@@ -14,9 +14,26 @@
                     [{{ object.alternate_title }}]
                 {% endif %}
             </li>
-            <li class="md-column md-column-volumes">Volumes: {{ object.display_volumes }}</li>
-            <li class="md-column md-column-completed">Completed: {{ object.is_completed }}</li>
-            <li class="md-column md-column-interest">Interest: {{ object.interest }}</li>
+
+            <li class="md-column md-column-volumes">
+                Volumes: {{ object.display_volumes }}
+            </li>
+
+            <li class="md-column md-column-completed">
+                Completed: {{ object.is_completed }}
+            </li>
+
+            <li class="md-column md-column-interest">
+                Interest: {{ object.interest }}
+            </li>
+
+            <li class="md-column md-column-status">
+                Status: {{ object.get_status_display }}
+            </li>
+            <li class="md-column md-column-notes">
+                Notes:
+                <p>{{ object.notes }}</p>
+            </li>
         </ul>
     </div>
 
