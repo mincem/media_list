@@ -1,0 +1,25 @@
+h1 {
+    text-align: center;
+    margin-bottom: 25px;
+}
+
+#content {
+    max-width: 1200px;
+    margin: auto;
+}
+
+#media-list {
+}
+
+.ml-column-title {
+    /*width: 50%;*/
+}
+.ml-column-volumes {
+    width: 20%;
+}
+.ml-column-completed {
+    width: 5%;
+}
+.ml-column-interest {
+    width: 10%;
+}

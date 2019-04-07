@@ -1,0 +1,23 @@
+{% extends 'media_list/base.html' %}
+
+{% block title %}{{ object }}{% endblock title %}
+
+{% block content %}
+
+    <h2>{{ object }}</h2>
+
+    <div class="media-detail">
+        <ul>
+            <li class="md-column md-column-title">
+                Title: {{ object.title }}
+                {% if object.alternate_title %}
+                    [{{ object.alternate_title }}]
+                {% endif %}
+            </li>
+            <li class="md-column md-column-volumes">Volumes: {{ object.display_volumes }}</li>
+            <li class="md-column md-column-completed">Completed: {{ object.is_completed }}</li>
+            <li class="md-column md-column-interest">Interest: {{ object.interest }}</li>
+        </ul>
+    </div>
+
+{% endblock content %}

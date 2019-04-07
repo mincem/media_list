@@ -1,0 +1,36 @@
+{% load static %}
+
+<html lang="en">
+<head>
+    <title>{% block title %}Media List{% endblock title %} - Media List</title>
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="{% static 'media_list/style.css' %}">
+    <link rel="shortcut icon" type="image/png" href="{% static 'favicon.ico' %}"/>
+</head>
+
+<body>
+
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <a class="navbar-brand" href="{% url 'index' %}">Media List</a>
+
+  <div class="collapse navbar-collapse">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item">
+        <a class="nav-link" href="{% url 'index' %}">List</a>
+      </li>
+
+      <li class="nav-item">
+        <a class="nav-link" href="{% url 'admin:index' %}">Admin</a>
+      </li>
+    </ul>
+  </div>
+</nav>
+
+<div id="content">
+    {% block content %}
+    {% endblock %}
+</div>
+</body>
+</html>

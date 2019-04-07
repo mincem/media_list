@@ -1,0 +1,44 @@
+{% extends 'media_list/base.html' %}
+
+{% block title %}Browse{% endblock title %}
+
+{% block content %}
+
+<h1>Media List</h1>
+
+<div id="media-list">
+    <table class="table table-hover table-bordered table-responsive">
+        <thead>
+        <tr>
+            <th class="ml-column ml-column-title">Title</th>
+            <th class="ml-column ml-column-volumes">Volumes</th>
+            <th class="ml-column ml-column-completed">Completed</th>
+            <th class="ml-column ml-column-interest">Interest</th>
+            <th class="ml-column ml-column-status">Status</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        {% for series in series_list %}
+            <tr class="ml-row" data-series-id="{{ series.id }}">
+                <td>
+                    <a href="{% url 'detail' series.id %}">{{ series.title }}</a>
+                    {% if series.alternate_title %}
+                        [{{ series.alternate_title }}]
+                    {% endif %}
+                </td>
+
+                <td>{{ series.display_volumes }}</td>
+
+                <td>{{ series.is_completed }}</td>
+
+                <td>{{ series.interest }}</td>
+
+                <td>{{ series.get_status_display }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+{% endblock content %}
