@@ -5,51 +5,78 @@
 
 {% block content %}
 
-    <h1>Media List</h1>
+  <h1>Media List</h1>
 
-    <div id="media-list">
-        <table class="table table-hover table-bordered table-responsive">
-            <thead>
-            <tr>
-                <th class="ml-column ml-column-title">Title</th>
-                <th class="ml-column ml-column-volumes">Volumes</th>
-                <th class="ml-column ml-column-completed">Completed</th>
-                <th class="ml-column ml-column-interest">Interest</th>
-                <th class="ml-column ml-column-status">Status</th>
-            </tr>
-            </thead>
+  <div class="row">
+    <div class="col-2">
+      <div id="filters">
 
-            <tbody>
-            {% for series in series_list %}
-                <tr class="ml-row" data-detail-url="{% url 'detail' series.id %}">
-                    <td>
-                        <a href="{{ series.url }}">{{ series.title }}</a>
-                        {% if series.alternate_title %}
-                            [{{ series.alternate_title }}]
-                        {% endif %}
-                    </td>
+        <div class="input-group mb-3">
+          <input type="text" class="form-control filter-title" placeholder="Search title">
 
-                    <td>{{ series.display_volumes }}</td>
-
-                    <td>{{ series.is_completed }}</td>
-
-                    <td>{{ series.interest }}</td>
-
-                    <td>{{ series.get_status_display }}</td>
-                </tr>
-            {% endfor %}
-            </tbody>
-        </table>
-    </div>
-
-    <div class="modal fade" id="details-modal" tabindex="-1" role="dialog" aria-hidden="true">
-        <div class="modal-dialog modal-xl">
-            <div class="modal-content"></div>
+          <div class="input-group-append">
+            <span class="input-group-text">
+              <i class="fas fa-search"></i>
+            </span>
+          </div>
         </div>
+
+        <button type="button" class="btn btn-primary" disabled>
+          Default order
+        </button>
+
+        <button type="button" class="btn btn-primary" disabled>
+          Order by Interest
+        </button>
+      </div>
     </div>
+
+    <div class="col-8">
+      <div id="media-list">
+        <table class="table table-hover table-bordered table-responsive">
+          <thead>
+          <tr>
+            <th class="ml-column ml-column-title">Title</th>
+            <th class="ml-column ml-column-volumes">Volumes</th>
+            <th class="ml-column ml-column-completed">Completed</th>
+            <th class="ml-column ml-column-interest">Interest</th>
+            <th class="ml-column ml-column-status">Status</th>
+          </tr>
+          </thead>
+
+          <tbody>
+          {% for series in series_list %}
+            <tr class="ml-row" data-detail-url="{% url 'detail' series.id %}">
+              <td class="ml-cell-title">
+                <a href="{{ series.url }}">{{ series.title }}</a>
+                {% if series.alternate_title %}
+                  [{{ series.alternate_title }}]
+                {% endif %}
+              </td>
+
+              <td>{{ series.display_volumes }}</td>
+
+              <td>{{ series.is_completed }}</td>
+
+              <td>{{ series.interest }}</td>
+
+              <td>{{ series.get_status_display }}</td>
+            </tr>
+          {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade" id="details-modal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+      <div class="modal-content"></div>
+    </div>
+  </div>
 
 {% endblock content %}
 
 {% block extra_js %}
-    <script src="{% static 'media_list/js/list.js' %}"></script>
+  <script src="{% static 'media_list/js/list.js' %}"></script>
 {% endblock %}

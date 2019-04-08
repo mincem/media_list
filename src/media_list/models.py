@@ -9,6 +9,9 @@ STATUS_CHOICES = (
 
 
 class MediaSeries(models.Model):
+    class Meta:
+        ordering = ['title', ]
+
     title = models.CharField(max_length=255)
     alternate_title = models.CharField(blank=True, max_length=255)
     volumes = models.IntegerField(default=0)
