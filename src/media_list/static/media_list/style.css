@@ -1,9 +1,11 @@
+body {
+    /*background: #e8dfdf;*/
+    background: #eff0f1; /* stackoverflow code background */
+}
+
 h1 {
     text-align: center;
     margin-bottom: 25px;
-}
-
-#media-list {
 }
 
 .ml-column-title {
