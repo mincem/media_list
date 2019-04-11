@@ -56,7 +56,7 @@
 
               <td>{{ series.display_volumes }}</td>
 
-              <td>{{ series.is_completed }}</td>
+              <td class="text-center"><i class="fas fa-{{ series.is_completed|yesno:"check,times" }}"></i></td>
 
               <td>{{ series.interest }}</td>
 

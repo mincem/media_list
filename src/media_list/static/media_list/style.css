@@ -20,3 +20,10 @@ h1 {
 .ml-column-interest {
     width: 10%;
 }
+
+.fa-check {
+    color: green;
+}
+.fa-times {
+    color: red;
+}

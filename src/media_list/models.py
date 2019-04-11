@@ -7,6 +7,13 @@ STATUS_CHOICES = (
     ('E', 'Edited'),
 )
 
+SOURCE_CHOICES = (
+    ('C', 'CRG'),
+    ('E', 'Empire'),
+    ('S', 'Scanlation'),
+    ('O', 'Other')
+)
+
 
 class MediaSeries(models.Model):
     class Meta:
@@ -17,7 +24,9 @@ class MediaSeries(models.Model):
     volumes = models.IntegerField(default=0)
     has_omnibus = models.BooleanField(default=False)
     is_completed = models.BooleanField(default=False)
-    url = models.URLField(blank=True)
+    is_read = models.BooleanField(default=False)
+    source = models.CharField(max_length=1, choices=SOURCE_CHOICES, default='O')
+    url = models.URLField(blank=True, null=True)
     interest = models.IntegerField()
     status = models.CharField(max_length=1, choices=STATUS_CHOICES, default='N')
     notes = models.TextField(blank=True)
