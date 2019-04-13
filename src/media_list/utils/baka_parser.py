@@ -1,60 +1,78 @@
 import json
 
+import requests
 from bs4 import BeautifulSoup
 from ..models import BakaSeries
 
 
 class BakaParser:
-    def __init__(self, baka_id):
-        self.baka_id = baka_id
-        self.raw_data = None
+    def __init__(self, baka_retriever=None):
+        self.baka_retriever = baka_retriever or BakaRetriever()
 
-    def baka_series(self):
-        return print(json.dumps(self._parse_webpage(), indent=2))
-        # return BakaSeries.objects.create()
+    def baka_series(self, baka_id):
+        return BakaSeries.objects.create(**self.parsed_series_data(baka_id))
 
-    def _parse_webpage(self):
-        soup = BeautifulSoup(self._raw_data())
+    def display_parsed_data(self, baka_id):
+        return json.dumps(self.parsed_series_data(baka_id), indent=2)
+
+    def parsed_series_data(self, baka_id):
+        soup = BeautifulSoup(self.baka_web_page_html(baka_id), "lxml")
         main_content = soup.find(id="main_content")
-        contents = self._find_contents(main_content)
+        contents = all_contents(main_content)
         return {
-            "title": self.parse_title(main_content),
-            "description": self.parse_description(main_content),
+            "title": parse_title(main_content),
+            "description": parse_description(main_content),
             "author": contents["Author(s)"],
             "artist": contents["Artist(s)"],
-            "year": contents["Year"],
+            "year": int(clean(contents["Year"])),
             "original_publisher": contents["Original Publisher"],
             "english_publisher": contents["English Publisher"],
         }
 
-    @staticmethod
-    def parse_description(soup):
-        return ' '.join(soup.find(id="div_desc_more").stripped_strings)  # TODO: Description format
+    def baka_web_page_html(self, baka_id):
+        return self.baka_retriever.get(baka_id)
 
-    @staticmethod
-    def parse_title(soup):
-        return soup.find(class_="releasestitle").string
 
-    def _raw_data(self):
-        if self.raw_data is None:
-            self.raw_data = self._baka_webpage()
-        return self.raw_data
+def all_contents(soup):
+    return {name_of(category): content_of(category) for category in soup(class_="sCat")}
 
-    @staticmethod
-    def _baka_webpage():
+
+def name_of(category):
+    return category.string
+
+
+def content_of(category):
+    return category.find_next_sibling(class_="sContent").string
+
+
+def parse_title(soup):
+    return soup.find(class_="releasestitle").string
+
+
+def parse_description(soup):
+    description_tag = soup.find(id="div_desc_more")
+    if description_tag is None:
+        return ""
+    return clean_text(description_tag)  # TODO: Description format
+
+
+def clean_text(html_tag):
+    return clean(" ".join(html_tag.stripped_strings))
+
+
+def clean(text):
+    return " ".join(text.split())
+
+
+class BakaRetriever:
+    def get(self, baka_id):
+        response = requests.get(f"https://www.mangaupdates.com/series.html?id={baka_id}")
+        response.raise_for_status()
+        return response.text
+
+
+class MockBakaRetriever(BakaRetriever):
+    def get(self, _baka_id):
         with open("./media_list/samples/sample_baka.html", 'rb') as html_file:
             dump = html_file.read()
         return dump
-
-    def _find_contents(self, soup):
-        cat_ = {self._category_name(category): self._category_content(category) for category in soup(class_="sCat")}
-        print(json.dumps(cat_, indent=2))
-        return cat_
-
-    @staticmethod
-    def _category_name(category):
-        return category.string
-
-    @staticmethod
-    def _category_content(category):
-        return category.find_next_sibling(class_="sContent").string
