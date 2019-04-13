@@ -17,7 +17,7 @@ SOURCE_CHOICES = (
 
 class MediaSeries(models.Model):
     class Meta:
-        ordering = ['title', ]
+        ordering = ('title',)
 
     title = models.CharField(max_length=255)
     alternate_title = models.CharField(blank=True, max_length=255)
@@ -41,12 +41,33 @@ class MediaSeries(models.Model):
 class BakaSeries(models.Model):
     baka_id = models.PositiveSmallIntegerField()  # TODO: unique, or save history?
     title = models.CharField(max_length=255)
-    genre = models.CharField(max_length=255)  # TODO: genres, plural?
+    genres = models.ManyToManyField("MangaGenre", related_name="series")
     description = models.TextField(blank=True)
-    status = models.CharField(max_length=255)
-    author = models.CharField(max_length=255)
-    artist = models.CharField(max_length=255)
-    year = models.PositiveSmallIntegerField()
-    original_publisher = models.CharField(max_length=255)
-    english_publisher = models.CharField(max_length=255)
-    # image = models.ImageField()
+    status = models.CharField(max_length=255, blank=True)
+    author = models.ForeignKey("MangaPerson", related_name="series_as_author", blank=True, null=True,
+                               on_delete=models.SET_NULL)
+    artist = models.ForeignKey("MangaPerson", related_name="series_as_artist", blank=True, null=True,
+                               on_delete=models.SET_NULL)
+    year = models.PositiveSmallIntegerField(blank=True, null=True)
+    original_publisher = models.CharField(max_length=255, blank=True)
+    english_publisher = models.CharField(max_length=255, blank=True)
+    image = models.ImageField(upload_to="manga_images/", blank=True, null=True)
+
+
+class NamedModel(models.Model):
+    class Meta:
+        abstract = True
+        ordering = ('name',)
+
+    name = models.CharField(max_length=255, unique=True)
+
+    def __str__(self):
+        return self.name
+
+
+class MangaGenre(NamedModel):
+    pass
+
+
+class MangaPerson(NamedModel):
+    pass
