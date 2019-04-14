@@ -1,7 +1,16 @@
 <div class="modal-header">
-  <h5 class="modal-title">
-    {{ object }}
-  </h5>
+
+  <div class="modal-title">
+    <h4>
+      {{ object }}
+    </h4>
+
+    {% if object.alternate_title %}
+      <h6 class="modal-title">
+        [{{ object.alternate_title }}]
+      </h6>
+    {% endif %}
+  </div>
 
   <button type="button" class="close" data-dismiss="modal" aria-label="Close">
     <span aria-hidden="true">&times;</span>
@@ -11,32 +20,21 @@
 <div class="modal-body">
   <div class="media-detail">
     <ul>
-      <li class="md-column md-column-title">
-        Title: {{ object.title }}
-        {% if object.alternate_title %}
-          [{{ object.alternate_title }}]
-        {% endif %}
-      </li>
-
       <li class="md-column md-column-volumes">
-        Volumes: {{ object.display_volumes }}
-      </li>
-
-      <li class="md-column md-column-completed">
-        Completed: {{ object.is_completed }}
+        <b>Status:</b> {{ object.display_volumes }} ({{ object.is_completed|yesno:"Complete,Ongoing" }})
       </li>
 
       <li class="md-column md-column-interest">
-        Interest: {{ object.interest }}
+        <b>Interest:</b> {{ object.interest }}
       </li>
 
       <li class="md-column md-column-status">
-        Status: {{ object.get_status_display }}
+        <b>Download status:</b> {{ object.get_status_display }}
       </li>
 
       {% if object.notes %}
         <li class="md-column md-column-notes">
-          Notes:
+          <b>Notes:</b>
           <p>{{ object.notes }}</p>
         </li>
       {% endif %}
