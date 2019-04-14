@@ -18,4 +18,15 @@ $(document).ready(function () {
       $(this).toggle($(this).find('.ml-cell-title').text().toLowerCase().indexOf(value) > -1)
     });
   });
+
+  $(".magic-button").click(function () {
+    $.ajax({
+      url: $(this).data('magic-url'),
+      type: 'get',
+      dataType: 'json',
+      success: function (data) {
+        alert(data['result']);
+      }
+    });
+  });
 });

@@ -16,13 +16,31 @@ LINK_COLORS = {
 
 
 class ScanListParser:
-    def scan(self):
-        with open("./media_list/samples/scans_sample.html", 'rb') as html_file:
+    def __init__(self, filename):
+        self.filename = filename
+        self.series_created = 0
+        self.errors = []
+
+    def perform(self):
+        with open(self.filename, 'rb') as html_file:
             self.scan_contents(html_file)
+        return {
+            "created": self.series_created,
+            "errors": self.errors
+        }
 
     def scan_contents(self, html):
         soup = BeautifulSoup(html, "lxml")
-        return [self.store(self.extracted_data_from(entry)) for entry in soup("p")]
+        return [self.scan(entry) for entry in soup("p")]
+
+    def scan(self, entry):
+        try:
+            series = MediaSeries.objects.create(**self.extracted_data_from(entry))
+            self.series_created += 1
+            return series
+        except Exception as error:
+            print(f"Cannot create entry from line {entry}. Error: {error}")
+            self.errors.append({"line": entry, "error": error})
 
     @staticmethod
     def extracted_data_from(entry):
@@ -34,15 +52,11 @@ class ScanListParser:
             "volumes": find_volumes(line),
             "source": 'E',
             "has_omnibus": "omnibus" in line,
-            "is_completed": "completo" in line,
+            "is_completed": "completo" in line or "unitario" in line,
             "interest": 100 if STAR_EMOJI in line else 0,
             "status": find_status(entry),
             "notes": "",
         }
-
-    @staticmethod
-    def store(series_data):
-        return MediaSeries.objects.create(**series_data)
 
 
 def entry_contents(entry):

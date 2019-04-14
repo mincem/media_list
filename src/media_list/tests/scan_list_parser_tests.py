@@ -83,71 +83,88 @@ another_html = """
 
 
 class ScanListParserTests(TestCase):
+    def setUp(self):
+        self.parser = ScanListParser("mock_filename")
+
+    def test_reports_amount_scanned(self):
+        response = ScanListParser("./media_list/samples/scan_list_test_sample.html").perform()
+        self.assertEquals(2, response["created"])
+        self.assertEquals(0, len(response["errors"]))
+
+    def test_reports_a_scanning_error(self):
+        response = ScanListParser("./media_list/samples/scan_list_broken_test_sample.html").perform()
+        self.assertEquals(1, response["created"])
+        self.assertEquals(1, len(response["errors"]))
+
     def test_store_correct_title(self):
-        media_series = ScanListParser().scan_contents(strike_the_blood_html)[0]
+        media_series = self.parser.scan_contents(strike_the_blood_html)[0]
         self.assertEquals(strike_the_blood_data["title"], media_series.title)
 
     def test_store_correct_alternate_title(self):
-        media_series = ScanListParser().scan_contents(water_dragon_bride_html)[0]
+        media_series = self.parser.scan_contents(water_dragon_bride_html)[0]
         self.assertEquals(water_dragon_bride_data["alternate_title"], media_series.alternate_title)
 
     def test_store_empty_alternate_title(self):
-        media_series = ScanListParser().scan_contents(strike_the_blood_html)[0]
+        media_series = self.parser.scan_contents(strike_the_blood_html)[0]
         self.assertEquals(strike_the_blood_data["alternate_title"], media_series.alternate_title)
 
     def test_store_correct_url(self):
-        media_series = ScanListParser().scan_contents(strike_the_blood_html)[0]
+        media_series = self.parser.scan_contents(strike_the_blood_html)[0]
         self.assertEquals(strike_the_blood_data["url"], media_series.url)
 
     def test_store_correct_volumes(self):
-        media_series = ScanListParser().scan_contents(strike_the_blood_html)[0]
+        media_series = self.parser.scan_contents(strike_the_blood_html)[0]
         self.assertEquals(strike_the_blood_data["volumes"], media_series.volumes)
 
     def test_standalone_stores_one_volume(self):
-        media_series = ScanListParser().scan_contents(beauty_html)[0]
+        media_series = self.parser.scan_contents(beauty_html)[0]
         self.assertEquals(1, media_series.volumes)
 
     def test_store_does_have_omnibus(self):
-        media_series = ScanListParser().scan_contents(dragon_half_html)[0]
+        media_series = self.parser.scan_contents(dragon_half_html)[0]
         self.assertEquals(True, media_series.has_omnibus)
 
     def test_store_does_not_have_omnibus(self):
-        media_series = ScanListParser().scan_contents(strike_the_blood_html)[0]
+        media_series = self.parser.scan_contents(strike_the_blood_html)[0]
         self.assertEquals(False, media_series.has_omnibus)
 
     def test_store_standalone_omnibus(self):
-        media_series = ScanListParser().scan_contents(another_html)[0]
+        media_series = self.parser.scan_contents(another_html)[0]
         self.assertEquals(1, media_series.volumes)
         self.assertEquals(True, media_series.has_omnibus)
 
     def test_store_is_completed(self):
-        media_series = ScanListParser().scan_contents(strike_the_blood_html)[0]
+        media_series = self.parser.scan_contents(strike_the_blood_html)[0]
         self.assertEquals(True, media_series.is_completed)
 
     def test_store_is_not_completed(self):
-        media_series = ScanListParser().scan_contents(water_dragon_bride_html)[0]
+        media_series = self.parser.scan_contents(water_dragon_bride_html)[0]
         self.assertEquals(False, media_series.is_completed)
 
+    def test_standalone_is_always_completed(self):
+        media_series = self.parser.scan_contents(beauty_html)[0]
+        self.assertEquals(True, media_series.is_completed)
+
     def test_store_min_interest(self):
-        media_series = ScanListParser().scan_contents(strike_the_blood_html)[0]
+        media_series = self.parser.scan_contents(strike_the_blood_html)[0]
         self.assertEquals(MIN_INTEREST, media_series.interest)
 
     def test_store_max_interest(self):
-        media_series = ScanListParser().scan_contents(ceres_html)[0]
+        media_series = self.parser.scan_contents(ceres_html)[0]
         self.assertEquals(MAX_INTEREST, media_series.interest)
 
     def test_store_status_not_downloaded(self):
-        media_series = ScanListParser().scan_contents(strike_the_blood_html)[0]
+        media_series = self.parser.scan_contents(strike_the_blood_html)[0]
         self.assertEquals("N", media_series.status)
 
     def test_store_status_downloading(self):
-        media_series = ScanListParser().scan_contents(water_dragon_bride_html)[0]
+        media_series = self.parser.scan_contents(water_dragon_bride_html)[0]
         self.assertEquals("D", media_series.status)
 
     def test_store_status_downloaded_raw(self):
-        media_series = ScanListParser().scan_contents(ceres_html)[0]
+        media_series = self.parser.scan_contents(ceres_html)[0]
         self.assertEquals("R", media_series.status)
 
     def test_store_status_edited(self):
-        media_series = ScanListParser().scan_contents(dragon_half_html)[0]
+        media_series = self.parser.scan_contents(dragon_half_html)[0]
         self.assertEquals("E", media_series.status)
