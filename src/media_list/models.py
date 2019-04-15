@@ -7,13 +7,6 @@ STATUS_CHOICES = (
     ('E', 'Edited'),
 )
 
-SOURCE_CHOICES = (
-    ('C', 'CRG'),
-    ('E', 'Empire'),
-    ('S', 'Scanlation'),
-    ('O', 'Other')
-)
-
 
 class MediaSeries(models.Model):
     class Meta:
@@ -21,15 +14,17 @@ class MediaSeries(models.Model):
 
     title = models.CharField(max_length=255)
     alternate_title = models.CharField(blank=True, max_length=255)
-    volumes = models.IntegerField(default=0)
+    volumes = models.IntegerField(blank=True, null=True)
     has_omnibus = models.BooleanField(default=False)
     is_completed = models.BooleanField(default=False)
     is_read = models.BooleanField(default=False)
-    source = models.CharField(max_length=1, choices=SOURCE_CHOICES, default='O')
+    source = models.ForeignKey("MangaSource", blank=True, null=True, on_delete=models.SET_NULL)
     url = models.URLField(blank=True, null=True)
     interest = models.IntegerField()
     status = models.CharField(max_length=1, choices=STATUS_CHOICES, default='N')
     notes = models.TextField(blank=True)
+    baka_id = models.PositiveSmallIntegerField(blank=True, null=True)
+    baka_info = models.ForeignKey("BakaSeries", blank=True, null=True, on_delete=models.SET_NULL)
 
     def __str__(self):
         return self.title
@@ -63,6 +58,10 @@ class NamedModel(models.Model):
 
     def __str__(self):
         return self.name
+
+
+class MangaSource(NamedModel):
+    icon = models.ImageField(upload_to="source_icons/", blank=True, null=True)
 
 
 class MangaGenre(NamedModel):
