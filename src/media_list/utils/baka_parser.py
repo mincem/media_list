@@ -9,26 +9,19 @@ class BakaParser:
     def __init__(self, baka_id, baka_retriever=None):
         self.baka_id = baka_id
         self.baka_retriever = baka_retriever or BakaRetriever()
-        self.author = None
-        self.artist = None
-        self.genres = []
+        self.web_page_html = None
 
-    def baka_series(self):
+    def perform(self):
         parsed_series_data = self.parsed_series_data()
-        author_name = parsed_series_data.pop("author_name", None)
-        if author_name is not None:
-            self.author, _created = MangaPerson.objects.get_or_create(name=author_name)
-        artist_name = parsed_series_data.pop("artist_name", None)
-        if artist_name is not None:
-            self.artist, _created = MangaPerson.objects.get_or_create(name=artist_name)
-        genre_names = parsed_series_data.pop("genre_names", None)
-        self.genres = [MangaGenre.objects.get_or_create(name=genre_name)[0] for genre_name in genre_names]
+        author = create_person(parsed_series_data.pop("author_name", None))
+        artist = create_person(parsed_series_data.pop("artist_name", None))
+        genres = create_genres(parsed_series_data.pop("genre_names", None))
         baka_series = BakaSeries.objects.create(
             **parsed_series_data,
-            author=self.author,
-            artist=self.artist,
+            author=author,
+            artist=artist,
         )
-        baka_series.genres.add(*self.genres)
+        baka_series.genres.add(*genres)
         return baka_series
 
     def display_parsed_data(self):
@@ -41,18 +34,21 @@ class BakaParser:
         return {
             "baka_id": self.baka_id,
             "title": parse_title(main_content),
+            "genre_names": parse_genres(contents["Genre"]) or [],
             "description": parse_description(main_content),
+            "status": clean_text(contents["Status in Country of Origin"]),
             "author_name": parse_person_name(contents["Author(s)"]),
             "artist_name": parse_person_name(contents["Artist(s)"]),
             "year": int(clean_text(contents["Year"])) or None,
             "original_publisher": clean_text(contents["Original Publisher"]) or "",
             "english_publisher": clean_text(contents["English Publisher"]) or "",
-            "genre_names": parse_genres(contents["Genre"]) or [],
             "image": None,
         }
 
     def baka_web_page_html(self):
-        return self.baka_retriever.get(self.baka_id)
+        if self.web_page_html is None:
+            self.web_page_html = self.baka_retriever.get(self.baka_id)
+        return self.web_page_html
 
 
 def all_contents(soup):
@@ -60,7 +56,7 @@ def all_contents(soup):
 
 
 def name_of(category):
-    return category.string
+    return " ".join(category.stripped_strings)
 
 
 def html_of(category):
@@ -75,7 +71,8 @@ def parse_description(soup):
     description_tag = soup.find(id="div_desc_more")
     if description_tag is None:
         return ""
-    return clean_text(description_tag)  # TODO: Description format
+    description_tag.a.extract()
+    return clean_text(description_tag)
 
 
 def parse_person_name(html):
@@ -87,6 +84,7 @@ def parse_person_name(html):
 def parse_genres(html):
     if html is None:
         return None
+    html.br.find_next_sibling().extract()
     return list(html.stripped_strings)
 
 
@@ -96,6 +94,17 @@ def clean_text(html_tag):
 
 def clean(text):
     return " ".join(text.split())
+
+
+def create_person(name):
+    if name is None:
+        return None
+    author, _created = MangaPerson.objects.get_or_create(name=name)
+    return author
+
+
+def create_genres(names):
+    return [MangaGenre.objects.get_or_create(name=genre_name)[0] for genre_name in names]
 
 
 class BakaRetriever:
