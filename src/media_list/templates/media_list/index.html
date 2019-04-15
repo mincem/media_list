@@ -52,7 +52,7 @@
           {% for series in series_list %}
             <tr class="ml-row" data-detail-url="{% url 'detail' series.id %}">
               <td class="ml-cell-title">
-                <a href="{{ series.url }}">{{ series.title }}</a>
+                <b><a href="{{ series.url }}">{{ series.title }}</a></b>
                 {% if series.alternate_title %}
                   [{{ series.alternate_title }}]
                 {% endif %}
