@@ -1,8 +1,9 @@
+import os
 import re
 
 from bs4 import BeautifulSoup
 
-from ..models import MediaSeries
+from ..models import MediaSeries, MangaSource
 
 STAR_EMOJI = "🌟"
 
@@ -18,13 +19,17 @@ LINK_COLORS = {
 class ScanListParser:
     def __init__(self, filename):
         self.filename = filename
+        self.total_lines_read = 0
         self.series_created = 0
         self.errors = []
 
     def perform(self):
+        if not os.path.isfile(self.filename):
+            raise FileNotFoundError(f'File "{self.filename}" does not exist.')
         with open(self.filename, 'rb') as html_file:
             self.scan_contents(html_file)
         return {
+            "total": self.total_lines_read,
             "created": self.series_created,
             "errors": self.errors
         }
@@ -37,10 +42,12 @@ class ScanListParser:
         try:
             series = MediaSeries.objects.create(**self.extracted_data_from(entry))
             self.series_created += 1
+            self.total_lines_read += 1
             return series
         except Exception as error:
             print(f"Cannot create entry from line {entry}. Error: {error}")
             self.errors.append({"line": entry, "error": error})
+            self.total_lines_read += 1
 
     @staticmethod
     def extracted_data_from(entry):
@@ -50,7 +57,7 @@ class ScanListParser:
             "alternate_title": find_alternate_title(line),
             "url": parse_url(entry),
             "volumes": find_volumes(line),
-            "source": 'E',
+            "source": MangaSource.objects.first() or None,
             "has_omnibus": "omnibus" in line,
             "is_completed": "completo" in line or "unitario" in line,
             "interest": 100 if STAR_EMOJI in line else 0,

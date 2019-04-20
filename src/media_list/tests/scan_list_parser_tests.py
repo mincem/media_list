@@ -88,11 +88,13 @@ class ScanListParserTests(TestCase):
 
     def test_reports_amount_scanned(self):
         response = ScanListParser("./media_list/samples/scan_list_test_sample.html").perform()
+        self.assertEquals(2, response["total"])
         self.assertEquals(2, response["created"])
         self.assertEquals(0, len(response["errors"]))
 
     def test_reports_a_scanning_error(self):
         response = ScanListParser("./media_list/samples/scan_list_broken_test_sample.html").perform()
+        self.assertEquals(2, response["total"])
         self.assertEquals(1, response["created"])
         self.assertEquals(1, len(response["errors"]))
 
