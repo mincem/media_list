@@ -21,7 +21,15 @@ class Command(BaseCommand):
 
     def print_parsing_errors(self, errors):
         if errors:
-            self.stdout.write(self.style.ERROR(f"Found {len(errors)} errors:"))
+            self.stdout.write(self.style.ERROR(f"Found {len(errors)} errors:\n"))
+            self.print_dividing_line()
         for error in errors:
-            self.stdout.write(self.style.ERROR(error))
-            self.stdout.write("------------------------------")
+            self.print_parsing_error(exception=error["error"], line=error["line"])
+
+    def print_parsing_error(self, exception, line):
+        self.stdout.write(self.style.ERROR(f"Error: {exception}"))
+        self.stdout.write(self.style.ERROR(f"In line: {line}"))
+        self.print_dividing_line()
+
+    def print_dividing_line(self):
+        self.stdout.write(self.style.ERROR("----------------------------------------------------"))

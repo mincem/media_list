@@ -7,9 +7,9 @@ from ..models import MediaSeries, MangaSource
 
 STAR_EMOJI = "🌟"
 
-DEFAULT_LINK_COLOR = "#1155cc"
+DEFAULT_STATUS = "U"
 LINK_COLORS = {
-    DEFAULT_LINK_COLOR: "N",
+    "#1155cc": "N",
     "#783f04": "D",
     "#bf9000": "R",
     "#38761d": "E",
@@ -45,7 +45,6 @@ class ScanListParser:
             self.total_lines_read += 1
             return series
         except Exception as error:
-            print(f"Cannot create entry from line {entry}. Error: {error}")
             self.errors.append({"line": entry, "error": error})
             self.total_lines_read += 1
 
@@ -97,6 +96,6 @@ def find_status(entry):
     entry_html = str(entry)
     try:
         entry_text_color = next(color for color in (LINK_COLORS.keys()) if color in entry_html)
+        return LINK_COLORS[entry_text_color]
     except StopIteration:
-        entry_text_color = DEFAULT_LINK_COLOR
-    return LINK_COLORS[entry_text_color]
+        return DEFAULT_STATUS
