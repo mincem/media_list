@@ -12,7 +12,7 @@ h1 {
     /*width: 50%;*/
 }
 .ml-column-volumes {
-    width: 20%;
+    width: 10%;
 }
 .ml-column-completed {
     width: 5%;
@@ -20,10 +20,20 @@ h1 {
 .ml-column-interest {
     width: 10%;
 }
+.ml-column-status {
+    width: 18%;
+}
 
 .fa-check {
     color: green;
 }
 .fa-times {
     color: red;
+}
+
+.source-icon {
+    height: 32px;
+    width: 32px;
+    margin: auto;
+    display: block;
 }

@@ -1,6 +1,7 @@
 from django.db import models
 
 STATUS_CHOICES = (
+    ('U', 'Unknown'),
     ('N', 'Not Downloaded'),
     ('D', 'Downloading'),
     ('R', 'Downloaded Raw'),
@@ -21,7 +22,7 @@ class MediaSeries(models.Model):
     source = models.ForeignKey("MangaSource", blank=True, null=True, on_delete=models.SET_NULL)
     url = models.URLField(blank=True, null=True)
     interest = models.IntegerField()
-    status = models.CharField(max_length=1, choices=STATUS_CHOICES, default='N')
+    status = models.CharField(max_length=1, choices=STATUS_CHOICES, default=STATUS_CHOICES[0][0])
     notes = models.TextField(blank=True)
     baka_id = models.PositiveSmallIntegerField(blank=True, null=True)
     baka_info = models.ForeignKey("BakaSeries", blank=True, null=True, on_delete=models.SET_NULL)

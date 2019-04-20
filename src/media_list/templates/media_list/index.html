@@ -40,6 +40,7 @@
         <table class="table table-hover table-bordered table-responsive">
           <thead>
           <tr>
+            <th class="ml-column ml-column-title">Source</th>
             <th class="ml-column ml-column-title">Title</th>
             <th class="ml-column ml-column-volumes">Volumes</th>
             <th class="ml-column ml-column-completed">Completed</th>
@@ -51,6 +52,12 @@
           <tbody>
           {% for series in series_list %}
             <tr class="ml-row" data-detail-url="{% url 'detail' series.id %}">
+              <td>
+                {% if series.source %}
+                  <img class="source-icon" src="{{ series.source.icon.url }}" alt="{{ series.source }}">
+                {% endif %}
+              </td>
+
               <td class="ml-cell-title">
                 <b><a href="{{ series.url }}">{{ series.title }}</a></b>
                 {% if series.alternate_title %}
