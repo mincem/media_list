@@ -49,6 +49,15 @@ class BakaSeries(models.Model):
     english_publisher = models.CharField(max_length=255, blank=True)
     image = models.ImageField(upload_to="manga_images/", blank=True, null=True)
 
+    def __str__(self):
+        return f"({self.baka_id}) {self.title}"
+
+    def url(self):
+        return f"https://www.mangaupdates.com/series.html?id={self.baka_id}"
+
+    def simple_genre_list(self):
+        return ", ".join(str(genre) for genre in self.genres.all())
+
 
 class NamedModel(models.Model):
     class Meta:

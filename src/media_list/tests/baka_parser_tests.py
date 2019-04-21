@@ -1,3 +1,5 @@
+from django.core.files.base import ContentFile
+from django.templatetags.static import static
 from django.test import TestCase
 
 from ..utils import BakaParser
@@ -30,9 +32,20 @@ class MockBakaRetriever:
             return html_file.read()
 
 
+class MockImageRetriever:
+    @staticmethod
+    def get(_image_url):
+        with open("./media_list" + static("media_list/images/shingeki_no_kyojin.png"), "rb") as image:
+            return ContentFile(image.read())
+
+
 class BakaParserTests(TestCase):
     def setUp(self):
-        self.baka_series = BakaParser(MOCK_BAKA_ID, MockBakaRetriever()).perform()
+        self.baka_series = BakaParser(
+            baka_id=MOCK_BAKA_ID,
+            baka_retriever=MockBakaRetriever(),
+            image_retriever=MockImageRetriever(),
+        ).perform()
 
     # def test_pending(self):
     #     parser = BakaParser(FMP_SIGMA_BAKA_ID, MockBakaRetriever())

@@ -39,6 +39,54 @@
         </li>
       {% endif %}
     </ul>
+
+    {% if object.baka_info %}
+      <div class="media-detail">
+        <h3>Mangaupdates Info</h3>
+      </div>
+
+      {% if object.baka_info.image %}
+        <img src="{{ object.baka_info.image.url }}" alt="{{ object.baka_info.title }}">
+      {% endif %}
+
+      <ul>
+        <li class="md-column">
+          <b>Title:</b> {{ object.baka_info.title }}
+        </li>
+
+        <li class="md-column">
+          <b>Genres:</b> {{ object.baka_info.simple_genre_list }}
+        </li>
+
+        <li class="md-column">
+          <b>Description:</b> {{ object.baka_info.description }}
+        </li>
+
+        <li class="md-column">
+          <b>Status:</b> {{ object.baka_info.status }}
+        </li>
+
+        <li class="md-column">
+          <b>Author:</b> {{ object.baka_info.author }}
+        </li>
+
+        <li class="md-column">
+          <b>Artist:</b> {{ object.baka_info.artist }}
+        </li>
+
+        <li class="md-column">
+          <b>Year:</b> {{ object.baka_info.year }}
+        </li>
+
+        <li class="md-column">
+          <b>Original Publisher:</b> {{ object.baka_info.original_publisher }}
+        </li>
+
+        <li class="md-column">
+          <b>English Publisher:</b> {{ object.baka_info.english_publisher }}
+        </li>
+      </ul>
+    {% endif %}
   </div>
 
   <div class="media-actions">
