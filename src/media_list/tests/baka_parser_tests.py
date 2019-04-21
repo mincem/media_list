@@ -1,3 +1,5 @@
+import os
+
 from django.core.files.base import ContentFile
 from django.templatetags.static import static
 from django.test import TestCase
@@ -35,8 +37,12 @@ class MockBakaRetriever:
 class MockImageRetriever:
     @staticmethod
     def get(_image_url):
-        with open("./media_list" + static("media_list/images/shingeki_no_kyojin.png"), "rb") as image:
-            return ContentFile(image.read())
+        static_url = "media_list/images/shingeki_no_kyojin.png"
+        with open("./media_list" + static(static_url), "rb") as image:
+            return {
+                "name": os.path.basename(static_url),
+                "content": ContentFile(image.read()),
+            }
 
 
 class BakaParserTests(TestCase):
