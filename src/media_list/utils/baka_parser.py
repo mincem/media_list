@@ -41,7 +41,7 @@ class BakaParser:
             "baka_id": self.baka_id,
             "title": parse_title(main_content),
             "genre_names": parse_genres(contents["Genre"]) or [],
-            "description": parse_description(main_content),
+            "description": parse_description(main_content, contents),
             "status": clean_text(contents["Status in Country of Origin"]),
             "author_name": parse_person_name(contents["Author(s)"]),
             "artist_name": parse_person_name(contents["Artist(s)"]),
@@ -77,11 +77,12 @@ def parse_title(soup):
     return soup.find(class_="releasestitle").string
 
 
-def parse_description(soup):
+def parse_description(soup, contents):
     description_tag = soup.find(id="div_desc_more")
     if description_tag is None:
-        return ""
-    description_tag.a.extract()
+        description_tag = contents["Description"]
+    else:
+        description_tag.find_all("a")[-1].extract()
     return clean_text(description_tag)
 
 

@@ -61,7 +61,10 @@
             </li>
 
             <li class="md-column">
-              <b>Genres:</b> {{ object.baka_info.simple_genre_list }}
+              <b>Genres:</b>
+              {% for genre in object.baka_info.genres.all %}
+                <span class="badge badge-info">{{ genre }}</span>
+              {% endfor %}
             </li>
 
             <li class="md-column">
