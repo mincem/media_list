@@ -50,9 +50,9 @@ class ScanListParser:
 
     @staticmethod
     def extracted_data_from(entry):
-        line = entry_contents(entry)
+        line = clean_text(entry)
         return {
-            "title": parse_title(line),
+            "title": parse_title(line, entry),
             "alternate_title": find_alternate_title(line),
             "url": parse_url(entry),
             "volumes": find_volumes(line),
@@ -65,8 +65,8 @@ class ScanListParser:
         }
 
 
-def entry_contents(entry):
-    soup_string = " ".join(entry.stripped_strings)
+def clean_text(html_tag):
+    soup_string = " ".join(html_tag.stripped_strings)
     return " ".join(soup_string.split())
 
 
@@ -75,8 +75,11 @@ def parse_url(entry):
     return None if hyperlink is None else hyperlink.get("href")
 
 
-def parse_title(line):
-    return re.search(r'(.*?) [(\[]', line).group(1)
+def parse_title(line, entry):
+    hyperlink = entry.find("a")
+    if hyperlink is None:
+        return re.search(r'(.*?) [(\[]', line).group(1)
+    return clean_text(hyperlink)
 
 
 def find_alternate_title(line):
@@ -88,7 +91,7 @@ def find_alternate_title(line):
 def find_volumes(line):
     if "unitario" in line:
         return 1
-    match = re.search(r'\((.*?)(\+?) (tomos|omnibus)', line)
+    match = re.search(r'.*\((.*?)(\+?) (tomos|omnibus)', line)
     return int(match.group(1))
 
 
