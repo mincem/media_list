@@ -65,6 +65,24 @@ class ScanListParser:
         }
 
 
+class OldScanListParser(ScanListParser):
+    @staticmethod
+    def extracted_data_from(entry):
+        line = clean_text(entry)
+        return {
+            "title": parse_old_title(line),
+            "alternate_title": "",
+            "url": parse_url(entry),
+            "volumes": find_old_volumes(line),
+            "source": MangaSource.objects.first() or None,
+            "has_omnibus": "omnibus" in line.lower(),
+            "is_completed": "complete" in line.lower(),
+            "interest": 100 if STAR_EMOJI in line else 0,
+            "status": find_status(entry),
+            "notes": "",
+        }
+
+
 def clean_text(html_tag):
     soup_string = " ".join(html_tag.stripped_strings)
     return " ".join(soup_string.split())
@@ -82,6 +100,10 @@ def parse_title(line, entry):
     return clean_text(hyperlink)
 
 
+def parse_old_title(line):
+    return re.search(r'(.*?) (Omnibus|v[0-9]|\()', line).group(1)
+
+
 def find_alternate_title(line):
     if "[" not in line:
         return ""
@@ -94,6 +116,12 @@ def find_volumes(line):
     match = re.search(r'.*\((.*?)(\+?) (tomos|omnibus)', line)
     return int(match.group(1))
 
+
+def find_old_volumes(line):
+    match = re.findall(r'v[0-9]{1,2}', line)
+    if not match:
+        return 1
+    return int(match[-1].replace("v", ""))
 
 def find_status(entry):
     entry_html = str(entry)

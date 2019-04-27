@@ -7,6 +7,7 @@ STATUS_CHOICES = (
     ('R', 'Downloaded Raw'),
     ('E', 'Edited'),
 )
+DEFAULT_STATUS_CHOICE = STATUS_CHOICES[0][0]
 
 
 class MediaSeries(models.Model):
@@ -22,7 +23,7 @@ class MediaSeries(models.Model):
     source = models.ForeignKey("MangaSource", blank=True, null=True, on_delete=models.SET_NULL)
     url = models.URLField(blank=True, null=True)
     interest = models.IntegerField()
-    status = models.CharField(max_length=1, choices=STATUS_CHOICES, default=STATUS_CHOICES[0][0])
+    status = models.CharField(max_length=1, choices=STATUS_CHOICES, default=DEFAULT_STATUS_CHOICE)
     notes = models.TextField(blank=True)
     baka_id = models.PositiveSmallIntegerField(blank=True, null=True)
     baka_info = models.ForeignKey("BakaSeries", blank=True, null=True, on_delete=models.SET_NULL)
@@ -32,6 +33,9 @@ class MediaSeries(models.Model):
 
     def display_volumes(self):
         return f"{self.volumes}{'+' if not self.is_completed else ''} {'omnibus' if self.has_omnibus else 'volumes'}"
+
+    def incomplete(self):
+        return self.volumes is None or self.url is None or self.status == DEFAULT_STATUS_CHOICE
 
 
 class BakaSeries(models.Model):
