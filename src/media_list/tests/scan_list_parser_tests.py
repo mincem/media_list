@@ -112,7 +112,7 @@ class ScanListParserTests(TestCase):
 
     def test_store_correct_url(self):
         media_series = self.parser.scan_contents(strike_the_blood_html)[0]
-        self.assertEquals(strike_the_blood_data["url"], media_series.url)
+        self.assertEquals(strike_the_blood_data["url"], str(media_series.urls.first()))
 
     def test_store_correct_volumes(self):
         media_series = self.parser.scan_contents(strike_the_blood_html)[0]

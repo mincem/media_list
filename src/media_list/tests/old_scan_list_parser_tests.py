@@ -54,3 +54,7 @@ class OldScanListParserTests(TestCase):
     def test_store_is_completed(self):
         media_series = self.parser.scan_contents(basara_html)[0]
         self.assertEquals(True, media_series.is_completed)
+
+    def test_store_correct_url(self):
+        media_series = self.parser.scan_contents(basara_html)[0]
+        self.assertEquals(basara_data["url"], str(media_series.urls.first()))

@@ -3,7 +3,7 @@ import re
 
 from bs4 import BeautifulSoup
 
-from ..models import MediaSeries, MangaSource
+from ..models import MediaSeries, MangaSource, MangaURL
 
 STAR_EMOJI = "🌟"
 
@@ -40,7 +40,11 @@ class ScanListParser:
 
     def scan(self, entry):
         try:
-            series = MediaSeries.objects.create(**self.extracted_data_from(entry))
+            extracted_data = self.extracted_data_from(entry)
+            url = extracted_data.pop("url", None)
+            series = MediaSeries.objects.create(**extracted_data)
+            if url is not None:
+                create_manga_url(url, series)
             self.series_created += 1
             self.total_lines_read += 1
             return series
@@ -123,6 +127,7 @@ def find_old_volumes(line):
         return 1
     return int(match[-1].replace("v", ""))
 
+
 def find_status(entry):
     entry_html = str(entry)
     try:
@@ -130,3 +135,8 @@ def find_status(entry):
         return LINK_COLORS[entry_text_color]
     except StopIteration:
         return DEFAULT_STATUS
+
+def create_manga_url(url, series):
+    if url is None:
+        return None
+    return MangaURL.objects.create(url=url, series=series)

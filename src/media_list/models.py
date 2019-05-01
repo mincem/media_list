@@ -1,4 +1,5 @@
 from django.db import models
+from ordered_model.models import OrderedModel
 
 STATUS_CHOICES = (
     ('U', 'Unknown'),
@@ -21,7 +22,6 @@ class MediaSeries(models.Model):
     is_completed = models.BooleanField(default=False)
     is_read = models.BooleanField(default=False)
     source = models.ForeignKey("MangaSource", blank=True, null=True, on_delete=models.SET_NULL)
-    url = models.URLField(blank=True, null=True)
     interest = models.IntegerField()
     status = models.CharField(max_length=1, choices=STATUS_CHOICES, default=DEFAULT_STATUS_CHOICE)
     notes = models.TextField(blank=True)
@@ -35,7 +35,7 @@ class MediaSeries(models.Model):
         return f"{self.volumes}{'+' if not self.is_completed else ''} {'omnibus' if self.has_omnibus else 'volumes'}"
 
     def incomplete(self):
-        return self.volumes is None or self.url is None or self.status == DEFAULT_STATUS_CHOICE
+        return self.volumes is None or not self.urls.all() or self.status == DEFAULT_STATUS_CHOICE
 
 
 class BakaSeries(models.Model):
@@ -84,3 +84,12 @@ class MangaGenre(NamedModel):
 
 class MangaPerson(NamedModel):
     pass
+
+
+class MangaURL(OrderedModel):
+    url = models.URLField()
+    series = models.ForeignKey("MediaSeries", related_name="urls", on_delete=models.CASCADE)
+    order_with_respect_to = 'series'
+
+    def __str__(self):
+        return self.url
