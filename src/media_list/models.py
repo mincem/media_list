@@ -44,10 +44,8 @@ class BakaSeries(models.Model):
     genres = models.ManyToManyField("MangaGenre", related_name="series")
     description = models.TextField(blank=True)
     status = models.CharField(max_length=255, blank=True)
-    author = models.ForeignKey("MangaPerson", related_name="series_as_author", blank=True, null=True,
-                               on_delete=models.SET_NULL)
-    artist = models.ForeignKey("MangaPerson", related_name="series_as_artist", blank=True, null=True,
-                               on_delete=models.SET_NULL)
+    authors = models.ManyToManyField("MangaPerson", related_name="series_as_author")
+    artists = models.ManyToManyField("MangaPerson", related_name="series_as_artist")
     year = models.PositiveSmallIntegerField(blank=True, null=True)
     original_publisher = models.CharField(max_length=255, blank=True)
     english_publisher = models.CharField(max_length=255, blank=True)

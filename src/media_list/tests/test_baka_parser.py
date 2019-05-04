@@ -10,8 +10,8 @@ MOCK_BAKA_ID = 1234567
 
 FMP_SIGMA_BAKA_ID = 913
 
-shingeki_author = "ISAYAMA Hajime"
-shingeki_artist = "ISAYAMA Hajime"
+shingeki_authors = {"ISAYAMA Hajime"}
+shingeki_artists = {"ISAYAMA Hajime"}
 shingeki_title = "Shingeki no Kyojin"
 shingeki_year = 2009
 shingeki_genres = {"Action", "Drama", "Fantasy", "Horror", "Mature", "Mystery", "Shounen", "Supernatural", "Tragedy"}
@@ -26,11 +26,21 @@ shingeki_description = \
     " to regaining their freedom. Note: Won the Kodansha Manga Award in the shōnen category in 2011, was nominated" \
     " for the 4th annual Manga Taishō award and also for the the 16th and 18th annual Tezuka Osamu Cultural Prize."
 
+princess_authors = {'SAKAKI Ichiro'}
+princess_artists = {'SOGABE Toshinori', 'YUKINOBU Azumi', 'YABUKI Gou'}
 
-class MockBakaRetriever:
+
+class ShingekiMockBakaRetriever:
     @staticmethod
     def get(_baka_id):
         with open("./media_list/samples/sample_baka.html", "rb") as html_file:
+            return html_file.read()
+
+
+class PrincessMockBakaRetriever:
+    @staticmethod
+    def get(_baka_id):
+        with open("./media_list/samples/sample_baka_2.html", "rb") as html_file:
             return html_file.read()
 
 
@@ -49,7 +59,7 @@ class BakaParserTests(TestCase):
     def setUp(self):
         self.baka_series = BakaParser(
             baka_id=MOCK_BAKA_ID,
-            baka_retriever=MockBakaRetriever(),
+            baka_retriever=ShingekiMockBakaRetriever(),
             image_retriever=MockImageRetriever(),
         ).perform()
 
@@ -74,11 +84,13 @@ class BakaParserTests(TestCase):
     def test_store_correct_status(self):
         self.assertEquals(shingeki_status, self.baka_series.status)
 
-    def test_store_correct_author(self):
-        self.assertEquals(shingeki_author, str(self.baka_series.author))
+    def test_store_correct_authors(self):
+        baka_series_authors = {str(author) for author in self.baka_series.authors.all()}
+        self.assertSetEqual(shingeki_authors, baka_series_authors)
 
-    def test_store_correct_artist(self):
-        self.assertEquals(shingeki_artist, str(self.baka_series.artist))
+    def test_store_correct_artists(self):
+        baka_series_artists = {str(artist) for artist in self.baka_series.artists.all()}
+        self.assertSetEqual(shingeki_artists, baka_series_artists)
 
     def test_store_correct_year(self):
         self.assertEquals(shingeki_year, self.baka_series.year)
@@ -88,3 +100,20 @@ class BakaParserTests(TestCase):
 
     def test_store_correct_english_publisher(self):
         self.assertEquals(shingeki_english_publisher, self.baka_series.english_publisher)
+
+
+class MoreBakaParserTests(TestCase):
+    def setUp(self):
+        self.baka_series = BakaParser(
+            baka_id=MOCK_BAKA_ID,
+            baka_retriever=PrincessMockBakaRetriever(),
+            image_retriever=MockImageRetriever(),
+        ).perform()
+
+    def test_store_correct_authors(self):
+        baka_series_authors = {str(author) for author in self.baka_series.authors.all()}
+        self.assertSetEqual(princess_authors, baka_series_authors)
+
+    def test_store_correct_artists(self):
+        baka_series_artists = {str(artist) for artist in self.baka_series.artists.all()}
+        self.assertSetEqual(princess_artists, baka_series_artists)

@@ -17,16 +17,14 @@ class BakaParser:
 
     def perform(self):
         parsed_series_data = self.parsed_series_data()
-        author = create_person(parsed_series_data.pop("author_name", None))
-        artist = create_person(parsed_series_data.pop("artist_name", None))
+        authors = create_people(parsed_series_data.pop("author_names", None))
+        artists = create_people(parsed_series_data.pop("artist_names", None))
         genres = create_genres(parsed_series_data.pop("genre_names", None))
         image_data = parsed_series_data.pop("image", None)
-        baka_series = BakaSeries.objects.create(
-            **parsed_series_data,
-            author=author,
-            artist=artist,
-        )
+        baka_series = BakaSeries.objects.create(**parsed_series_data)
         baka_series.genres.add(*genres)
+        baka_series.authors.add(*authors)
+        baka_series.artists.add(*artists)
         baka_series.image.save(**image_data)
         return baka_series
 
@@ -43,8 +41,8 @@ class BakaParser:
             "genre_names": parse_genres(contents["Genre"]) or [],
             "description": parse_description(main_content, contents),
             "status": clean_text(contents["Status in Country of Origin"]),
-            "author_name": parse_person_name(contents["Author(s)"]),
-            "artist_name": parse_person_name(contents["Artist(s)"]),
+            "author_names": parse_person_names(contents["Author(s)"]),
+            "artist_names": parse_person_names(contents["Artist(s)"]),
             "year": int(clean_text(contents["Year"])) or None,
             "original_publisher": clean_text(contents["Original Publisher"]) or "",
             "english_publisher": clean_text(contents["English Publisher"]) or "",
@@ -86,10 +84,10 @@ def parse_description(soup, contents):
     return clean_text(description_tag)
 
 
-def parse_person_name(html):
+def parse_person_names(html):
     if html is None:
-        return None
-    return html.find("a").string
+        return []
+    return [hyperlink.string for hyperlink in html.find_all("a")]
 
 
 def parse_genres(html):
@@ -107,11 +105,8 @@ def clean(text):
     return " ".join(text.split())
 
 
-def create_person(name):
-    if name is None:
-        return None
-    author, _created = MangaPerson.objects.get_or_create(name=name)
-    return author
+def create_people(names):
+    return [MangaPerson.objects.get_or_create(name=name)[0] for name in names]
 
 
 def create_genres(names):

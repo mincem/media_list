@@ -1,2 +1,0 @@
-from .scan_list_parser_tests import ScanListParserTests
-from .baka_parser_tests import BakaParserTests
