@@ -1,6 +1,8 @@
 from django.http import JsonResponse
+from django.urls import reverse_lazy
 from django.views import generic
 
+from .forms import MediaSeriesCreateForm
 from .models import MediaSeries
 from .utils import ScanListParser, BakaFinder, BakaParser
 
@@ -29,7 +31,7 @@ class FetchBakaIDView(DetailView):
         return super().get(self, request, *args, **kwargs)
 
 
-class FetchBakaInfo(DetailView):
+class FetchBakaInfoView(DetailView):
     def get(self, request, *args, **kwargs):
         series = self.get_object()
         try:
@@ -39,6 +41,13 @@ class FetchBakaInfo(DetailView):
         except Exception:
             pass
         return super().get(self, request, *args, **kwargs)
+
+
+class CreateView(generic.CreateView):
+    model = MediaSeries
+    form_class = MediaSeriesCreateForm
+    template_name = "media_list/forms/media_series_create_form.html"
+    success_url = reverse_lazy("index")
 
 
 class MagicView(generic.View):

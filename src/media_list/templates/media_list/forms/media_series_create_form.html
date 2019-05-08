@@ -1,0 +1,17 @@
+{% extends 'media_list/base.html' %}
+
+{% block title %}Create Media Series{% endblock title %}
+
+{% block content %}
+
+  <form method="POST" class="post-form">
+    {% csrf_token %}
+
+    <div class="form-group">
+      {{ form.as_p }}
+    </div>
+
+    <input type="submit" class="btn btn-primary" value="Save">
+  </form>
+
+{% endblock %}
