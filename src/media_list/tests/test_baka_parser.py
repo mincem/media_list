@@ -1,7 +1,6 @@
-import os
+from unittest import mock
 
-from django.core.files.base import ContentFile
-from django.templatetags.static import static
+from django.core.files.base import File
 from django.test import TestCase
 
 from ..utils import BakaParser
@@ -47,12 +46,10 @@ class PrincessMockBakaRetriever:
 class MockImageRetriever:
     @staticmethod
     def get(_image_url):
-        static_url = "media_list/images/shingeki_no_kyojin.png"
-        with open("./media_list" + static(static_url), "rb") as image:
-            return {
-                "name": os.path.basename(static_url),
-                "content": ContentFile(image.read()),
-            }
+        return {
+            "name": 'FileMock',
+            "content": mock.MagicMock(spec=File, name='FileMock'),
+        }
 
 
 class BakaParserTests(TestCase):
