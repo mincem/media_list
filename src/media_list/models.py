@@ -1,3 +1,4 @@
+import django
 from django.db import models
 from ordered_model.models import OrderedModel
 
@@ -11,7 +12,15 @@ STATUS_CHOICES = (
 DEFAULT_STATUS_CHOICE = STATUS_CHOICES[0][0]
 
 
-class MediaSeries(models.Model):
+class TimestampedModel(models.Model):
+    class Meta:
+        abstract = True
+
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+
+class MediaSeries(TimestampedModel):
     class Meta:
         ordering = ('title',)
 
@@ -38,7 +47,7 @@ class MediaSeries(models.Model):
         return self.volumes is None or not self.urls.all() or self.status == DEFAULT_STATUS_CHOICE
 
 
-class BakaSeries(models.Model):
+class BakaSeries(TimestampedModel):
     baka_id = models.PositiveSmallIntegerField()  # TODO: unique, or save history?
     title = models.CharField(max_length=255)
     genres = models.ManyToManyField("MangaGenre", related_name="series")
@@ -72,7 +81,7 @@ class NamedModel(models.Model):
         return self.name
 
 
-class MangaSource(NamedModel):
+class MangaSource(NamedModel, TimestampedModel):
     icon = models.ImageField(upload_to="source_icons/", blank=True, null=True)
 
 
@@ -80,7 +89,7 @@ class MangaGenre(NamedModel):
     pass
 
 
-class MangaPerson(NamedModel):
+class MangaPerson(NamedModel, TimestampedModel):
     pass
 
 
