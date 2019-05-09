@@ -31,6 +31,10 @@ h1 {
     color: red;
 }
 
+.fa-edit {
+    color: black;
+}
+
 .source-icon {
     height: 32px;
     width: 32px;

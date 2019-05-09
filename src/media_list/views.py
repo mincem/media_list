@@ -49,6 +49,12 @@ class CreateView(generic.CreateView):
     template_name = "media_list/forms/media_series_create_form.html"
     success_url = reverse_lazy("index")
 
+class EditView(generic.UpdateView):
+    model = MediaSeries
+    form_class = MediaSeriesCreateForm
+    template_name = "media_list/forms/media_series_edit_form.html"
+    success_url = reverse_lazy("index")
+
 
 class MagicView(generic.View):
     def get(self, _request, *_args, **_kwargs):

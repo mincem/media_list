@@ -47,6 +47,7 @@
             <th class="ml-column ml-column-completed">Completed</th>
             <th class="ml-column ml-column-interest">Interest</th>
             <th class="ml-column ml-column-status">Status</th>
+            <th class="ml-column">Edit</th>
           </tr>
           </thead>
 
@@ -79,6 +80,12 @@
               <td>{{ series.interest }}</td>
 
               <td>{{ series.get_status_display }}</td>
+
+              <td>
+                <a href="{% url "edit" series.id %}">
+                  <i class="fas fa-edit"></i>
+                </a>
+              </td>
             </tr>
           {% endfor %}
           </tbody>
