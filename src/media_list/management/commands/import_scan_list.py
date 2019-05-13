@@ -8,9 +8,10 @@ class Command(BaseCommand):
 
     def add_arguments(self, parser):
         parser.add_argument('file', type=str)
+        parser.add_argument('source', type=str)
 
     def handle(self, *args, **options):
-        results = ScanListParser(options["file"]).perform()
+        results = ScanListParser(options["file"], options["source"]).perform()
         self.print_parsing_results(results["created"], results["total"])
         self.print_parsing_errors(results["errors"])
 

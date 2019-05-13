@@ -17,8 +17,9 @@ LINK_COLORS = {
 
 
 class ScanListParser:
-    def __init__(self, filename):
+    def __init__(self, filename, source_name):
         self.filename = filename
+        self.source = MangaSource.objects.get_or_create(name=source_name)[0]
         self.total_lines_read = 0
         self.series_created = 0
         self.errors = []
@@ -52,15 +53,14 @@ class ScanListParser:
             self.errors.append({"line": entry, "error": error})
             self.total_lines_read += 1
 
-    @staticmethod
-    def extracted_data_from(entry):
+    def extracted_data_from(self, entry):
         line = clean_text(entry)
         return {
             "title": parse_title(line, entry),
             "alternate_title": find_alternate_title(line),
             "url": parse_url(entry),
             "volumes": find_volumes(line),
-            "source": MangaSource.objects.first() or None,
+            "source": self.source,
             "has_omnibus": "omnibus" in line,
             "is_completed": "completo" in line or "unitario" in line,
             "interest": 100 if STAR_EMOJI in line else 0,
@@ -70,15 +70,14 @@ class ScanListParser:
 
 
 class OldScanListParser(ScanListParser):
-    @staticmethod
-    def extracted_data_from(entry):
+    def extracted_data_from(self, entry):
         line = clean_text(entry)
         return {
             "title": parse_old_title(line),
             "alternate_title": "",
             "url": parse_url(entry),
             "volumes": find_old_volumes(line),
-            "source": MangaSource.objects.first() or None,
+            "source": self.source,
             "has_omnibus": "omnibus" in line.lower(),
             "is_completed": "complete" in line.lower(),
             "interest": 100 if STAR_EMOJI in line else 0,
@@ -135,6 +134,7 @@ def find_status(entry):
         return LINK_COLORS[entry_text_color]
     except StopIteration:
         return DEFAULT_STATUS
+
 
 def create_manga_url(url, series):
     if url is None:
