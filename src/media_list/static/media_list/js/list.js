@@ -1,24 +1,17 @@
 $(document).ready(function () {
-  $('.ml-row').click(showDetailsView);
+  document.detailView = new DetailView();
+
+  $('.ml-row').click(renderDetailView);
 
   $("#filters").find('.filter-title').on('keyup', filterListByTitle);
 
   $(".magic-button").click(doMagic);
 });
 
-function showDetailsView() {
-  $.ajax({
-    url: $(this).data('detail-url'),
-    type: 'get',
-    dataType: 'html',
-    success: openDetailsModal
-  });
-}
-
-function openDetailsModal(data) {
-  let $detailsModal = $('#details-modal');
-  $detailsModal.find('.modal-content').html(data);
-  $detailsModal.modal('show');
+function renderDetailView() {
+  let series = new MediaSeries($(this).data('series-id'));
+  document.detailView.register(series);
+  document.detailView.render();
 }
 
 function filterListByTitle(event) {
@@ -37,4 +30,66 @@ function doMagic() {
       alert(data['result']);
     }
   });
+}
+
+class MediaSeries {
+  constructor(id) {
+    this.id = id;
+  }
+}
+
+class DetailView {
+  constructor() {
+    this.mediaSeries = null;
+    this.$modal = $('#details-modal');
+  }
+
+  register(mediaSeries) {
+    this.mediaSeries = mediaSeries;
+  }
+
+  render() {
+    if (this.mediaSeries === null) return;
+    $.ajax({
+      url: `/media_list/detail/${this.mediaSeries.id}/`,
+      type: 'get',
+      dataType: 'html',
+      success: (htmlData) => {
+        this.display(htmlData)
+      }
+    });
+  }
+
+  display(htmlData) {
+    this.$modal.find('.modal-content').html(htmlData);
+    this.$modal.modal('show');
+    $('#action-find-baka-id').click(() => {
+      this.findBakaID()
+    });
+    $('#action-get-baka-data').click(() => {
+      this.getBakaData()
+    });
+  }
+
+  findBakaID() {
+    $.ajax({
+      url: `/media_list/get_baka_id/${this.mediaSeries.id}/`,
+      type: 'get',
+      dataType: 'html',
+      success: (htmlData) => {
+        this.display(htmlData)
+      }
+    });
+  }
+
+  getBakaData() {
+    $.ajax({
+      url: `/media_list/get_baka_info/${this.mediaSeries.id}/`,
+      type: 'get',
+      dataType: 'html',
+      success: (htmlData) => {
+        this.display(htmlData)
+      }
+    });
+  }
 }

@@ -53,7 +53,7 @@
 
           <tbody>
           {% for series in series_list %}
-            <tr class="ml-row" data-detail-url="{% url 'detail' series.id %}">
+            <tr class="ml-row" data-series-id="{{ series.id }}" data-detail-url="{% url 'detail' series.id %}">
               <td>
                 {% if series.baka_info.image %}
                   <img src="{{ series.baka_info.image|thumbnail_url:'list' }}" alt="{{ series.title }}"/>

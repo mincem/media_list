@@ -101,14 +101,14 @@
   </div>
 
   <div class="media-actions">
-    {% if False %}
-      <button type="button" class="btn btn-primary action-find-baka-id">
+    {% if not object.baka_id %}
+      <button id="action-find-baka-id" type="button" class="btn btn-primary">
         Find Mangaupdates ID
       </button>
     {% endif %}
 
-    {% if False %}
-      <button type="button" class="btn btn-primary action-get-baka-data">
+    {% if object.baka_id and not object.baka_info %}
+      <button id="action-get-baka-data" type="button" class="btn btn-primary">
         Get Info from Mangaupdates
       </button>
     {% endif %}

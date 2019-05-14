@@ -49,6 +49,7 @@ class CreateView(generic.CreateView):
     template_name = "media_list/forms/media_series_create_form.html"
     success_url = reverse_lazy("index")
 
+
 class EditView(generic.UpdateView):
     model = MediaSeries
     form_class = MediaSeriesCreateForm
