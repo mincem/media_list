@@ -4,8 +4,6 @@ $(document).ready(function () {
   $('.ml-row').click(renderDetailView);
 
   $("#filters").find('.filter-title').on('keyup', filterListByTitle);
-
-  $(".magic-button").click(doMagic);
 });
 
 function renderDetailView() {
@@ -18,17 +16,6 @@ function filterListByTitle(event) {
   let searchInput = $(event.target).val().toLowerCase();
   $('#media-list').find('tbody').find('tr').filter(function () {
     $(this).toggle($(this).find('.ml-cell-title').text().toLowerCase().indexOf(searchInput) > -1)
-  });
-}
-
-function doMagic() {
-  $.ajax({
-    url: $(this).data('magic-url'),
-    type: 'get',
-    dataType: 'json',
-    success: function (data) {
-      alert(data['result']);
-    }
   });
 }
 

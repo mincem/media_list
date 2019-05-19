@@ -1,10 +1,9 @@
-from django.http import JsonResponse
 from django.urls import reverse_lazy
 from django.views import generic
 
 from .forms import MediaSeriesCreateForm
 from .models import MediaSeries
-from .utils import ScanListParser, BakaFinder, BakaParser
+from .utils import BakaFinder, BakaParser
 
 
 class IndexView(generic.ListView):
@@ -55,11 +54,3 @@ class EditView(generic.UpdateView):
     form_class = MediaSeriesCreateForm
     template_name = "media_list/forms/media_series_edit_form.html"
     success_url = reverse_lazy("index")
-
-
-class MagicView(generic.View):
-    def get(self, _request, *_args, **_kwargs):
-        filename = "./media_list/samples/scans_half.html"
-        result = ScanListParser(filename).perform()
-        # result = "No magic today"
-        return JsonResponse(result.update({"result": "Finished!"}))

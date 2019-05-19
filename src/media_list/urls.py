@@ -10,5 +10,4 @@ urlpatterns = [
     path('create/', views.CreateView.as_view(), name='create'),
     path('get_baka_id/<int:pk>/', views.FetchBakaIDView.as_view(), name='get_baka_id'),
     path('get_baka_info/<int:pk>/', views.FetchBakaInfoView.as_view(), name='get_baka_info'),
-    path('magic/', views.MagicView.as_view(), name='magic'),
 ]
