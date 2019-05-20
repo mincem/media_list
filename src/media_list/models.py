@@ -1,4 +1,3 @@
-import django
 from django.db import models
 from ordered_model.models import OrderedModel
 
@@ -20,7 +19,7 @@ class TimestampedModel(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
 
-class MediaSeries(TimestampedModel):
+class MangaSeries(TimestampedModel):
     class Meta:
         ordering = ('title',)
 
@@ -44,7 +43,7 @@ class MediaSeries(TimestampedModel):
         return f"{self.volumes}{'+' if not self.is_completed else ''} {'omnibus' if self.has_omnibus else 'volumes'}"
 
     def incomplete(self):
-        return self.volumes is None or not self.urls.all() or self.status == DEFAULT_STATUS_CHOICE
+        return self.volumes is None or not self.urls.count() or self.status == DEFAULT_STATUS_CHOICE
 
 
 class BakaSeries(TimestampedModel):
@@ -95,7 +94,7 @@ class MangaPerson(NamedModel, TimestampedModel):
 
 class MangaURL(OrderedModel):
     url = models.URLField()
-    series = models.ForeignKey("MediaSeries", related_name="urls", on_delete=models.CASCADE)
+    series = models.ForeignKey("MangaSeries", related_name="urls", on_delete=models.CASCADE)
     order_with_respect_to = 'series'
 
     def __str__(self):

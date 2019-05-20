@@ -3,7 +3,7 @@ import re
 
 from bs4 import BeautifulSoup
 
-from ..models import MediaSeries, MangaSource, MangaURL
+from ..models import MangaSeries, MangaSource, MangaURL
 
 STAR_EMOJI = "🌟"
 
@@ -43,7 +43,7 @@ class ScanListParser:
         try:
             extracted_data = self.extracted_data_from(entry)
             url = extracted_data.pop("url", None)
-            series = MediaSeries.objects.create(**extracted_data)
+            series = MangaSeries.objects.create(**extracted_data)
             if url is not None:
                 create_manga_url(url, series)
             self.series_created += 1

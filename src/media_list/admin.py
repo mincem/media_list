@@ -1,8 +1,8 @@
 from django.contrib import admin
 
-from .models import MediaSeries, BakaSeries, MangaSource, MangaGenre, MangaPerson
+from .models import MangaSeries, BakaSeries, MangaSource, MangaGenre, MangaPerson
 
-admin.site.register(MediaSeries)
+admin.site.register(MangaSeries)
 admin.site.register(BakaSeries)
 admin.site.register(MangaSource)
 admin.site.register(MangaGenre)

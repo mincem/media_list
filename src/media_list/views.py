@@ -1,8 +1,8 @@
 from django.urls import reverse_lazy
 from django.views import generic
 
-from .forms import MediaSeriesCreateForm
-from .models import MediaSeries
+from .forms import MangaSeriesCreateForm
+from .models import MangaSeries
 from .utils import BakaFinder, BakaParser
 
 
@@ -11,11 +11,11 @@ class IndexView(generic.ListView):
     context_object_name = 'series_list'
 
     def get_queryset(self):
-        return MediaSeries.objects.all()
+        return MangaSeries.objects.all()
 
 
 class DetailView(generic.DetailView):
-    model = MediaSeries
+    model = MangaSeries
     template_name = 'media_list/detail.html'
 
 
@@ -43,14 +43,14 @@ class FetchBakaInfoView(DetailView):
 
 
 class CreateView(generic.CreateView):
-    model = MediaSeries
-    form_class = MediaSeriesCreateForm
-    template_name = "media_list/forms/media_series_create_form.html"
+    model = MangaSeries
+    form_class = MangaSeriesCreateForm
+    template_name = "media_list/forms/manga_series_create_form.html"
     success_url = reverse_lazy("index")
 
 
 class EditView(generic.UpdateView):
-    model = MediaSeries
-    form_class = MediaSeriesCreateForm
-    template_name = "media_list/forms/media_series_edit_form.html"
+    model = MangaSeries
+    form_class = MangaSeriesCreateForm
+    template_name = "media_list/forms/manga_series_edit_form.html"
     success_url = reverse_lazy("index")

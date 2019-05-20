@@ -1,10 +1,10 @@
 from django.forms import ModelForm
-from .models import MediaSeries
+from .models import MangaSeries
 
 
-class MediaSeriesCreateForm(ModelForm):
+class MangaSeriesCreateForm(ModelForm):
     class Meta:
-        model = MediaSeries
+        model = MangaSeries
         fields = [
             "title",
             "alternate_title",
