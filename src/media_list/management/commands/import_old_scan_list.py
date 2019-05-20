@@ -6,6 +6,6 @@ class Command(ImportScanListCommand):
     help = 'Imports manga series from an old list of scans'
 
     def handle(self, *args, **options):
-        results = OldScanListParser(options["file"]).perform()
+        results = OldScanListParser(options["file"], options["source"]).perform()
         self.print_parsing_results(results["created"], results["total"])
         self.print_parsing_errors(results["errors"])
