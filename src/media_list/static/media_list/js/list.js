@@ -47,6 +47,15 @@ class DetailView {
     });
   }
 
+  fooBeginLoading() {
+    this.$modal.find('#details-modal-loading').removeClass('hidden');
+  }
+
+  fooEndLoading() {
+    this.$modal.removeClass('spinner-border');
+    this.$modal.find('#details-modal-loading').addClass('hidden');
+  }
+
   display(htmlData) {
     this.$modal.find('.modal-content').html(htmlData);
     this.$modal.modal('show');
@@ -59,24 +68,28 @@ class DetailView {
   }
 
   findBakaID() {
+    this.fooBeginLoading();
     $.ajax({
       url: `/media_list/get_baka_id/${this.mediaSeries.id}/`,
       type: 'get',
       dataType: 'html',
       success: (htmlData) => {
-        this.display(htmlData)
+        this.display(htmlData);
       }
     });
+    this.fooEndLoading();
   }
 
   getBakaData() {
+    this.fooBeginLoading();
     $.ajax({
       url: `/media_list/get_baka_info/${this.mediaSeries.id}/`,
       type: 'get',
       dataType: 'html',
       success: (htmlData) => {
-        this.display(htmlData)
+        this.display(htmlData);
       }
     });
+    this.fooEndLoading();
   }
 }

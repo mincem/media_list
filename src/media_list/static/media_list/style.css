@@ -41,3 +41,7 @@ h1 {
     margin: auto;
     display: block;
 }
+
+.hidden {
+    display: none;
+}
