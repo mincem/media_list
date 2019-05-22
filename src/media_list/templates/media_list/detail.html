@@ -54,7 +54,7 @@
         <div class="col">
           <a href="{{ object.baka_info.url }}">{{ object.baka_info.url }}</a>
 
-          <ul>
+          <ul class="baka-detail">
             <li class="md-column">
               <b>Title:</b> {{ object.baka_info.title }}
             </li>
@@ -75,11 +75,11 @@
             </li>
 
             <li class="md-column">
-              <b>Author:</b> {{ object.baka_info.author }}
+              <b>Author(s):</b> {{ object.baka_info.authors.all|join:", " }}
             </li>
 
             <li class="md-column">
-              <b>Artist:</b> {{ object.baka_info.artist }}
+              <b>Artist(s):</b> {{ object.baka_info.artists.all|join:", " }}
             </li>
 
             <li class="md-column">

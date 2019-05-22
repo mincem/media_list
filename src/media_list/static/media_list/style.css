@@ -45,3 +45,7 @@ h1 {
 .hidden {
     display: none;
 }
+
+.baka-detail li {
+    padding-bottom: 5px;
+}
