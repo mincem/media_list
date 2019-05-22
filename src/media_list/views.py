@@ -2,16 +2,19 @@ from django.urls import reverse_lazy
 from django.views import generic
 
 from .forms import MangaSeriesCreateForm
-from .models import MangaSeries
+from .models import MangaSeries, MangaSource
 from .utils import BakaFinder, BakaParser
 
 
 class IndexView(generic.ListView):
     template_name = 'media_list/index.html'
     context_object_name = 'series_list'
+    model = MangaSeries
 
-    def get_queryset(self):
-        return MangaSeries.objects.all()
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['sources'] = MangaSource.objects.all()
+        return context
 
 
 class DetailView(generic.DetailView):
