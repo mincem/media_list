@@ -10,7 +10,6 @@
   <div class="row">
     <div class="col-2">
       <div id="filters">
-
         <div class="input-group mb-3">
           <input type="text" class="form-control filter-title" placeholder="Search title">
 
@@ -28,6 +27,15 @@
         <button type="button" class="btn btn-primary" disabled>
           Order by Interest
         </button>
+
+        <div class="input-group mb-3">
+          <select class="custom-select filter-source">
+            <option selected value="">Filter by source...</option>
+            {% for source in sources %}
+              <option value="{{ source }}">{{ source }}</option>
+            {% endfor %}
+          </select>
+        </div>
       </div>
     </div>
 
@@ -49,7 +57,8 @@
 
           <tbody>
           {% for series in series_list %}
-            <tr class="ml-row" data-series-id="{{ series.id }}" data-detail-url="{% url 'detail' series.id %}">
+            <tr class="ml-row" data-series-id="{{ series.id }}" data-detail-url="{% url 'detail' series.id %}"
+                data-source="{{ series.source }}">
               <td>
                 {% if series.baka_info.image %}
                   <img src="{{ series.baka_info.image|thumbnail_url:'list' }}" alt="{{ series.title }}"/>
@@ -58,7 +67,8 @@
 
               <td>
                 {% if series.source %}
-                  <img class="source-icon" src="{{ series.source.icon.url }}" alt="{{ series.source }}">
+                  <img class="source-icon" src="{{ series.source.icon.url }}" alt="{{ series.source }}"
+                       title="{{ series.source }}">
                 {% endif %}
               </td>
 
