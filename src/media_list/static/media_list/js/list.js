@@ -19,36 +19,48 @@ class MediaSeries {
   }
 }
 
-class ListView {
-  constructor() {
-    this.$list = $('#media-list').find('tbody');
-    this.$filters = $('#filters');
-  }
-
-  render() {
-    this.$filters.find('.filter-title').on('keyup', (event) => {
-      this.filterListByTitle(event);
-    });
-    this.$filters.find('.filter-source').change((event) => {
-      this.filterListBySource(event);
-    });
-  }
-
-  filterListByTitle(event) {
-    let searchInput = $(event.target).val().toLowerCase();
-    this.$list.find('tr').filter(function () {
+function TitleListFilter() {
+  this.element = '#list-filter-by-title';
+  this.action = 'keyup';
+  this.apply = function ($list) {
+    let searchInput = $(this.element).val().toLowerCase();
+    $list.find('tr').filter(function () {
       $(this).toggle($(this).find('.ml-cell-title').text().toLowerCase().indexOf(searchInput) > -1)
     });
   }
+}
 
-  filterListBySource(event) {
-    let selectedSource = $(event.target).val();
+function SourceListFilter() {
+  this.element = '#list-filter-by-source';
+  this.action = 'change';
+  this.apply = function ($list) {
+    let selectedSource = $(this.element).val();
     if (!selectedSource) {
-      this.$list.find('tr').show();
+      $list.find('tr').show();
       return;
     }
-    this.$list.find('tr').hide();
-    this.$list.find(`tr[data-source="${selectedSource}"]`).show();
+    $list.find('tr').hide();
+    $list.find(`tr[data-source="${selectedSource}"]`).show();
+  }
+}
+
+class ListView {
+  constructor() {
+    this.$list = $('#media-list').find('tbody');
+    this.filters = [
+      new TitleListFilter(),
+      new SourceListFilter()
+    ];
+  }
+
+  render() {
+    let i;
+    for (i = 0; i < this.filters.length; i++) {
+      const filter = this.filters[i];
+      $(filter.element).on(filter.action, () => {
+        filter.apply(this.$list);
+      });
+    }
   }
 }
 

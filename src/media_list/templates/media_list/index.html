@@ -11,7 +11,7 @@
     <div class="col-2">
       <div id="filters">
         <div class="input-group mb-3">
-          <input type="text" class="form-control filter-title" placeholder="Search title">
+          <input class="form-control" id="list-filter-by-title" placeholder="Search title" type="text">
 
           <div class="input-group-append">
             <span class="input-group-text">
@@ -29,7 +29,7 @@
         </button>
 
         <div class="input-group mb-3">
-          <select class="custom-select filter-source">
+          <select class="custom-select" id="list-filter-by-source">
             <option selected value="">Filter by source...</option>
             {% for source in sources %}
               <option value="{{ source }}">{{ source }}</option>
