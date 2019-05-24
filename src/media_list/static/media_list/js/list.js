@@ -35,12 +35,8 @@ function SourceListFilter() {
   this.action = 'change';
   this.apply = function ($list) {
     let selectedSource = $(this.element).val();
-    if (!selectedSource) {
-      $list.find('tr').show();
-      return;
-    }
-    $list.find('tr').hide();
-    $list.find(`tr[data-source="${selectedSource}"]`).show();
+    if (!selectedSource) return;
+    $list.find(`tr[data-source!="${selectedSource}"]`).hide();
   }
 }
 
@@ -54,11 +50,20 @@ class ListView {
   }
 
   render() {
-    let i;
-    for (i = 0; i < this.filters.length; i++) {
+    this.applyFilters();
+    this.bindFilterEvents();
+  }
+
+  applyFilters() {
+    this.$list.find('tr').show();
+    for (let i = 0; i < this.filters.length; i++) this.filters[i].apply(this.$list);
+  }
+
+  bindFilterEvents() {
+    for (let i = 0; i < this.filters.length; i++) {
       const filter = this.filters[i];
       $(filter.element).on(filter.action, () => {
-        filter.apply(this.$list);
+        this.applyFilters();
       });
     }
   }
