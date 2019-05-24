@@ -18,6 +18,10 @@
 
 <div class="modal-body">
   <div class="media-detail">
+    {% for url in object.urls.all %}
+      <a href="{{ url }}">{{ url }}</a>
+    {% endfor %}
+
     <ul>
       <li class="md-column md-column-volumes">
         <b>Status:</b> {{ object.display_volumes }} ({{ object.is_completed|yesno:"Complete,Ongoing" }})
