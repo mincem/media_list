@@ -40,12 +40,23 @@ function SourceListFilter() {
   }
 }
 
+function CompletedListFilter() {
+  this.element = '#list-filter-by-completed';
+  this.action = 'change';
+  this.apply = function ($list) {
+    let selectedState = $('input[name=filter-by-completed]:checked', this.element).val();
+    if (!selectedState) return;
+    $list.find(`tr[data-completed!="${selectedState}"]`).hide();
+  }
+}
+
 class ListView {
   constructor() {
     this.$list = $('#media-list').find('tbody');
     this.filters = [
       new TitleListFilter(),
-      new SourceListFilter()
+      new SourceListFilter(),
+      new CompletedListFilter(),
     ];
   }
 

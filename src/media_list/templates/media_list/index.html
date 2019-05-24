@@ -15,18 +15,10 @@
 
           <div class="input-group-append">
             <span class="input-group-text">
-              <i class="fas fa-search"></i>
+              <i class="fas fa-filter"></i>
             </span>
           </div>
         </div>
-
-        <button type="button" class="btn btn-primary" disabled>
-          Default order
-        </button>
-
-        <button type="button" class="btn btn-primary" disabled>
-          Order by Interest
-        </button>
 
         <div class="input-group mb-3">
           <select class="custom-select" id="list-filter-by-source">
@@ -36,6 +28,30 @@
             {% endfor %}
           </select>
         </div>
+
+        <p>Completed:</p>
+
+        <div class="btn-group btn-group-toggle" data-toggle="buttons" id="list-filter-by-completed">
+          <label class="btn btn-primary active">
+            <input checked name="filter-by-completed" type="radio" value=""> Any
+          </label>
+
+          <label class="btn btn-primary">
+            <input name="filter-by-completed" type="radio" value="True"> Yes
+          </label>
+
+          <label class="btn btn-primary">
+            <input name="filter-by-completed" type="radio" value="False"> No
+          </label>
+        </div>
+
+{#        <button type="button" class="btn btn-primary" disabled>#}
+{#          Default order#}
+{#        </button>#}
+{##}
+{#        <button type="button" class="btn btn-primary" disabled>#}
+{#          Order by Interest#}
+{#        </button>#}
       </div>
     </div>
 
@@ -58,7 +74,7 @@
           <tbody>
           {% for series in series_list %}
             <tr class="ml-row" data-series-id="{{ series.id }}" data-detail-url="{% url 'detail' series.id %}"
-                data-source="{{ series.source }}">
+                data-source="{{ series.source }}" data-completed="{{ series.is_completed }}">
               <td>
                 {% if series.baka_info.image %}
                   <img src="{{ series.baka_info.image|thumbnail_url:'list' }}" alt="{{ series.title }}"/>
