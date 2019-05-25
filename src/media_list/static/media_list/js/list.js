@@ -120,6 +120,9 @@ class DetailView {
     $('#action-get-baka-data').click(() => {
       this.getBakaData()
     });
+    $('#action-swap-titles').click(() => {
+      this.swapTitles()
+    });
   }
 
   findBakaID() {
@@ -146,5 +149,16 @@ class DetailView {
       }
     });
     this.fooEndLoading();
+  }
+
+  swapTitles() {
+    $.ajax({
+      url: `/media_list/swap_titles/${this.mediaSeries.id}/`,
+      type: 'get',
+      dataType: 'html',
+      success: (htmlData) => {
+        this.display(htmlData);
+      }
+    });
   }
 }

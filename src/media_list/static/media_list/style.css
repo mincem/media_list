@@ -24,6 +24,10 @@ h1 {
     width: 18%;
 }
 
+table .ml-cell-thumbnail {
+    padding: 0;
+}
+
 .fa-check {
     color: green;
 }

@@ -44,6 +44,11 @@ class FetchBakaInfoView(DetailView):
             pass
         return super().get(self, request, *args, **kwargs)
 
+class SwapMangaSeriesTitlesView(DetailView):
+    def get(self, request, *args, **kwargs):
+        self.get_object().swap_titles()
+        return super().get(self, request, *args, **kwargs)
+
 
 class CreateView(generic.CreateView):
     model = MangaSeries

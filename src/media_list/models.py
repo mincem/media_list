@@ -45,6 +45,10 @@ class MangaSeries(TimestampedModel):
     def incomplete(self):
         return self.volumes is None or not self.urls.count() or self.status == DEFAULT_STATUS_CHOICE
 
+    def swap_titles(self):
+        self.title, self.alternate_title = self.alternate_title, self.title
+        self.save()
+
 
 class BakaSeries(TimestampedModel):
     baka_id = models.PositiveSmallIntegerField()  # TODO: unique, or save history?
