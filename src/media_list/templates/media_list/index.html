@@ -45,6 +45,22 @@
           </label>
         </div>
 
+        <p>Has info:</p>
+
+        <div class="btn-group btn-group-toggle" data-toggle="buttons" id="list-filter-by-baka-info">
+          <label class="btn btn-primary active">
+            <input checked name="filter-by-baka-info" type="radio" value=""> Any
+          </label>
+
+          <label class="btn btn-primary">
+            <input name="filter-by-baka-info" type="radio" value="True"> Yes
+          </label>
+
+          <label class="btn btn-primary">
+            <input name="filter-by-baka-info" type="radio" value="False"> No
+          </label>
+        </div>
+
 {#        <button type="button" class="btn btn-primary" disabled>#}
 {#          Default order#}
 {#        </button>#}
@@ -74,7 +90,8 @@
           <tbody>
           {% for series in series_list %}
             <tr class="ml-row" data-series-id="{{ series.id }}" data-detail-url="{% url 'detail' series.id %}"
-                data-source="{{ series.source }}" data-completed="{{ series.is_completed }}">
+                data-source="{{ series.source }}" data-completed="{{ series.is_completed }}"
+            data-baka-info="{{ series.baka_info_id|yesno:"True,False" }}">
               <td class="ml-cell-thumbnail">
                 {% if series.baka_info.image %}
                   <img src="{{ series.baka_info.image|thumbnail_url:'list' }}" alt="{{ series.title }}"/>

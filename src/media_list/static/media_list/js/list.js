@@ -50,6 +50,16 @@ function CompletedListFilter() {
   }
 }
 
+function BakaInfoListFilter() {
+  this.element = '#list-filter-by-baka-info';
+  this.action = 'change';
+  this.apply = function ($list) {
+    let selectedState = $('input[name=filter-by-baka-info]:checked', this.element).val();
+    if (!selectedState) return;
+    $list.find(`tr[data-baka-info!="${selectedState}"]`).hide();
+  }
+}
+
 class ListView {
   constructor() {
     this.$list = $('#media-list').find('tbody');
@@ -57,6 +67,7 @@ class ListView {
       new TitleListFilter(),
       new SourceListFilter(),
       new CompletedListFilter(),
+      new BakaInfoListFilter(),
     ];
   }
 
