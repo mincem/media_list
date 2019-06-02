@@ -113,13 +113,10 @@ class DetailView {
     });
   }
 
-  fooBeginLoading() {
-    this.$modal.find('#details-modal-loading').removeClass('hidden');
-  }
-
-  fooEndLoading() {
-    this.$modal.removeClass('spinner-border');
-    this.$modal.find('#details-modal-loading').addClass('hidden');
+  showLoadingAnimation($button) {
+    $button
+      .attr('disabled','disabled')
+      .html('<div class="spinner-border" role="status"></div>');
   }
 
   display(htmlData) {
@@ -137,7 +134,7 @@ class DetailView {
   }
 
   findBakaID() {
-    this.fooBeginLoading();
+    this.showLoadingAnimation($('#action-find-baka-id'));
     $.ajax({
       url: `/media_list/get_baka_id/${this.mediaSeries.id}/`,
       type: 'get',
@@ -146,11 +143,10 @@ class DetailView {
         this.display(htmlData);
       }
     });
-    this.fooEndLoading();
   }
 
   getBakaData() {
-    this.fooBeginLoading();
+    this.showLoadingAnimation($('#action-get-baka-data'));
     $.ajax({
       url: `/media_list/get_baka_info/${this.mediaSeries.id}/`,
       type: 'get',
@@ -159,7 +155,6 @@ class DetailView {
         this.display(htmlData);
       }
     });
-    this.fooEndLoading();
   }
 
   swapTitles() {
