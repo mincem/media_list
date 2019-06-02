@@ -83,7 +83,7 @@
             <th class="ml-column ml-column-completed">Completed</th>
             <th class="ml-column ml-column-interest">Interest</th>
             <th class="ml-column ml-column-status">Status</th>
-            <th class="ml-column">Edit</th>
+            <th class="ml-column">Actions</th>
           </tr>
           </thead>
 
@@ -121,9 +121,15 @@
               <td>{{ series.get_status_display }}</td>
 
               <td>
-                <a href="{% url "edit" series.id %}">
-                  <i class="fas fa-edit"></i>
-                </a>
+                <div class="d-flex justify-content-around">
+                  <a href="{% url "edit" series.id %}">
+                    <i class="fas fa-edit"></i>
+                  </a>
+
+                  <a href="{% url "delete" series.id %}">
+                    <i class="fas fa-trash"></i>
+                  </a>
+                </div>
               </td>
             </tr>
           {% endfor %}
