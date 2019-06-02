@@ -45,6 +45,12 @@
           <p>{{ object.notes }}</p>
         </li>
       {% endif %}
+
+      {% if object.baka_id %}
+        <li class="md-column">
+          <b>Mangaupdates page:</b> <a href="{{ object.baka_url }}">{{ object.baka_url }}</a>
+        </li>
+      {% endif %}
     </ul>
 
     {% if object.baka_info %}
@@ -60,8 +66,6 @@
         {% endif %}
 
         <div class="col">
-          <a href="{{ object.baka_info.url }}">{{ object.baka_info.url }}</a>
-
           <ul class="baka-detail">
             <li class="md-column">
               <b>Title:</b> {{ object.baka_info.title }}
