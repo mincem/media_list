@@ -23,7 +23,9 @@
 <div class="modal-body">
   <div class="media-detail">
     {% for url in object.urls.all %}
-      <a href="{{ url }}">{{ url }}</a>
+      <p>
+        <a href="{{ url }}">{{ url }}</a>
+      </p>
     {% endfor %}
 
     <ul>
