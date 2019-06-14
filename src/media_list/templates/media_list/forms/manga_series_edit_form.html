@@ -13,6 +13,10 @@
 
         <div class="form-group">
           {{ form.as_p }}
+
+          {% for formset in inlines %}
+            <p>{{ formset }}</p>
+          {% endfor %}
         </div>
 
         <input type="submit" class="btn btn-primary" value="Save">

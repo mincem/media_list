@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'easy_thumbnails',
     'ordered_model',
+    'extra_views',
 ]
 
 MIDDLEWARE = [
