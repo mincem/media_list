@@ -11,15 +11,19 @@ h1 {
 .ml-column-title {
     /*width: 50%;*/
 }
+
 .ml-column-volumes {
     width: 10%;
 }
+
 .ml-column-completed {
     width: 5%;
 }
+
 .ml-column-interest {
     width: 10%;
 }
+
 .ml-column-status {
     width: 18%;
 }
@@ -28,9 +32,27 @@ table .ml-cell-thumbnail {
     padding: 0;
 }
 
+
+table .ml-cell-volumes.complete {
+    background-color: #d4f3d1;
+}
+
+table tr:hover .ml-cell-volumes.complete {
+    background-color: #baf2b5;
+}
+
+table .ml-cell-volumes.incomplete {
+    background-color: #f2d0d0;
+}
+
+table tr:hover .ml-cell-volumes.incomplete {
+    background-color: #f2b5b5;
+}
+
 .fa-check {
     color: green;
 }
+
 .fa-times {
     color: red;
 }

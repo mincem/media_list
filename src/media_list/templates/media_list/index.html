@@ -112,7 +112,9 @@
                 {% endif %}
               </td>
 
-              <td>{{ series.display_volumes }}</td>
+              <td class="ml-cell-volumes {{ series.is_completed|yesno:"complete,incomplete" }}">
+                {{ series.display_volumes }}
+              </td>
 
               <td class="text-center"><i class="fas fa-{{ series.is_completed|yesno:"check,times" }}"></i></td>
 
