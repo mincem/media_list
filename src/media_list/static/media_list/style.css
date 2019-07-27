@@ -32,6 +32,9 @@ table .ml-cell-thumbnail {
     padding: 0;
 }
 
+#media-list-table {
+    background: #e6e7e8;
+}
 
 table .ml-cell-volumes.complete {
     background-color: #d4f3d1;

@@ -73,7 +73,7 @@
 
     <div class="col-8">
       <div id="media-list">
-        <table class="table table-hover table-bordered table-responsive">
+        <table class="table table-hover table-bordered table-responsive" id="media-list-table">
           <thead>
           <tr>
             <th class="ml-column"></th>
@@ -151,4 +151,5 @@
 
 {% block extra_js %}
   <script src="{% static 'media_list/js/list.js' %}"></script>
+  <script src="{% static 'media_list/js/datatable.js' %}"></script>
 {% endblock %}
