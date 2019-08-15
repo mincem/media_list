@@ -7,21 +7,7 @@
   <h1>Add Media Series</h1>
 
   <div class="row justify-content-center">
-    <div class="col-8">
-      <form method="POST" class="post-form">
-        {% csrf_token %}
-
-        <div class="form-group">
-          {{ form.as_p }}
-
-          {% for formset in inlines %}
-            <p>{{ formset }}</p>
-          {% endfor %}
-        </div>
-
-        <input type="submit" class="btn btn-primary" value="Save">
-      </form>
-    </div>
+    {% include 'media_list/forms/_manga_series_form.html' %}
   </div>
 
 {% endblock %}
