@@ -15,6 +15,7 @@ class IndexView(generic.ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['sources'] = MangaSource.objects.all()
+        context['series_id'] = self.kwargs.get('pk')
         return context
 
 
@@ -46,10 +47,10 @@ class SwapMangaSeriesTitlesView(DetailView):
         return super().get(self, request, *args, **kwargs)
 
 
-
 class URLInline(InlineFormSetFactory):
     model = MangaURL
     fields = ['url']
+
 
 class CreateView(CreateWithInlinesView):
     model = MangaSeries
@@ -65,6 +66,9 @@ class EditView(UpdateWithInlinesView):
     inlines = [URLInline]
     template_name = "media_list/forms/manga_series_edit_form.html"
     success_url = reverse_lazy("index")
+
+    # def get_success_url(self):
+    #     return reverse_lazy("index_and_modal", kwargs={"pk": self.object.id})
 
 
 class DeleteView(generic.DeleteView):

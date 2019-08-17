@@ -4,6 +4,7 @@ from . import views
 
 urlpatterns = [
     path('', views.IndexView.as_view(), name='index'),
+    path('<int:pk>/', views.IndexView.as_view(), name='index_and_modal'),
     # ex: media_list/detail/5/
     path('detail/<int:pk>/', views.DetailView.as_view(), name='detail'),
     path('edit/<int:pk>/', views.EditView.as_view(), name='edit'),

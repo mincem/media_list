@@ -7,8 +7,9 @@ $(document).ready(function () {
   $('.ml-row').click(renderDetailView);
 });
 
-function renderDetailView() {
-  let series = new MediaSeries($(this).data('series-id'));
+function renderDetailView(id) {
+  let series_id = Number.isInteger(id) ? id : $(this).data('series-id');
+  let series = new MediaSeries(series_id);
   document.detailView.register(series);
   document.detailView.render();
 }

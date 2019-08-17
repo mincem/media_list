@@ -151,4 +151,10 @@
 
 {% block extra_js %}
   <script src="{% static 'media_list/js/list.js' %}"></script>
+  <script>
+    $(document).ready(function () {
+      const series_id = {{ series_id|default:'null' }};
+      if (series_id) renderDetailView(series_id);
+    });
+  </script>
 {% endblock %}
