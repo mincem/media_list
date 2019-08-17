@@ -57,7 +57,9 @@ class CreateView(CreateWithInlinesView):
     form_class = MangaSeriesCreateForm
     inlines = [URLInline]
     template_name = "media_list/forms/manga_series_create_form.html"
-    success_url = reverse_lazy("index")
+
+    def get_success_url(self):
+        return reverse_lazy("index_and_modal", kwargs={"pk": self.object.id})
 
 
 class EditView(UpdateWithInlinesView):
@@ -65,10 +67,9 @@ class EditView(UpdateWithInlinesView):
     form_class = MangaSeriesCreateForm
     inlines = [URLInline]
     template_name = "media_list/forms/manga_series_edit_form.html"
-    success_url = reverse_lazy("index")
 
-    # def get_success_url(self):
-    #     return reverse_lazy("index_and_modal", kwargs={"pk": self.object.id})
+    def get_success_url(self):
+        return reverse_lazy("index_and_modal", kwargs={"pk": self.object.id})
 
 
 class DeleteView(generic.DeleteView):
