@@ -1,0 +1,59 @@
+<div id="filters">
+  <div class="input-group mb-3">
+    <input class="form-control" id="list-filter-by-title" placeholder="Search title" type="text">
+
+    <div class="input-group-append">
+      <span class="input-group-text">
+        <i class="fas fa-filter"></i>
+      </span>
+    </div>
+  </div>
+
+  <div class="list-filter">
+    <div class="input-group mb-3">
+      <select class="custom-select" id="list-filter-by-source">
+        <option selected value="">Filter by source...</option>
+        {% for source in sources %}
+          <option value="{{ source }}">{{ source }}</option>
+        {% endfor %}
+      </select>
+    </div>
+  </div>
+
+  <div class="list-filter">
+    <p>Completed:</p>
+
+    <div class="btn-group btn-group-toggle" data-toggle="buttons" id="list-filter-by-completed">
+      <label class="btn btn-primary active">
+        <input checked name="filter-by-completed" type="radio" value=""> Any
+      </label>
+
+      <label class="btn btn-primary">
+        <input name="filter-by-completed" type="radio" value="True"> Yes
+      </label>
+
+      <label class="btn btn-primary">
+        <input name="filter-by-completed" type="radio" value="False"> No
+      </label>
+    </div>
+  </div>
+
+
+  <div class="list-filter">
+    <p>Has info:</p>
+
+    <div class="btn-group btn-group-toggle" data-toggle="buttons" id="list-filter-by-baka-info">
+      <label class="btn btn-primary active">
+        <input checked name="filter-by-baka-info" type="radio" value=""> Any
+      </label>
+
+      <label class="btn btn-primary">
+        <input name="filter-by-baka-info" type="radio" value="True"> Yes
+      </label>
+
+      <label class="btn btn-primary">
+        <input name="filter-by-baka-info" type="radio" value="False"> No
+      </label>
+    </div>
+  </div>
+</div>
