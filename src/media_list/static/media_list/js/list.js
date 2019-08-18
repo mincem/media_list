@@ -89,6 +89,10 @@ class ListView {
         this.applyFilters();
       });
     }
+    $('#list-filter-by-title-clear').click(() => {
+      $('#list-filter-by-title').val('');
+      this.applyFilters();
+    })
   }
 }
 
@@ -116,7 +120,7 @@ class DetailView {
 
   showLoadingAnimation($button) {
     $button
-      .attr('disabled','disabled')
+      .attr('disabled', 'disabled')
       .html('<div class="spinner-border" role="status"></div>');
   }
 

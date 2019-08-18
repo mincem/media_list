@@ -1,3 +1,4 @@
+from django.http import HttpResponseRedirect
 from django.urls import reverse_lazy
 from django.views import generic
 from extra_views import InlineFormSetFactory, CreateWithInlinesView, UpdateWithInlinesView
@@ -59,6 +60,8 @@ class CreateView(CreateWithInlinesView):
     template_name = "media_list/forms/manga_series_create_form.html"
 
     def get_success_url(self):
+        if "add_another" in self.request.POST:
+            return reverse_lazy('create')
         return reverse_lazy("index_and_modal", kwargs={"pk": self.object.id})
 
 

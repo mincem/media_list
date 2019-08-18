@@ -21,6 +21,16 @@
 </div>
 
 <div class="modal-body">
+  <div class="d-flex justify-content-around float-right">
+    <a href="{% url "edit" object.id %}">
+      <i class="fas fa-edit"></i>
+    </a>
+
+    <a href="{% url "delete" object.id %}">
+      <i class="fas fa-trash"></i>
+    </a>
+  </div>
+
   <div class="media-detail">
     {% for url in object.urls.all %}
       <p>
