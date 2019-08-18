@@ -1,5 +1,7 @@
 {% extends 'media_list/base.html' %}
 
+{% load static %}
+
 {% block title %}Edit Media Series{% endblock title %}
 
 {% block content %}
@@ -8,4 +10,8 @@
   <div class="row justify-content-center">
     {% include 'media_list/forms/_manga_series_form.html' %}
   </div>
+{% endblock %}
+
+{% block extra_js %}
+  <script src="{% static 'media_list/js/form.js' %}"></script>
 {% endblock %}

@@ -75,3 +75,11 @@ table tr:hover .ml-cell-volumes.incomplete {
 .baka-detail li {
     padding-bottom: 5px;
 }
+
+.centered-flex {
+    display: flex;
+    align-items: center;
+}
+.centered-flex output {
+    margin-left: 15px;
+}
