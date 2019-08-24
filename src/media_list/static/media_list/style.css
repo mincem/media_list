@@ -83,3 +83,12 @@ table tr:hover .ml-cell-volumes.incomplete {
 .centered-flex output {
     margin-left: 15px;
 }
+
+.media-picture img {
+    max-width: 200px;
+    margin: 0 30px;
+}
+
+.media-description {
+    max-width: 60%;
+}

@@ -90,7 +90,7 @@ class ListView {
       });
     }
     $('#list-filter-by-title-clear').click(() => {
-      $('#list-filter-by-title').val('');
+      $('#list-filter-by-title').val('').focus();
       this.applyFilters();
     })
   }

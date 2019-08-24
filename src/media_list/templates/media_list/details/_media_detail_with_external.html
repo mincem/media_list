@@ -1,0 +1,86 @@
+<div class="media-detail">
+  <div class="media-introduction d-flex">
+    {% if object.baka_info.image %}
+      <div class="media-picture">
+        <img src="{{ object.baka_info.image.url }}" alt="{{ object.baka_info.title }}">
+      </div>
+    {% endif %}
+
+    <div class="media-description">
+      <p>
+        {% for genre in object.baka_info.genres.all %}
+          <span class="badge badge-info">{{ genre }}</span>
+        {% endfor %}
+      </p>
+
+      {{ object.baka_info.description }}
+    </div>
+  </div>
+
+  <ul>
+    <li class="md-column md-column-volumes">
+      <b>Status:</b> {{ object.display_volumes }} ({{ object.is_completed|yesno:"Complete,Ongoing" }})
+    </li>
+
+    <li class="md-column md-column-interest">
+      <b>Interest:</b> {{ object.interest }}
+    </li>
+
+    <li class="md-column md-column-status">
+      <b>Download status:</b> {{ object.get_status_display }}
+    </li>
+
+    {% if object.notes %}
+      <li class="md-column md-column-notes">
+        <b>Notes:</b>
+        <p>{{ object.notes }}</p>
+      </li>
+    {% endif %}
+  </ul>
+
+  <div class="row">
+    <div class="col">
+      <ul class="baka-detail">
+        <li class="md-column">
+          <b>Title:</b> {{ object.baka_info.title }}
+        </li>
+
+        <li class="md-column">
+          <b>Status:</b> {{ object.baka_info.status }}
+        </li>
+
+        <li class="md-column">
+          <b>Author(s):</b> {{ object.baka_info.authors.all|join:", " }}
+        </li>
+
+        <li class="md-column">
+          <b>Artist(s):</b> {{ object.baka_info.artists.all|join:", " }}
+        </li>
+
+        <li class="md-column">
+          <b>Year:</b> {{ object.baka_info.year }}
+        </li>
+
+        <li class="md-column">
+          <b>Original Publisher:</b> {{ object.baka_info.original_publisher }}
+        </li>
+
+        <li class="md-column">
+          <b>English Publisher:</b> {{ object.baka_info.english_publisher }}
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  {% if object.baka_id %}
+    <a class="btn btn-primary media-link" href="{{ object.baka_url }}">
+      Mangaupdates page
+    </a>
+  {% endif %}
+
+  {% for url in object.urls.all %}
+    <a class="btn btn-primary media-link" href="{{ url }}">
+      URL
+    </a>
+  {% endfor %}
+</div>
