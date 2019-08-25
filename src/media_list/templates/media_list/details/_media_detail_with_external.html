@@ -1,10 +1,20 @@
 <div class="media-detail">
   <div class="media-introduction d-flex">
-    {% if object.baka_info.image %}
-      <div class="media-picture">
+    <div class="media-picture">
+      {% if object.baka_info.image %}
         <img src="{{ object.baka_info.image.url }}" alt="{{ object.baka_info.title }}">
+      {% endif %}
+
+      <div class="media-interest">
+        <div class="progress">
+          <div class="progress-bar" role="progressbar"
+               style="width: {{ object.interest }}%; background-color: {{ object.interest_color }}"
+               aria-valuenow="{{ object.interest }}" aria-valuemin="0" aria-valuemax="100">
+            {{ object.interest }}
+          </div>
+        </div>
       </div>
-    {% endif %}
+    </div>
 
     <div class="media-description">
       <p>
@@ -20,10 +30,6 @@
   <ul>
     <li class="md-column md-column-volumes">
       <b>Status:</b> {{ object.display_volumes }} ({{ object.is_completed|yesno:"Complete,Ongoing" }})
-    </li>
-
-    <li class="md-column md-column-interest">
-      <b>Interest:</b> {{ object.interest }}
     </li>
 
     <li class="md-column md-column-status">

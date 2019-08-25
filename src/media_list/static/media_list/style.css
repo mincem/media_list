@@ -92,3 +92,12 @@ table tr:hover .ml-cell-volumes.incomplete {
 .media-description {
     max-width: 60%;
 }
+
+.media-interest {
+    margin: 10px 30px;
+}
+
+.media-interest .progress {
+    height: 25px;
+    font-size: 15px;
+}
