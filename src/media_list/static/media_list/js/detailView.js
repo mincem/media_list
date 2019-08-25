@@ -38,6 +38,9 @@ class DetailView {
     $('#action-swap-titles').click(() => {
       this.swapTitles()
     });
+    $('.media-interest-form').submit((event) => {
+      this.updateInterest(event)
+    });
   }
 
   findBakaID() {
@@ -69,6 +72,23 @@ class DetailView {
       url: `/media_list/swap_titles/${this.mediaSeries.id}/`,
       type: 'get',
       dataType: 'html',
+      success: (htmlData) => {
+        this.display(htmlData);
+      }
+    });
+  }
+
+  updateInterest(event) {
+    event.preventDefault();
+    let $form = $(event.target);
+    $.ajax({
+      url: `/media_list/edit_interest/${this.mediaSeries.id}/`,
+      type: 'post',
+      dataType: 'html',
+      data: $form.serializeArray().concat([{
+        name: 'csrfmiddlewaretoken',
+        value: getCookie('csrftoken')
+      }]),
       success: (htmlData) => {
         this.display(htmlData);
       }

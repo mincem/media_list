@@ -1,4 +1,3 @@
-from django.http import HttpResponseRedirect
 from django.urls import reverse_lazy
 from django.views import generic
 from extra_views import InlineFormSetFactory, CreateWithInlinesView, UpdateWithInlinesView
@@ -73,6 +72,14 @@ class EditView(UpdateWithInlinesView):
 
     def get_success_url(self):
         return reverse_lazy("index_and_modal", kwargs={"pk": self.object.id})
+
+
+class EditInterestView(generic.UpdateView):
+    model = MangaSeries
+    fields = ['interest']
+
+    def get_success_url(self):
+        return reverse_lazy("detail", kwargs={"pk": self.object.id})
 
 
 class DeleteView(generic.DeleteView):
