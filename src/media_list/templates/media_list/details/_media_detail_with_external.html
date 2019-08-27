@@ -19,7 +19,7 @@
     </div>
 
     <div class="media-description">
-      <p>
+      <p class="media-genres">
         {% for genre in object.baka_info.genres.all %}
           <span class="badge badge-info">{{ genre }}</span>
         {% endfor %}
@@ -63,10 +63,6 @@
 
         <li class="md-column">
           <b>Artist(s):</b> {{ object.baka_info.artists.all|join:", " }}
-        </li>
-
-        <li class="md-column">
-          <b>Year:</b> {{ object.baka_info.year }}
         </li>
 
         <li class="md-column">

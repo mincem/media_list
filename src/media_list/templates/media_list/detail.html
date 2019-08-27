@@ -2,6 +2,10 @@
   <div class="modal-title">
     <h4>
       {{ object }}
+
+      {% if object.baka_info.year %}
+          <span class="badge badge-info">{{ object.baka_info.year }}</span>
+      {% endif %}
     </h4>
 
     {% if object.alternate_title %}
