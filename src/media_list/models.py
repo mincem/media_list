@@ -81,6 +81,10 @@ class BakaSeries(TimestampedModel):
     def simple_genre_list(self):
         return ", ".join(str(genre) for genre in self.genres.all())
 
+    def single_author(self):
+        if self.authors.count() == 1 and self.artists.count() == 1 and self.authors.first() == self.artists.first():
+            return self.authors.first()
+
 
 class NamedModel(models.Model):
     class Meta:
