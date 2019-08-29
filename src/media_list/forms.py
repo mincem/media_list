@@ -1,4 +1,4 @@
-from django.forms import ModelForm
+from django.forms import ModelForm, Textarea
 from .models import MangaSeries
 from .widgets import RangeInput
 
@@ -20,5 +20,6 @@ class MangaSeriesCreateForm(ModelForm):
             "baka_id",
         ]
         widgets = {
-            'interest': RangeInput(attrs={'min': 0, 'max': 100})
+            'interest': RangeInput(attrs={'min': 0, 'max': 100}),
+            'notes': Textarea(attrs={'rows': 3}),
         }
