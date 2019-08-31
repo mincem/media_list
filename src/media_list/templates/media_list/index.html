@@ -21,6 +21,7 @@
             <th class="ml-column ml-column-title">Source</th>
             <th class="ml-column ml-column-title">Title</th>
             <th class="ml-column ml-column-staff">Staff</th>
+            <th class="ml-column ml-column-year">Year</th>
             <th class="ml-column ml-column-volumes">Volumes</th>
             <th class="ml-column ml-column-completed">Completed</th>
             <th class="ml-column ml-column-interest">Interest</th>
@@ -62,6 +63,10 @@
                 {% if series.baka_info.has_extra_staff %}
                   <span class="badge badge-info">...</span>
                 {% endif %}
+              </td>
+
+              <td class="text-center">
+                {{ series.baka_info.year }}
               </td>
 
               <td class="ml-cell-volumes {{ series.is_completed|yesno:"complete,incomplete" }}">

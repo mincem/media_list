@@ -43,6 +43,11 @@ class DataTableView {
         searchable: true,
       },
       {
+        name: 'year',
+        orderable: true,
+        searchable: false,
+      },
+      {
         name: 'volumes',
         orderable: true,
         searchable: false,
