@@ -1,8 +1,8 @@
 $(document).ready(function () {
-  document.listView = new ListView();
-  document.listView.render();
-
+  // document.listView = new ListView();
+  // document.listView.render();
   document.detailView = new DetailView();
+  document.dataTableView = new DataTableView($('#media-list-table'));
 
   $('.ml-row').click(renderDetailView);
 });

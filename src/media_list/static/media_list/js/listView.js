@@ -37,10 +37,10 @@ function TitleListFilter() {
   this.element = '#list-filter-by-title';
   this.action = 'keyup';
   this.apply = function ($list) {
-    // let searchInput = $(this.element).val().toLowerCase();
-    // $list.find('tr').filter(function () {
-    //   $(this).toggle($(this).find('.ml-cell-title').text().toLowerCase().indexOf(searchInput) > -1)
-    // });
+    let searchInput = $(this.element).val().toLowerCase();
+    $list.find('tr').filter(function () {
+      $(this).toggle($(this).find('.ml-cell-title').text().toLowerCase().indexOf(searchInput) > -1)
+    });
   }
 }
 

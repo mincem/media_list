@@ -39,7 +39,7 @@
                 {% endif %}
               </td>
 
-              <td>
+              <td data-search="{{ series.source }}">
                 {% if series.source %}
                   <img class="source-icon" src="{{ series.source.icon.url }}" alt="{{ series.source }}"
                        title="{{ series.source }}">
@@ -57,7 +57,9 @@
                 {{ series.display_volumes }}
               </td>
 
-              <td class="text-center"><i class="fas fa-{{ series.is_completed|yesno:"check,times" }}"></i></td>
+              <td class="text-center" data-search="{{ series.is_completed }}">
+                <i class="fas fa-{{ series.is_completed|yesno:"check,times" }}"></i>
+              </td>
 
               <td>{{ series.interest }}</td>
 
