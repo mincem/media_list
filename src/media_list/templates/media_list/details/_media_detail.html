@@ -1,0 +1,34 @@
+<div class="media-detail">
+  {% for url in object.urls.all %}
+    <p>
+      <a href="{{ url }}">{{ url }}</a>
+    </p>
+  {% endfor %}
+
+  <ul>
+    <li class="md-column md-column-volumes">
+      <b>Status:</b> {{ object.display_volumes }} ({{ object.is_completed|yesno:"Complete,Ongoing" }})
+    </li>
+
+    <li class="md-column md-column-interest">
+      <b>Interest:</b> {{ object.interest }}
+    </li>
+
+    <li class="md-column md-column-status">
+      <b>Download status:</b> {{ object.get_status_display }}
+    </li>
+
+    {% if object.notes %}
+      <li class="md-column md-column-notes">
+        <b>Notes:</b>
+        <p>{{ object.notes }}</p>
+      </li>
+    {% endif %}
+
+    {% if object.baka_id %}
+      <li class="md-column">
+        <b>Mangaupdates page:</b> <a href="{{ object.baka_url }}">{{ object.baka_url }}</a>
+      </li>
+    {% endif %}
+  </ul>
+</div>

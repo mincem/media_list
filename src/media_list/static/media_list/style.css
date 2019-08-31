@@ -78,3 +78,33 @@ table tr:hover .ml-cell-volumes.incomplete {
 .baka-detail li {
     padding-bottom: 5px;
 }
+
+.centered-flex {
+    display: flex;
+    align-items: center;
+}
+.centered-flex output {
+    margin-left: 15px;
+}
+
+.media-picture img {
+    max-width: 200px;
+    margin: 0 30px;
+}
+
+.media-description {
+    max-width: 60%;
+}
+
+.media-genres {
+    font-size: 19px;
+}
+
+.media-interest {
+    margin: 10px 30px;
+}
+
+.media-interest .progress {
+    height: 25px;
+    font-size: 15px;
+}

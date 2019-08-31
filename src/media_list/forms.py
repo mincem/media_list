@@ -1,5 +1,6 @@
-from django.forms import ModelForm
+from django.forms import ModelForm, Textarea
 from .models import MangaSeries
+from .widgets import RangeInput
 
 
 class MangaSeriesCreateForm(ModelForm):
@@ -18,10 +19,7 @@ class MangaSeriesCreateForm(ModelForm):
             "notes",
             "baka_id",
         ]
-
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        for field in iter(self.fields):
-            self.fields[field].widget.attrs.update({
-                'class': 'form-control'
-            })
+        widgets = {
+            'interest': RangeInput(attrs={'min': 0, 'max': 100}),
+            'notes': Textarea(attrs={'rows': 3}),
+        }

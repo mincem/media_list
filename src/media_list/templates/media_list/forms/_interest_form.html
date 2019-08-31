@@ -1,0 +1,11 @@
+<form class="media-interest-form centered-flex">
+  <label for="id_interest"></label>
+  <input type="range" name="interest" value="{{ interest }}" min="0" max="100"
+         class="interest-range range-input form-control-range flex-grow-1" required="" id="id_interest">
+
+  <output class="interest-value value-output">{{ interest }}</output>
+
+  <button type="submit" class="btn btn-primary">
+    <i class="fas fa-check"></i>
+  </button>
+</form>

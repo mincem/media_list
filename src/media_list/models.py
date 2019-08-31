@@ -54,6 +54,10 @@ class MangaSeries(TimestampedModel):
         self.title, self.alternate_title = self.alternate_title, self.title
         self.save()
 
+    def interest_color(self):
+        from .utils import ColorPicker
+        return ColorPicker().color_for(self.interest)
+
 
 class BakaSeries(TimestampedModel):
     baka_id = models.PositiveSmallIntegerField()  # TODO: unique, or save history?
@@ -76,6 +80,10 @@ class BakaSeries(TimestampedModel):
 
     def simple_genre_list(self):
         return ", ".join(str(genre) for genre in self.genres.all())
+
+    def single_author(self):
+        if self.authors.count() == 1 and self.artists.count() == 1 and self.authors.first() == self.artists.first():
+            return self.authors.first()
 
 
 class NamedModel(models.Model):
