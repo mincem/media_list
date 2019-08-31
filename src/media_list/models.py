@@ -82,8 +82,19 @@ class BakaSeries(TimestampedModel):
         return ", ".join(str(genre) for genre in self.genres.all())
 
     def single_author(self):
-        if self.authors.count() == 1 and self.artists.count() == 1 and self.authors.first() == self.artists.first():
+        if self.has_single_author():
             return self.authors.first()
+
+    def has_single_author(self):
+        return self.authors.count() == 1 and self.artists.count() == 1 and self.authors.first() == self.artists.first()
+
+    def staff(self):
+        if self.has_single_author():
+            return [self.authors.first()]
+        return [self.authors.first(), self.artists.first()]
+
+    def has_extra_staff(self):
+        return self.authors.count() + self.artists.count() > 2
 
 
 class NamedModel(models.Model):

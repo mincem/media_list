@@ -8,6 +8,9 @@ class DataTableView {
     $('#list-filter-by-title').keyup((event) => {
       this.table.column('title:name').search(event.target.value).draw();
     });
+    $('#list-filter-by-staff').keyup((event) => {
+      this.table.column('staff:name').search(event.target.value).draw();
+    });
     $('#list-filter-by-source').change((event) => {
       this.table.column('source:name').search(event.target.value).draw();
     });
@@ -31,6 +34,11 @@ class DataTableView {
       },
       {
         name: 'title',
+        orderable: true,
+        searchable: true,
+      },
+      {
+        name: 'staff',
         orderable: true,
         searchable: true,
       },

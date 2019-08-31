@@ -20,6 +20,7 @@
             <th class="ml-column"></th>
             <th class="ml-column ml-column-title">Source</th>
             <th class="ml-column ml-column-title">Title</th>
+            <th class="ml-column ml-column-staff">Staff</th>
             <th class="ml-column ml-column-volumes">Volumes</th>
             <th class="ml-column ml-column-completed">Completed</th>
             <th class="ml-column ml-column-interest">Interest</th>
@@ -32,7 +33,7 @@
           {% for series in series_list %}
             <tr class="ml-row" data-series-id="{{ series.id }}" data-detail-url="{% url 'detail' series.id %}"
                 data-source="{{ series.source }}" data-completed="{{ series.is_completed }}"
-            data-baka-info="{{ series.baka_info_id|yesno:"True,False" }}">
+                data-baka-info="{{ series.baka_info_id|yesno:"True,False" }}">
               <td class="ml-cell-thumbnail">
                 {% if series.baka_info.image %}
                   <img src="{{ series.baka_info.image|thumbnail_url:'list' }}" alt="{{ series.title }}"/>
@@ -50,6 +51,16 @@
                 <b>{{ series.title }}</b>
                 {% if series.alternate_title %}
                   [{{ series.alternate_title }}]
+                {% endif %}
+              </td>
+
+              <td class="ml-cell-staff">
+                {% for member in series.baka_info.staff %}
+                  <span class="badge badge-info">{{ member }}</span>
+                {% endfor %}
+
+                {% if series.baka_info.has_extra_staff %}
+                  <span class="badge badge-info">...</span>
                 {% endif %}
               </td>
 
