@@ -13,5 +13,9 @@
 {% endblock %}
 
 {% block extra_js %}
-  <script src="{% static 'media_list/js/form.js' %}"></script>
+  <script src="{% static 'media_list/js/rangeField.js' %}"></script>
+
+  <script>
+    new RangeField($('.interest-field'));
+  </script>
 {% endblock %}

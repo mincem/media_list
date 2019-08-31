@@ -60,10 +60,10 @@
         {{ form.interest.label_tag }}
       </div>
 
-      <div class="col-9 centered-flex">
-        {{ form.interest|add_class:'interest-range form-control-range flex-grow-1' }}
+      <div class="col-9 interest-field centered-flex">
+        {{ form.interest|add_class:'interest-range range-input form-control-range flex-grow-1' }}
 
-        <output class="interest-value">{{ form.interest.value }}</output>
+        <output class="interest-value value-output">{{ form.interest.value }}</output>
       </div>
     </div>
 

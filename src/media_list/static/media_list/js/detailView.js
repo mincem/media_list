@@ -29,6 +29,7 @@ class DetailView {
   display(htmlData) {
     this.$modal.find('.modal-content').html(htmlData);
     this.$modal.modal('show');
+    this.displayInterestForm();
     $('#action-find-baka-id').click(() => {
       this.findBakaID()
     });
@@ -38,7 +39,12 @@ class DetailView {
     $('#action-swap-titles').click(() => {
       this.swapTitles()
     });
-    $('.media-interest-form').submit((event) => {
+  }
+
+  displayInterestForm() {
+    let $interestForm = this.$modal.find('.media-interest-form');
+    new RangeField($interestForm);
+    $interestForm.submit((event) => {
       this.updateInterest(event)
     });
   }
