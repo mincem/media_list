@@ -12,7 +12,7 @@
       {% include 'media_list/_list_filters.html' %}
     </div>
 
-    <div class="col-8">
+    <div class="col-9">
       <div id="media-list">
         <table class="table table-hover table-bordered table-responsive" id="media-list-table">
           <thead>
@@ -77,9 +77,13 @@
                 <i class="fas fa-{{ series.is_completed|yesno:"check,times" }}"></i>
               </td>
 
-              <td>{{ series.interest }}</td>
+              <td class="text-center">
+                {{ series.interest }}
+              </td>
 
-              <td>{{ series.get_status_display }}</td>
+              <td class="text-center">
+                {{ series.get_status_display }}
+              </td>
 
               <td>
                 <div class="d-flex justify-content-around">

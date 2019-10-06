@@ -6,7 +6,8 @@ STATUS_CHOICES = (
     ('N', 'Not Downloaded'),
     ('D', 'Downloading'),
     ('R', 'Downloaded Raw'),
-    ('E', 'Edited'),
+    ('E', 'Edited Complete'),
+    ('I', 'Edited Incomplete'),
 )
 DEFAULT_STATUS_CHOICE = STATUS_CHOICES[0][0]
 
