@@ -15,8 +15,14 @@ class DataTableView {
       this.table.column('source:name').search(event.target.value).draw();
     });
     $('#list-filter-by-completed').change((event) => {
-      console.log(event.target.value);
       this.table.column('completed:name').search(event.target.value).draw();
+    });
+    $('#list-filter-by-baka-info').change((event) => {
+      var searchValue;
+      if(event.target.value === 'True') searchValue = '\S';
+      else if(event.target.value === 'False') searchValue = '^$';
+      else searchValue = '';
+      this.table.column('staff:name').search(searchValue, true).draw();
     });
   }
 
