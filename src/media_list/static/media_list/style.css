@@ -52,6 +52,12 @@ table tr:hover .ml-cell-volumes.incomplete {
     background-color: #f2b5b5;
 }
 
+table .ml-cell-interest .badge {
+    color: white;
+    font-size: 15px;
+    width: 50px;
+}
+
 .fa-check {
     color: green;
 }

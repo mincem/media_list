@@ -77,8 +77,10 @@
                 <i class="fas fa-{{ series.is_completed|yesno:"check,times" }}"></i>
               </td>
 
-              <td class="text-center">
-                {{ series.interest }}
+              <td class="ml-cell-interest text-center" data-search="{{ series.interest }}">
+                <span class="badge" style="background-color: {{ series.interest_color }}">
+                  {{ series.interest }}
+                </span>
               </td>
 
               <td class="text-center">
