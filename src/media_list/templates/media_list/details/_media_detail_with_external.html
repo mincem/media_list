@@ -90,7 +90,7 @@
 
   {% for url in object.urls.all %}
     <a class="btn btn-primary media-link" href="{{ url }}">
-      URL
+      {{ url.hostname }} page
     </a>
   {% endfor %}
 </div>

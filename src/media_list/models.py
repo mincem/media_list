@@ -1,3 +1,5 @@
+from urllib.parse import urlparse
+
 from django.db import models
 from ordered_model.models import OrderedModel
 
@@ -128,3 +130,6 @@ class MangaURL(OrderedModel):
 
     def __str__(self):
         return self.url
+
+    def hostname(self):
+        return urlparse(self.url).hostname
