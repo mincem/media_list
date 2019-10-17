@@ -1,10 +1,4 @@
 <div class="media-detail">
-  {% for url in object.urls.all %}
-    <p>
-      <a href="{{ url }}">{{ url }}</a>
-    </p>
-  {% endfor %}
-
   <ul>
     <li class="md-column md-column-volumes">
       <b>Status:</b> {{ object.display_volumes }} ({{ object.is_completed|yesno:"Complete,Ongoing" }})
@@ -24,11 +18,17 @@
         <p>{{ object.notes }}</p>
       </li>
     {% endif %}
-
-    {% if object.baka_id %}
-      <li class="md-column">
-        <b>Mangaupdates page:</b> <a href="{{ object.baka_url }}">{{ object.baka_url }}</a>
-      </li>
-    {% endif %}
   </ul>
+
+  {% if object.baka_id %}
+    <a class="btn btn-primary btn-sm media-link" href="{{ object.baka_url }}">
+      Mangaupdates page
+    </a>
+  {% endif %}
+
+  {% for url in object.urls.all %}
+    <a class="btn btn-primary btn-sm media-link" href="{{ url }}">
+      {{ url.hostname }} page
+    </a>
+  {% endfor %}
 </div>

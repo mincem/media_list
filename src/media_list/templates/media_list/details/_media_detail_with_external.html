@@ -83,13 +83,13 @@
   </div>
 
   {% if object.baka_id %}
-    <a class="btn btn-primary media-link" href="{{ object.baka_url }}">
+    <a class="btn btn-primary btn-sm media-link" href="{{ object.baka_url }}">
       Mangaupdates page
     </a>
   {% endif %}
 
   {% for url in object.urls.all %}
-    <a class="btn btn-primary media-link" href="{{ url }}">
+    <a class="btn btn-primary btn-sm media-link" href="{{ url }}">
       {{ url.hostname }} page
     </a>
   {% endfor %}

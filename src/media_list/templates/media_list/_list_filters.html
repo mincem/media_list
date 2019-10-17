@@ -1,10 +1,15 @@
 <div id="filters">
-  {% include "media_list/_list_search_filter.html" with field="title" only %}
-
-  {% include "media_list/_list_search_filter.html" with field="staff" only %}
 
   <div class="list-filter">
-    <div class="input-group mb-3">
+    {% include "media_list/_list_search_filter.html" with field="title" only %}
+  </div>
+
+  <div class="list-filter">
+    {% include "media_list/_list_search_filter.html" with field="staff" only %}
+  </div>
+
+  <div class="list-filter">
+    <div class="input-group">
       <select class="custom-select" id="list-filter-by-source">
         <option selected value="">Filter by source...</option>
         {% for source in sources %}
@@ -15,18 +20,18 @@
   </div>
 
   <div class="list-filter">
-    <p>Completed:</p>
+    <span class="list-filter-title">Completed:</span>
 
     <div class="btn-group btn-group-toggle" data-toggle="buttons" id="list-filter-by-completed">
-      <label class="btn btn-primary active">
+      <label class="btn btn-primary btn-sm active">
         <input checked name="filter-by-completed" type="radio" value=""> Any
       </label>
 
-      <label class="btn btn-primary">
+      <label class="btn btn-primary btn-sm">
         <input name="filter-by-completed" type="radio" value="True"> Yes
       </label>
 
-      <label class="btn btn-primary">
+      <label class="btn btn-primary btn-sm">
         <input name="filter-by-completed" type="radio" value="False"> No
       </label>
     </div>
@@ -34,18 +39,18 @@
 
 
   <div class="list-filter">
-    <p>Has info:</p>
+    <span class="list-filter-title">Has info:</span>
 
     <div class="btn-group btn-group-toggle" data-toggle="buttons" id="list-filter-by-baka-info">
-      <label class="btn btn-primary active">
+      <label class="btn btn-primary btn-sm active">
         <input checked name="filter-by-baka-info" type="radio" value=""> Any
       </label>
 
-      <label class="btn btn-primary">
+      <label class="btn btn-primary btn-sm">
         <input name="filter-by-baka-info" type="radio" value="True"> Yes
       </label>
 
-      <label class="btn btn-primary">
+      <label class="btn btn-primary btn-sm">
         <input name="filter-by-baka-info" type="radio" value="False"> No
       </label>
     </div>

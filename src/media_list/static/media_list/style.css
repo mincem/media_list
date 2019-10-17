@@ -8,6 +8,26 @@ h1 {
     margin-bottom: 25px;
 }
 
+section.content {
+    display: flex;
+}
+
+section.content aside {
+    flex-shrink: 0;
+    width: 320px;
+    padding-right: 30px;
+    padding-top: 6px;
+}
+
+.list-filter {
+    margin-bottom: 20px;
+}
+
+.list-filter .list-filter-title {
+    font-weight: bold;
+    margin-right: 5px;
+}
+
 .ml-column-title {
     /*width: 50%;*/
 }
@@ -34,6 +54,7 @@ table .ml-cell-thumbnail {
 
 #media-list-table {
     background: #e6e7e8;
+    margin-top: 0;
 }
 
 table .ml-cell-volumes.complete {
@@ -113,4 +134,8 @@ table .ml-cell-interest .badge {
 .media-interest .progress {
     height: 25px;
     font-size: 15px;
+}
+
+.media-detail {
+    margin-bottom: 10px;
 }
