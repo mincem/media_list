@@ -4,7 +4,7 @@ from django.db import models
 from ordered_model.models import OrderedModel
 
 STATUS_CHOICES = (
-    ('U', 'Unknown'),
+    ('U', 'Unknown Status'),
     ('N', 'Not Downloaded'),
     ('D', 'Downloading'),
     ('R', 'Downloaded Raw'),

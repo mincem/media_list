@@ -79,6 +79,11 @@ table .ml-cell-interest .badge {
     width: 50px;
 }
 
+table .ml-cell-status .badge {
+    font-size: 13px;
+    width: 125px;
+}
+
 .fa-check {
     color: green;
 }
@@ -138,4 +143,34 @@ table .ml-cell-interest .badge {
 
 .media-detail {
     margin-bottom: 10px;
+}
+
+.media-download-status-U { /* Unknown */
+    color: #fff;
+    background-color: #dc3545;
+}
+
+.media-download-status-N { /* Not Downloaded */
+    color: #fff;
+    background-color: #6c757d;
+}
+
+.media-download-status-D { /* Downloading */
+    color: #212529;
+    background-color: #ff8933;
+}
+
+.media-download-status-R { /* Downloaded Raw */
+    color: #212529;
+    background-color: #ffc107;
+}
+
+.media-download-status-E { /* Edited Complete */
+    color: #fff;
+    background-color: #28a745;
+}
+
+.media-download-status-I { /* Edited Incomplete */
+    color: #4d4d4d;
+    background-color: #7be693;
 }

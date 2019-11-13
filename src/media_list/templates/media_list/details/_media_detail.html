@@ -9,7 +9,10 @@
     </li>
 
     <li class="md-column md-column-status">
-      <b>Download status:</b> {{ object.get_status_display }}
+      <b>Download status:</b>
+      <span class="badge media-download-status-{{ object.status }}">
+        {{ object.get_status_display }}
+      </span>
     </li>
 
     {% if object.notes %}
