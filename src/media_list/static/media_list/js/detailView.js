@@ -21,9 +21,18 @@ class DetailView {
   }
 
   showLoadingAnimation($button) {
-    $button
+    let $loadingAnimation = $button.clone();
+    $loadingAnimation
       .attr('disabled', 'disabled')
+      .addClass('loading-button')
       .html('<div class="spinner-border" role="status"></div>');
+    $button.after($loadingAnimation).hide();
+  }
+
+  hideLoadingAnimation($button) {
+    $button
+      .show()
+      .siblings('.loading-button').remove();
   }
 
   display(htmlData) {
@@ -50,25 +59,35 @@ class DetailView {
   }
 
   findBakaID() {
-    this.showLoadingAnimation($('#action-find-baka-id'));
+    const $button = $('#action-find-baka-id');
+    this.showLoadingAnimation($button);
     $.ajax({
       url: `/media_list/get_baka_id/${this.mediaSeries.id}/`,
       type: 'get',
       dataType: 'html',
       success: (htmlData) => {
         this.display(htmlData);
+      },
+      error: () => {
+        this.hideLoadingAnimation($button);
+        alert("Error finding ID!");
       }
     });
   }
 
   getBakaData() {
-    this.showLoadingAnimation($('#action-get-baka-data'));
+    const $button = $('#action-get-baka-data');
+    this.showLoadingAnimation($button);
     $.ajax({
       url: `/media_list/get_baka_info/${this.mediaSeries.id}/`,
       type: 'get',
       dataType: 'html',
       success: (htmlData) => {
         this.display(htmlData);
+      },
+      error: () => {
+        this.hideLoadingAnimation($button);
+        alert("Error retrieving data!");
       }
     });
   }
