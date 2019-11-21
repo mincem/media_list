@@ -25,7 +25,8 @@ class BakaParser:
         baka_series.genres.add(*genres)
         baka_series.authors.add(*authors)
         baka_series.artists.add(*artists)
-        baka_series.image.save(**image_data)
+        if image_data is not None:
+            baka_series.image.save(**image_data)
         return baka_series
 
     def display_parsed_data(self):
@@ -55,6 +56,8 @@ class BakaParser:
         return self.web_page_html
 
     def parse_image(self, html_tag):
+        if html_tag.img is None:
+            return None
         image_url = html_tag.img["src"]
         return self.image_retriever.get(image_url)
 
