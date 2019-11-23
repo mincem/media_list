@@ -43,6 +43,8 @@ class MangaSeries(TimestampedModel):
         return self.title
 
     def display_volumes(self):
+        if self.volumes == 1 and self.is_completed:
+            return 'Omnibus One-shot' if self.has_omnibus else 'One-shot'
         return f"{self.volumes}{'+' if not self.is_completed else ''} {'omnibus' if self.has_omnibus else 'volumes'}"
 
     def baka_url(self):
