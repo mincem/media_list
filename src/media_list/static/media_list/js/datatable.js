@@ -40,7 +40,7 @@ class DataTableView {
 
   bindFilterByCompleted() {
     $('#list-filter-by-completed').change((event) => {
-      this.table.column('completed:name').search(event.target.value).draw();
+      this.table.column('volumes:name').search(event.target.value).draw();
     });
   }
 
@@ -84,11 +84,6 @@ class DataTableView {
       {
         name: 'volumes',
         orderable: true,
-        searchable: false,
-      },
-      {
-        name: 'completed',
-        orderable: false,
         searchable: true,
       },
       {
