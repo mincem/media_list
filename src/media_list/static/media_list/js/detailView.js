@@ -39,14 +39,14 @@ class DetailView {
     this.$modal.find('.modal-content').html(htmlData);
     this.$modal.modal('show');
     this.displayInterestForm();
-    $('#action-find-baka-id').click(() => {
-      this.findBakaID()
+    $('#action-find-baka-id').click((event) => {
+      this.findBakaID(event);
     });
-    $('#action-get-baka-data').click(() => {
-      this.getBakaData()
+    $('#action-get-baka-data').click((event) => {
+      this.getBakaData(event);
     });
-    $('#action-swap-titles').click(() => {
-      this.swapTitles()
+    $('#action-swap-titles').click((event) => {
+      this.swapTitles(event);
     });
   }
 
@@ -58,11 +58,11 @@ class DetailView {
     });
   }
 
-  findBakaID() {
+  findBakaID(event) {
     const $button = $('#action-find-baka-id');
     this.showLoadingAnimation($button);
     $.ajax({
-      url: `/media_list/get_baka_id/${this.mediaSeries.id}/`,
+      url: event.currentTarget.dataset.url,
       type: 'get',
       dataType: 'html',
       success: (htmlData) => {
@@ -75,11 +75,11 @@ class DetailView {
     });
   }
 
-  getBakaData() {
+  getBakaData(event) {
     const $button = $('#action-get-baka-data');
     this.showLoadingAnimation($button);
     $.ajax({
-      url: `/media_list/get_baka_info/${this.mediaSeries.id}/`,
+      url: event.currentTarget.dataset.url,
       type: 'get',
       dataType: 'html',
       success: (htmlData) => {
@@ -92,9 +92,9 @@ class DetailView {
     });
   }
 
-  swapTitles() {
+  swapTitles(event) {
     $.ajax({
-      url: `/media_list/swap_titles/${this.mediaSeries.id}/`,
+      url: event.currentTarget.dataset.url,
       type: 'get',
       dataType: 'html',
       success: (htmlData) => {
