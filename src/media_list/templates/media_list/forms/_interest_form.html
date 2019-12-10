@@ -1,9 +1,9 @@
-<form class="media-interest-form centered-flex">
+<form class="media-interest-form centered-flex" data-url="{% url 'edit_interest' object.id %}">
   <label for="id_interest"></label>
-  <input type="range" name="interest" value="{{ interest }}" min="0" max="100"
+  <input type="range" name="interest" value="{{ object.interest }}" min="0" max="100"
          class="interest-range range-input form-control-range flex-grow-1" required="" id="id_interest">
 
-  <output class="interest-value value-output">{{ interest }}</output>
+  <output class="interest-value value-output">{{ object.interest }}</output>
 
   <button type="submit" class="btn btn-primary">
     <i class="fas fa-check"></i>

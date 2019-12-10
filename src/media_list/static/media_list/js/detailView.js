@@ -1,21 +1,23 @@
 class DetailView {
   constructor() {
     this.mediaSeries = null;
+    this.viewURL = null;
     this.$modal = $('#details-modal');
   }
 
-  register(mediaSeries) {
+  register(mediaSeries, viewURL) {
     this.mediaSeries = mediaSeries;
+    this.viewURL = viewURL;
   }
 
   render() {
-    if (this.mediaSeries === null) return;
+    if (!this.mediaSeries || !this.viewURL) return;
     $.ajax({
-      url: `/media_list/detail/${this.mediaSeries.id}/`,
+      url: this.viewURL,
       type: 'get',
       dataType: 'html',
       success: (htmlData) => {
-        this.display(htmlData)
+        this.display(htmlData);
       }
     });
   }
@@ -54,7 +56,7 @@ class DetailView {
     let $interestForm = this.$modal.find('.media-interest-form');
     new RangeField($interestForm);
     $interestForm.submit((event) => {
-      this.updateInterest(event)
+      this.updateInterest(event);
     });
   }
 
@@ -107,7 +109,7 @@ class DetailView {
     event.preventDefault();
     let $form = $(event.target);
     $.ajax({
-      url: `/media_list/edit_interest/${this.mediaSeries.id}/`,
+      url: event.target.dataset.url,
       type: 'post',
       dataType: 'html',
       data: $form.serializeArray().concat([{

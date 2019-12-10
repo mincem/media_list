@@ -33,7 +33,7 @@
 
           <tbody>
           {% for series in series_list %}
-            <tr class="ml-row" data-series-id="{{ series.id }}" data-detail-url="{% url 'detail' series.id %}"
+            <tr class="ml-row" data-series-id="{{ series.id }}" data-url="{% url 'detail' series.id %}"
                 data-source="{{ series.source }}" data-completed="{{ series.is_completed }}"
                 data-baka-info="{{ series.baka_info_id|yesno:"True,False" }}">
               <td class="ml-cell-thumbnail">
@@ -130,8 +130,9 @@
 
   <script>
     $(document).ready(function () {
-      const series_id = {{ series_id|default:'null' }};
-      if (series_id) renderDetailView(series_id);
+      let seriesID = {{ series_id|default:'null' }};
+      let viewURL = "{% url 'detail' series_id|default:0 %}";
+      if (seriesID) renderDetailView(seriesID, viewURL);
     });
   </script>
 {% endblock %}
