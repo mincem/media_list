@@ -41,13 +41,16 @@ class DetailView {
     this.$modal.find('.modal-content').html(htmlData);
     this.$modal.modal('show');
     this.displayInterestForm();
-    $('#action-find-baka-id').click((event) => {
+    const findBakaIDButton = document.getElementById('action-find-baka-id');
+    findBakaIDButton && findBakaIDButton.addEventListener('click', (event) => {
       this.findBakaID(event);
     });
-    $('#action-get-baka-data').click((event) => {
+    const getBakaDataButton = document.getElementById('action-get-baka-data');
+    getBakaDataButton && getBakaDataButton.addEventListener('click', (event) => {
       this.getBakaData(event);
     });
-    $('#action-swap-titles').click((event) => {
+    const swapTitlesButton = document.getElementById('action-swap-titles');
+    swapTitlesButton && swapTitlesButton.addEventListener('click', (event) => {
       this.swapTitles(event);
     });
   }
