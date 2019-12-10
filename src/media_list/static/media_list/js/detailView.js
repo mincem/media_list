@@ -22,13 +22,13 @@ class DetailView {
     });
   }
 
-  showLoadingAnimation($button) {
-    let $loadingAnimation = $button.clone();
-    $loadingAnimation
-      .attr('disabled', 'disabled')
-      .addClass('loading-button')
-      .html('<div class="spinner-border" role="status"></div>');
-    $button.after($loadingAnimation).hide();
+  showLoadingAnimation(button) {
+    let loadingAnimation = button.cloneNode(true);
+    loadingAnimation.disabled = true;
+    loadingAnimation.classList.add('loading-button');
+    loadingAnimation.innerHTML = '<div class="spinner-border" role="status"></div>';
+    button.style.display = 'none';
+    button.insertAdjacentElement('afterend', loadingAnimation);
   }
 
   hideLoadingAnimation($button) {
@@ -61,8 +61,8 @@ class DetailView {
   }
 
   findBakaID(event) {
-    const $button = $('#action-find-baka-id');
-    this.showLoadingAnimation($button);
+    const button = document.getElementById('action-find-baka-id');
+    this.showLoadingAnimation(button);
     $.ajax({
       url: event.currentTarget.dataset.url,
       type: 'get',
@@ -71,15 +71,15 @@ class DetailView {
         this.display(htmlData);
       },
       error: () => {
-        this.hideLoadingAnimation($button);
+        this.hideLoadingAnimation($(button));
         alert("Error finding ID!");
       }
     });
   }
 
   getBakaData(event) {
-    const $button = $('#action-get-baka-data');
-    this.showLoadingAnimation($button);
+    const button = document.getElementById('action-get-baka-data');
+    this.showLoadingAnimation(button);
     $.ajax({
       url: event.currentTarget.dataset.url,
       type: 'get',
@@ -88,7 +88,7 @@ class DetailView {
         this.display(htmlData);
       },
       error: () => {
-        this.hideLoadingAnimation($button);
+        this.hideLoadingAnimation($(button));
         alert("Error retrieving data!");
       }
     });
