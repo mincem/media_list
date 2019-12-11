@@ -15,16 +15,16 @@
 <body>
 
 <nav class="navbar sticky-top navbar-expand-lg navbar-light bg-light ">
-  <a class="navbar-brand" href="{% url 'index' %}">Media List</a>
+  <a class="navbar-brand" href="{% url 'categories:manga:index' %}">Media List</a>
 
   <div class="collapse navbar-collapse">
     <ul class="navbar-nav mr-auto">
       <li class="nav-item">
-        <a class="nav-link" href="{% url 'index' %}">List</a>
+        <a class="nav-link" href="{% url 'categories:manga:index' %}">List</a>
       </li>
 
       <li class="nav-item">
-        <a class="nav-link" href="{% url 'create' %}">Create</a>
+        <a class="nav-link" href="{% url 'categories:manga:create' %}">Create</a>
       </li>
 
       <li class="nav-item">

@@ -33,7 +33,7 @@
 
           <tbody>
           {% for series in series_list %}
-            <tr class="ml-row" data-series-id="{{ series.id }}" data-url="{% url 'detail' series.id %}"
+            <tr class="ml-row" data-series-id="{{ series.id }}" data-url="{% url 'categories:manga:detail' series.id %}"
                 data-source="{{ series.source }}" data-completed="{{ series.is_completed }}"
                 data-baka-info="{{ series.baka_info_id|yesno:"True,False" }}">
               <td class="ml-cell-thumbnail">
@@ -90,11 +90,11 @@
 
               <td>
                 <div class="d-flex justify-content-around">
-                  <a href="{% url "edit" series.id %}">
+                  <a href="{% url "categories:manga:edit" series.id %}">
                     <i class="fas fa-edit"></i>
                   </a>
 
-                  <a href="{% url "delete" series.id %}">
+                  <a href="{% url "categories:manga:delete" series.id %}">
                     <i class="fas fa-trash"></i>
                   </a>
                 </div>
@@ -131,7 +131,7 @@
   <script>
     $(document).ready(function () {
       let seriesID = {{ series_id|default:'null' }};
-      let viewURL = "{% url 'detail' series_id|default:0 %}";
+      let viewURL = "{% url 'categories:manga:detail' series_id|default:0 %}";
       if (seriesID) renderDetailView(seriesID, viewURL);
     });
   </script>

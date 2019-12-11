@@ -1,4 +1,4 @@
-<form class="media-interest-form centered-flex" data-url="{% url 'edit_interest' object.id %}">
+<form class="media-interest-form centered-flex" data-url="{% url 'categories:manga:edit_interest' object.id %}">
   <label for="id_interest"></label>
   <input type="range" name="interest" value="{{ object.interest }}" min="0" max="100"
          class="interest-range range-input form-control-range flex-grow-1" required="" id="id_interest">

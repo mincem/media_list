@@ -60,8 +60,8 @@ class CreateView(CreateWithInlinesView):
 
     def get_success_url(self):
         if "add_another" in self.request.POST:
-            return reverse_lazy('create')
-        return reverse_lazy("index_and_modal", kwargs={"pk": self.object.id})
+            return reverse_lazy('categories:manga:create')
+        return reverse_lazy("categories:manga:index_and_modal", kwargs={"pk": self.object.id})
 
 
 class EditView(UpdateWithInlinesView):
@@ -71,7 +71,7 @@ class EditView(UpdateWithInlinesView):
     template_name = "media_list/forms/manga_series_edit_form.html"
 
     def get_success_url(self):
-        return reverse_lazy("index_and_modal", kwargs={"pk": self.object.id})
+        return reverse_lazy("categories:manga:index_and_modal", kwargs={"pk": self.object.id})
 
 
 class EditInterestView(generic.UpdateView):
@@ -79,9 +79,9 @@ class EditInterestView(generic.UpdateView):
     fields = ['interest']
 
     def get_success_url(self):
-        return reverse_lazy("detail", kwargs={"pk": self.object.id})
+        return reverse_lazy("categories:manga:detail", kwargs={"pk": self.object.id})
 
 
 class DeleteView(generic.DeleteView):
     model = MangaSeries
-    success_url = reverse_lazy("index")
+    success_url = reverse_lazy("categories:manga:index")

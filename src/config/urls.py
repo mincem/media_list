@@ -21,7 +21,7 @@ from django.urls import include, path
 from . import settings
 
 urlpatterns = [
-    path('media_list/', include('media_list.urls')),
+    path('categories/', include(('media_list.urls', 'media_list'), namespace='categories')),
     path('admin/', admin.site.urls),
 ]
 
