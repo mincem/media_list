@@ -3,6 +3,8 @@ from urllib.parse import urlparse
 from django.db import models
 from ordered_model.models import OrderedModel
 
+from .base import TimestampedModel, NamedModel
+
 STATUS_CHOICES = (
     ('U', 'Unknown Status'),
     ('N', 'Not Downloaded'),
@@ -12,14 +14,6 @@ STATUS_CHOICES = (
     ('I', 'Edited Incomplete'),
 )
 DEFAULT_STATUS_CHOICE = STATUS_CHOICES[0][0]
-
-
-class TimestampedModel(models.Model):
-    class Meta:
-        abstract = True
-
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
 
 
 class MangaSeries(TimestampedModel):
@@ -60,7 +54,7 @@ class MangaSeries(TimestampedModel):
         self.save()
 
     def interest_color(self):
-        from .utils import ColorPicker
+        from ..utils import ColorPicker
         return ColorPicker().color_for(self.interest)
 
 
@@ -100,17 +94,6 @@ class BakaSeries(TimestampedModel):
 
     def has_extra_staff(self):
         return self.authors.count() + self.artists.count() > 2
-
-
-class NamedModel(models.Model):
-    class Meta:
-        abstract = True
-        ordering = ('name',)
-
-    name = models.CharField(max_length=255, unique=True)
-
-    def __str__(self):
-        return self.name
 
 
 class MangaSource(NamedModel, TimestampedModel):
