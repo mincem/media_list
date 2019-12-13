@@ -2,9 +2,9 @@ from django.urls import reverse_lazy
 from django.views import generic
 from extra_views import InlineFormSetFactory, CreateWithInlinesView, UpdateWithInlinesView
 
-from .forms import MangaSeriesCreateForm
-from .models import MangaSeries, MangaSource, MangaURL
-from .utils import BakaFinder, BakaParser
+from ..forms import MangaSeriesCreateForm
+from ..models import MangaSeries, MangaSource, MangaURL
+from ..utils import BakaFinder, BakaParser
 
 
 class IndexView(generic.ListView):

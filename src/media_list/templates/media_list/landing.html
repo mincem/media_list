@@ -1,0 +1,19 @@
+{% extends 'media_list/base.html' %}
+
+{% block title %}Home{% endblock title %}
+
+{% block content %}
+  <header class="title">
+    <h1>Media Lists</h1>
+  </header>
+
+  <section class="content">
+    <ul class="list-group">
+      <li class="list-group-item">
+        <a href="{% url 'categories:manga:index' %}">
+          Manga
+        </a>
+      </li>
+    </ul>
+  </section>
+{% endblock content %}

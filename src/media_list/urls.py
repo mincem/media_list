@@ -15,6 +15,11 @@ manga_urls = [
     path('<int:pk>/swap_titles/', views.SwapMangaSeriesTitlesView.as_view(), name='swap_titles'),
 ]
 
-urlpatterns = [
+categories_urls = [
     path('manga/', include((manga_urls, 'manga'))),
+]
+
+urlpatterns = [
+    path('categories/', include((categories_urls, 'categories'), namespace='categories')),
+    path('', views.LandingView.as_view(), name='landing'),
 ]
