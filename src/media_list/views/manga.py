@@ -8,7 +8,7 @@ from ..utils import BakaFinder, BakaParser
 
 
 class IndexView(generic.ListView):
-    template_name = 'media_list/index.html'
+    template_name = 'media_list/categories/manga/list.html'
     context_object_name = 'series_list'
     model = MangaSeries
 
@@ -21,7 +21,7 @@ class IndexView(generic.ListView):
 
 class DetailView(generic.DetailView):
     model = MangaSeries
-    template_name = 'media_list/detail.html'
+    template_name = 'media_list/categories/manga/detail.html'
 
 
 class FetchBakaIDView(DetailView):
@@ -35,8 +35,7 @@ class FetchBakaIDView(DetailView):
 class FetchBakaInfoView(DetailView):
     def get(self, request, *args, **kwargs):
         series = self.get_object()
-        baka_info = BakaParser(series.baka_id).perform()
-        series.baka_info = baka_info
+        series.baka_info = BakaParser(series.baka_id).perform()
         series.save()
         return super().get(self, request, *args, **kwargs)
 
@@ -56,7 +55,7 @@ class CreateView(CreateWithInlinesView):
     model = MangaSeries
     form_class = MangaSeriesCreateForm
     inlines = [URLInline]
-    template_name = "media_list/forms/manga_series_create_form.html"
+    template_name = "media_list/categories/manga/forms/manga_series_create_form.html"
 
     def get_success_url(self):
         if "add_another" in self.request.POST:
@@ -68,7 +67,7 @@ class EditView(UpdateWithInlinesView):
     model = MangaSeries
     form_class = MangaSeriesCreateForm
     inlines = [URLInline]
-    template_name = "media_list/forms/manga_series_edit_form.html"
+    template_name = "media_list/categories/manga/forms/manga_series_edit_form.html"
 
     def get_success_url(self):
         return reverse_lazy("categories:manga:index_and_modal", kwargs={"pk": self.object.id})
