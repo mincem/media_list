@@ -18,3 +18,20 @@ class NamedModel(models.Model):
 
     def __str__(self):
         return self.name
+
+
+class MediaItem(TimestampedModel):
+    class Meta:
+        abstract = True
+        ordering = ('title',)
+
+    title = models.CharField(max_length=255)
+    interest = models.IntegerField()
+    notes = models.TextField(blank=True)
+
+    def __str__(self):
+        return self.title
+
+    def interest_color(self):
+        from ..utils import ColorPicker
+        return ColorPicker().color_for(self.interest)

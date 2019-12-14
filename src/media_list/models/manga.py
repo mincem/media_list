@@ -3,7 +3,7 @@ from urllib.parse import urlparse
 from django.db import models
 from ordered_model.models import OrderedModel
 
-from .base import TimestampedModel, NamedModel
+from .base import TimestampedModel, NamedModel, MediaItem
 
 STATUS_CHOICES = (
     ('U', 'Unknown Status'),
@@ -16,25 +16,16 @@ STATUS_CHOICES = (
 DEFAULT_STATUS_CHOICE = STATUS_CHOICES[0][0]
 
 
-class MangaSeries(TimestampedModel):
-    class Meta:
-        ordering = ('title',)
-
-    title = models.CharField(max_length=255)
+class MangaSeries(MediaItem):
     alternate_title = models.CharField(blank=True, max_length=255)
     volumes = models.IntegerField(blank=True, null=True)
     has_omnibus = models.BooleanField(default=False)
     is_completed = models.BooleanField(default=False)
     is_read = models.BooleanField(default=False)
     source = models.ForeignKey("MangaSource", blank=True, null=True, on_delete=models.SET_NULL)
-    interest = models.IntegerField()
     status = models.CharField(max_length=1, choices=STATUS_CHOICES, default=DEFAULT_STATUS_CHOICE)
-    notes = models.TextField(blank=True)
     baka_id = models.PositiveSmallIntegerField(blank=True, null=True)
     baka_info = models.ForeignKey("BakaSeries", blank=True, null=True, on_delete=models.SET_NULL)
-
-    def __str__(self):
-        return self.title
 
     def display_volumes(self):
         if self.volumes == 1 and self.is_completed:
@@ -52,10 +43,6 @@ class MangaSeries(TimestampedModel):
     def swap_titles(self):
         self.title, self.alternate_title = self.alternate_title, self.title
         self.save()
-
-    def interest_color(self):
-        from ..utils import ColorPicker
-        return ColorPicker().color_for(self.interest)
 
 
 class BakaSeries(TimestampedModel):
