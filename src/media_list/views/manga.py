@@ -7,36 +7,32 @@ from ..models import MangaSeries, MangaSource, MangaURL
 from ..utils import BakaFinder, BakaParser
 
 
-class IndexView(generic.ListView):
+class MangaCollectionView(generic.ListView):
+    context_object_name = 'series_list'
+    model = MangaSeries
+
+    def get_context_data(self, **kwargs):
+        return super().get_context_data(
+            sources=MangaSource.objects.all(),
+            series_id=self.kwargs.get('pk'),
+            **kwargs
+        )
+
+
+class MangaListView(MangaCollectionView):
     template_name = 'media_list/categories/manga/list.html'
-    context_object_name = 'series_list'
-    model = MangaSeries
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['sources'] = MangaSource.objects.all()
-        context['series_id'] = self.kwargs.get('pk')
-        return context
 
 
-class GridView(generic.ListView):
+class MangaGridView(MangaCollectionView):
     template_name = 'media_list/categories/manga/grid.html'
-    context_object_name = 'series_list'
-    model = MangaSeries
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['sources'] = MangaSource.objects.all()
-        context['series_id'] = self.kwargs.get('pk')
-        return context
 
 
-class DetailView(generic.DetailView):
+class MangaDetailView(generic.DetailView):
     model = MangaSeries
     template_name = 'media_list/categories/manga/detail.html'
 
 
-class FetchBakaIDView(DetailView):
+class MangaFetchBakaIDView(MangaDetailView):
     def get(self, request, *args, **kwargs):
         series = self.get_object()
         series.baka_id = BakaFinder(series.title).baka_id()
@@ -44,7 +40,7 @@ class FetchBakaIDView(DetailView):
         return super().get(self, request, *args, **kwargs)
 
 
-class FetchBakaInfoView(DetailView):
+class MangaFetchBakaInfoView(MangaDetailView):
     def get(self, request, *args, **kwargs):
         series = self.get_object()
         series.baka_info = BakaParser(series.baka_id).perform()
@@ -52,7 +48,7 @@ class FetchBakaInfoView(DetailView):
         return super().get(self, request, *args, **kwargs)
 
 
-class SwapMangaSeriesTitlesView(DetailView):
+class MangaSwapTitlesView(MangaDetailView):
     def get(self, request, *args, **kwargs):
         self.get_object().swap_titles()
         return super().get(self, request, *args, **kwargs)
@@ -63,7 +59,7 @@ class URLInline(InlineFormSetFactory):
     fields = ['url']
 
 
-class CreateView(CreateWithInlinesView):
+class MangaCreateView(CreateWithInlinesView):
     model = MangaSeries
     form_class = MangaSeriesCreateForm
     inlines = [URLInline]
@@ -75,7 +71,7 @@ class CreateView(CreateWithInlinesView):
         return reverse_lazy("categories:manga:index_and_modal", kwargs={"pk": self.object.id})
 
 
-class EditView(UpdateWithInlinesView):
+class MangaEditView(UpdateWithInlinesView):
     model = MangaSeries
     form_class = MangaSeriesCreateForm
     inlines = [URLInline]
@@ -85,7 +81,7 @@ class EditView(UpdateWithInlinesView):
         return reverse_lazy("categories:manga:index_and_modal", kwargs={"pk": self.object.id})
 
 
-class EditInterestView(generic.UpdateView):
+class MangaEditInterestView(generic.UpdateView):
     model = MangaSeries
     fields = ['interest']
 
@@ -93,6 +89,6 @@ class EditInterestView(generic.UpdateView):
         return reverse_lazy("categories:manga:detail", kwargs={"pk": self.object.id})
 
 
-class DeleteView(generic.DeleteView):
+class MangaDeleteView(generic.DeleteView):
     model = MangaSeries
-    success_url = reverse_lazy("categories:manga:index")
+    success_url = reverse_lazy("categories:manga:list")
