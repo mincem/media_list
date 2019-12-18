@@ -1,5 +1,6 @@
 from urllib.parse import urlparse
 
+from django.contrib.staticfiles.templatetags.staticfiles import static
 from django.db import models
 from ordered_model.models import OrderedModel
 
@@ -43,6 +44,13 @@ class MangaSeries(MediaItem):
     def swap_titles(self):
         self.title, self.alternate_title = self.alternate_title, self.title
         self.save()
+
+    @property
+    def image_url(self):
+        if self.baka_info and self.baka_info.image:
+            return self.baka_info.image.url
+        else:
+            return static('media_list/images/default_cover_2.jpg')
 
 
 class BakaSeries(TimestampedModel):

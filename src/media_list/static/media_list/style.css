@@ -174,3 +174,17 @@ table .ml-cell-status .badge {
     color: #4d4d4d;
     background-color: #7be693;
 }
+
+.media-grid {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.grid-thumbnail {
+    margin: 5px;
+}
+
+.grid-thumbnail img {
+    height: 200px;
+    width: 140px;
+}

@@ -4,6 +4,7 @@ from . import views
 
 manga_urls = [
     path('', views.IndexView.as_view(), name='index'),
+    path('grid/', views.GridView.as_view(), name='grid'),
     path('create/', views.CreateView.as_view(), name='create'),
     path('<int:pk>/', views.IndexView.as_view(), name='index_and_modal'),
     path('<int:pk>/detail/', views.DetailView.as_view(), name='detail'),

@@ -19,6 +19,18 @@ class IndexView(generic.ListView):
         return context
 
 
+class GridView(generic.ListView):
+    template_name = 'media_list/categories/manga/grid.html'
+    context_object_name = 'series_list'
+    model = MangaSeries
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['sources'] = MangaSource.objects.all()
+        context['series_id'] = self.kwargs.get('pk')
+        return context
+
+
 class DetailView(generic.DetailView):
     model = MangaSeries
     template_name = 'media_list/categories/manga/detail.html'
