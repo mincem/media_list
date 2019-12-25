@@ -18,7 +18,7 @@ from django.contrib.staticfiles.urls import static
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 from django.urls import include, path
 
-from . import settings
+from .settings import base
 
 urlpatterns = [
     path('', include('media_list.urls')),
@@ -26,4 +26,4 @@ urlpatterns = [
 ]
 
 urlpatterns += staticfiles_urlpatterns()
-urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+urlpatterns += static(base.MEDIA_URL, document_root=base.MEDIA_ROOT)
