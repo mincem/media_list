@@ -86,14 +86,16 @@
   </div>
 
   {% if object.baka_id %}
-    <a class="btn btn-primary btn-sm media-link" href="{{ object.baka_url }}">
+    <a class="btn btn-primary btn-sm media-link" href="{{ object.baka_url }}" target="_blank" rel="noopener">
       Mangaupdates page
+      <i class="fas fa-external-link-alt"></i>
     </a>
   {% endif %}
 
   {% for url in object.urls.all %}
-    <a class="btn btn-primary btn-sm media-link" href="{{ url }}">
+    <a class="btn btn-primary btn-sm media-link" href="{{ url }}" target="_blank" rel="noopener">
       {{ url.hostname }} page
+      <i class="fas fa-external-link-alt"></i>
     </a>
   {% endfor %}
 </div>
