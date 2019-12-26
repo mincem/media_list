@@ -10,10 +10,9 @@ class BakaFinder:
     def baka_id(self):
         link = self.fetch_link()
         url = urlparse(link)
-        if self.source_is_correct(url):
-            return int(parse_qs(url.query)["id"][0])
-        else:
+        if not self.source_is_correct(url):
             raise Exception(f"Cannot get Baka-ID from URL: {link}")
+        return int(parse_qs(url.query)["id"][0])
 
     def fetch_link(self):
         return self.link_fetcher.get(self.series_title)
@@ -26,5 +25,7 @@ class BakaFinder:
 class LinkFetcher:
     @staticmethod
     def get(series_title):
-        search_results = google.search(f"mangaupdates {series_title}")
+        search_results = google.search(f"site:mangaupdates.com {series_title}")
+        if not search_results:
+            raise Exception(f'Cannot find Mangaupdates page for series "{series_title}"')
         return search_results[0].link
