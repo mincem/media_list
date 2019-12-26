@@ -25,6 +25,14 @@
         {% endfor %}
       </p>
 
+      <p class="media-keywords">
+        {% for keyword in object.baka_info.weighed_keywords.all %}
+          <span class="badge badge-orange">
+            {{ keyword }} ({{ keyword.score }})
+          </span>
+        {% endfor %}
+      </p>
+
       {{ object.baka_info.description }}
     </div>
   </div>

@@ -57,6 +57,7 @@ class BakaSeries(TimestampedModel):
     baka_id = models.PositiveSmallIntegerField()  # TODO: unique, or save history?
     title = models.CharField(max_length=255)
     genres = models.ManyToManyField("MangaGenre", related_name="series")
+    keywords = models.ManyToManyField("MangaKeyword", related_name="series", through="MangaSeriesKeyword")
     description = models.TextField(blank=True)
     status = models.CharField(max_length=255, blank=True)
     authors = models.ManyToManyField("MangaPerson", related_name="series_as_author")
@@ -97,6 +98,22 @@ class MangaSource(NamedModel, TimestampedModel):
 
 class MangaGenre(NamedModel):
     pass
+
+
+class MangaKeyword(NamedModel):
+    pass
+
+
+class MangaSeriesKeyword(models.Model):
+    class Meta:
+        ordering = ['-score']
+
+    baka_series = models.ForeignKey("BakaSeries", related_name="weighed_keywords", on_delete=models.CASCADE)
+    keyword = models.ForeignKey("MangaKeyword", on_delete=models.CASCADE)
+    score = models.PositiveSmallIntegerField(blank=True, null=True)
+
+    def __str__(self):
+        return str(self.keyword)
 
 
 class MangaPerson(NamedModel, TimestampedModel):

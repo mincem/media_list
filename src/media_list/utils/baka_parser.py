@@ -1,11 +1,12 @@
 import json
 import os
+import re
 
 import requests
 from bs4 import BeautifulSoup
 from django.core.files.base import ContentFile
 
-from ..models import BakaSeries, MangaPerson, MangaGenre
+from ..models import BakaSeries, MangaPerson, MangaGenre, MangaKeyword
 
 
 class BakaParser:
@@ -20,11 +21,13 @@ class BakaParser:
         authors = create_people(parsed_series_data.pop("author_names", None))
         artists = create_people(parsed_series_data.pop("artist_names", None))
         genres = create_genres(parsed_series_data.pop("genre_names", None))
+        keywords_data = parsed_series_data.pop("keywords", None)
         image_data = parsed_series_data.pop("image", None)
         baka_series = BakaSeries.objects.create(**parsed_series_data)
         baka_series.genres.add(*genres)
         baka_series.authors.add(*authors)
         baka_series.artists.add(*artists)
+        add_keywords(keywords_data, baka_series)
         if image_data is not None:
             baka_series.image.save(**image_data)
         return baka_series
@@ -40,6 +43,7 @@ class BakaParser:
             "baka_id": self.baka_id,
             "title": parse_title(main_content),
             "genre_names": parse_genres(contents["Genre"]) or [],
+            "keywords": parse_keywords(contents["Categories"]) or [],
             "description": parse_description(main_content, contents),
             "status": clean_text(contents["Status in Country of Origin"]),
             "author_names": parse_person_names(contents["Author(s)"]),
@@ -100,6 +104,19 @@ def parse_genres(html):
     return list(html.stripped_strings)
 
 
+def parse_keywords(html):
+    if html is None:
+        return None
+    return [parse_keyword(item) for item in html.find("ul").find_all("li")]
+
+
+def parse_keyword(html):
+    return {
+        "name": html.text,
+        "score": re.search(r'Score: (.*) \(', html.a.attrs["title"]).group(1)
+    }
+
+
 def clean_text(html_tag):
     return clean(" ".join(html_tag.stripped_strings))
 
@@ -114,6 +131,12 @@ def create_people(names):
 
 def create_genres(names):
     return [MangaGenre.objects.get_or_create(name=genre_name)[0] for genre_name in names]
+
+
+def add_keywords(keywords_data, baka_series):
+    for keyword_data in keywords_data:
+        keyword = MangaKeyword.objects.get_or_create(name=keyword_data["name"])[0]
+        baka_series.keywords.add(keyword, through_defaults={"score": keyword_data["score"]})
 
 
 class BakaRetriever:

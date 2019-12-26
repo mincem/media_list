@@ -115,6 +115,7 @@ table .ml-cell-status .badge {
     display: flex;
     align-items: center;
 }
+
 .centered-flex output {
     margin-left: 15px;
 }
@@ -124,12 +125,12 @@ table .ml-cell-status .badge {
     margin: 0 30px;
 }
 
-.media-description {
-    max-width: 60%;
+.media-genres {
+    font-size: 20px;
 }
 
-.media-genres {
-    font-size: 19px;
+.media-keywords {
+    font-size: 17px;
 }
 
 .media-interest {
@@ -187,4 +188,9 @@ table .ml-cell-status .badge {
 .grid-thumbnail img {
     height: 200px;
     width: 140px;
+}
+
+.badge-orange {
+    color: #ffffff;
+    background-color: #ff8933;
 }
