@@ -6,7 +6,7 @@ import requests
 from bs4 import BeautifulSoup
 from django.core.files.base import ContentFile
 
-from ..models import BakaSeries, MangaPerson, MangaGenre, MangaKeyword
+from ..repositories import BakaSeriesRepository
 
 
 class BakaParser:
@@ -18,18 +18,7 @@ class BakaParser:
 
     def perform(self):
         parsed_series_data = self.parsed_series_data()
-        authors = create_people(parsed_series_data.pop("author_names", None))
-        artists = create_people(parsed_series_data.pop("artist_names", None))
-        genres = create_genres(parsed_series_data.pop("genre_names", None))
-        keywords_data = parsed_series_data.pop("keywords", None)
-        image_data = parsed_series_data.pop("image", None)
-        baka_series = BakaSeries.objects.create(**parsed_series_data)
-        baka_series.genres.add(*genres)
-        baka_series.authors.add(*authors)
-        baka_series.artists.add(*artists)
-        add_keywords(keywords_data, baka_series)
-        if image_data is not None:
-            baka_series.image.save(**image_data)
+        baka_series = BakaSeriesRepository().create(**parsed_series_data)
         return baka_series
 
     def display_parsed_data(self):
@@ -112,7 +101,7 @@ def parse_keywords(html):
 
 def parse_keyword(html):
     return {
-        "name": html.text,
+        "name": clean(html.text),
         "score": re.search(r'Score: (.*) \(', html.a.attrs["title"]).group(1)
     }
 
@@ -123,20 +112,6 @@ def clean_text(html_tag):
 
 def clean(text):
     return " ".join(text.split())
-
-
-def create_people(names):
-    return [MangaPerson.objects.get_or_create(name=name)[0] for name in names]
-
-
-def create_genres(names):
-    return [MangaGenre.objects.get_or_create(name=genre_name)[0] for genre_name in names]
-
-
-def add_keywords(keywords_data, baka_series):
-    for keyword_data in keywords_data:
-        keyword = MangaKeyword.objects.get_or_create(name=keyword_data["name"])[0]
-        baka_series.keywords.add(keyword, through_defaults={"score": keyword_data["score"]})
 
 
 class BakaRetriever:

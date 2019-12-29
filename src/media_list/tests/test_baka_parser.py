@@ -14,6 +14,10 @@ shingeki_artists = {"ISAYAMA Hajime"}
 shingeki_title = "Shingeki no Kyojin"
 shingeki_year = 2009
 shingeki_genres = {"Action", "Drama", "Fantasy", "Horror", "Mature", "Mystery", "Shounen", "Supernatural", "Tragedy"}
+shingeki_keywords = {
+    'Giant/s': 153, 'Military': 144, 'Mysterious Power/s': 137, 'Survival': 136, 'Dead Family Member/s': 134,
+    'Strong Female Lead': 132, 'Hidden Power/s': 131, 'Revenge': 129, 'Apocalypse': 128, 'Teamwork': 123,
+}
 shingeki_status = "28 Volumes (Ongoing)"
 shingeki_original_publisher = "Kodansha"
 shingeki_english_publisher = "Kodansha Comics (26 Volumes - Ongoing)"
@@ -74,6 +78,10 @@ class BakaParserTests(TestCase):
     def test_store_correct_genres(self):
         baka_series_genres = {str(genre) for genre in self.baka_series.genres.all()}
         self.assertSetEqual(shingeki_genres, baka_series_genres)
+
+    def test_store_correct_keywords(self):
+        baka_series_keywords = {str(keyword): keyword.score for keyword in self.baka_series.weighed_keywords.all()}
+        self.assertDictEqual(shingeki_keywords, baka_series_keywords)
 
     def test_store_correct_description(self):
         self.assertEquals(shingeki_description, self.baka_series.description)
