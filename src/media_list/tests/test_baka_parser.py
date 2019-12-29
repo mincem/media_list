@@ -48,8 +48,10 @@ class PrincessMockBakaRetriever:
 
 
 class MockImageRetriever:
-    @staticmethod
-    def get(_image_url):
+    def __init__(self, _image_url):
+        pass
+
+    def fetch(self):
         return {
             "name": 'FileMock',
             "content": mock.MagicMock(spec=File, name='FileMock'),
@@ -61,7 +63,7 @@ class BakaParserTests(TestCase):
         self.baka_series = BakaParser(
             baka_id=MOCK_BAKA_ID,
             baka_retriever=ShingekiMockBakaRetriever(),
-            image_retriever=MockImageRetriever(),
+            image_retriever_class=MockImageRetriever,
         ).perform()
 
     # def test_pending(self):
@@ -112,7 +114,7 @@ class MoreBakaParserTests(TestCase):
         self.baka_series = BakaParser(
             baka_id=MOCK_BAKA_ID,
             baka_retriever=PrincessMockBakaRetriever(),
-            image_retriever=MockImageRetriever(),
+            image_retriever_class=MockImageRetriever,
         ).perform()
 
     def test_store_correct_authors(self):

@@ -4,11 +4,10 @@ from bs4 import BeautifulSoup
 
 
 class BakaPageScraper:
-    def __init__(self, page_html, baka_id, image_retriever):
+    def __init__(self, page_html, baka_id):
         self.baka_id = baka_id
         self.main_content = BeautifulSoup(page_html, "lxml").find(id="main_content")
         self.contents = self.all_contents()
-        self.image_retriever = image_retriever
 
     def all_contents(self):
         return {name_of(category): html_of(category) for category in self.main_content(class_="sCat")}
@@ -26,7 +25,7 @@ class BakaPageScraper:
             "year": int(clean_text(self.contents["Year"])) or None,
             "original_publisher": clean_text(self.contents["Original Publisher"]) or "",
             "english_publisher": clean_text(self.contents["English Publisher"]) or "",
-            "image": self.parse_image(self.contents["Image [ Report Inappropriate Content ]"]),
+            "image_url": self.parse_image_url(),
         }
 
     def parse_title(self):
@@ -75,11 +74,11 @@ class BakaPageScraper:
             return []
         return [hyperlink.string for hyperlink in section_html.find_all("a")]
 
-    def parse_image(self, html_tag):
+    def parse_image_url(self):
+        html_tag = self.contents["Image [ Report Inappropriate Content ]"]
         if html_tag.img is None:
             return None
-        image_url = html_tag.img["src"]
-        return self.image_retriever.get(image_url)
+        return html_tag.img["src"]
 
 
 def name_of(category):

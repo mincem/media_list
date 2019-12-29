@@ -1,18 +1,17 @@
 import json
-import os
 
 import requests
-from django.core.files.base import ContentFile
 
 from .baka_page_scraper import BakaPageScraper
+from .image_retriever import ImageRetriever
 from ..repositories import BakaSeriesRepository
 
 
 class BakaParser:
-    def __init__(self, baka_id, baka_retriever=None, image_retriever=None):
+    def __init__(self, baka_id, baka_retriever=None, image_retriever_class=None):
         self.baka_id = baka_id
         self.baka_retriever = baka_retriever or BakaRetriever()
-        self.image_retriever = image_retriever or BakaImageRetriever()
+        self.image_retriever_class = image_retriever_class or ImageRetriever
         self.web_page_html = None
 
     def perform(self):
@@ -24,7 +23,11 @@ class BakaParser:
         return json.dumps(self.parsed_series_data(), indent=2)
 
     def parsed_series_data(self):
-        return BakaPageScraper(self.baka_web_page_html(), self.baka_id, self.image_retriever).parse()
+        series_data = BakaPageScraper(self.baka_web_page_html(), self.baka_id).parse()
+        image_url = series_data.pop("image_url")
+        if image_url is not None:
+            series_data["image"] = self.image_retriever_class(image_url).fetch()
+        return series_data
 
     def baka_web_page_html(self):
         if self.web_page_html is None:
@@ -38,14 +41,3 @@ class BakaRetriever:
         response = requests.get(f"https://www.mangaupdates.com/series.html?id={baka_id}")
         response.raise_for_status()
         return response.text
-
-
-class BakaImageRetriever:
-    @staticmethod
-    def get(baka_image_url):
-        response = requests.get(baka_image_url)
-        response.raise_for_status()
-        return {
-            "name": os.path.basename(baka_image_url),
-            "content": ContentFile(response.content),
-        }
