@@ -42,11 +42,7 @@
     </div>
   </div>
 
-  {% if object.baka_info %}
-    {% include 'media_list/categories/manga/_media_detail_with_external.html' %}
-  {% else %}
-    {% include 'media_list/categories/manga/_media_detail.html' %}
-  {% endif %}
+  {% include 'media_list/categories/manga/_media_detail_with_external.html' %}
 
   <div class="media-actions">
     {% if not object.baka_id %}

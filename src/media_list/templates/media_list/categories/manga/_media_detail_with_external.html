@@ -1,9 +1,7 @@
 <div class="media-detail">
   <div class="media-introduction d-flex">
     <div class="media-picture">
-      {% if object.baka_info.image %}
-        <img src="{{ object.baka_info.image.url }}" alt="{{ object.baka_info.title }}">
-      {% endif %}
+      <img src="{{ object.image_url }}" alt="{{ object }}">
 
       <div class="media-interest">
         <div class="progress">
@@ -37,7 +35,7 @@
     </div>
   </div>
 
-  <ul>
+  <ul class="baka-detail">
     <li class="md-column md-column-volumes">
       <b>Status:</b> {{ object.display_volumes }} ({{ object.is_completed|yesno:"Complete,Ongoing" }})
     </li>
@@ -51,47 +49,51 @@
 
     {% if object.notes %}
       <li class="md-column md-column-notes">
-        <b>Notes:</b>
+        <b>My notes:</b>
         <p>{{ object.notes }}</p>
       </li>
     {% endif %}
+
+    {% if object.baka_info.title %}
+      <li class="md-column">
+        <b>Title:</b> {{ object.baka_info.title }}
+      </li>
+    {% endif %}
+
+    {% if object.baka_info.status %}
+      <li class="md-column">
+        <b>Status:</b> {{ object.baka_info.status }}
+      </li>
+    {% endif %}
+
+    {% if object.baka_info %}
+      {% if object.baka_info.single_author %}
+        <li class="md-column">
+          <b>Author:</b> <span class="badge badge-info">{{ object.baka_info.single_author }}</span>
+        </li>
+      {% else %}
+        <li class="md-column">
+          <b>Author(s):</b> {{ object.baka_info.authors.all|join:", " }}
+        </li>
+
+        <li class="md-column">
+          <b>Artist(s):</b> {{ object.baka_info.artists.all|join:", " }}
+        </li>
+      {% endif %}
+    {% endif %}
+
+    {% if object.baka_info.original_publisher %}
+      <li class="md-column">
+        <b>Original Publisher:</b> {{ object.baka_info.original_publisher }}
+      </li>
+    {% endif %}
+
+    {% if object.baka_info.english_publisher %}
+      <li class="md-column">
+        <b>English Publisher:</b> {{ object.baka_info.english_publisher }}
+      </li>
+    {% endif %}
   </ul>
-
-  <div class="row">
-    <div class="col">
-      <ul class="baka-detail">
-        <li class="md-column">
-          <b>Title:</b> {{ object.baka_info.title }}
-        </li>
-
-        <li class="md-column">
-          <b>Status:</b> {{ object.baka_info.status }}
-        </li>
-
-        {% if object.baka_info.single_author %}
-          <li class="md-column">
-            <b>Author:</b> <span class="badge badge-info">{{ object.baka_info.single_author }}</span>
-          </li>
-        {% else %}
-          <li class="md-column">
-            <b>Author(s):</b> {{ object.baka_info.authors.all|join:", " }}
-          </li>
-
-          <li class="md-column">
-            <b>Artist(s):</b> {{ object.baka_info.artists.all|join:", " }}
-          </li>
-        {% endif %}
-
-        <li class="md-column">
-          <b>Original Publisher:</b> {{ object.baka_info.original_publisher }}
-        </li>
-
-        <li class="md-column">
-          <b>English Publisher:</b> {{ object.baka_info.english_publisher }}
-        </li>
-      </ul>
-    </div>
-  </div>
 
   {% if object.baka_id %}
     <a class="btn btn-baka btn-sm media-link" href="{{ object.baka_url }}" target="_blank" rel="noopener">
