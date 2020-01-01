@@ -194,3 +194,15 @@ table .ml-cell-status .badge {
     color: #ffffff;
     background-color: #ff8933;
 }
+
+.btn-baka {
+    color: #fff;
+    background-color: #ff8c00;
+    border-color: #ff8c00;
+}
+
+.btn-baka:hover {
+    color: #fff;
+    background-color: #d97000;
+    border-color: #cc6d00;
+}
