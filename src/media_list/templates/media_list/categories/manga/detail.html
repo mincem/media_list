@@ -26,14 +26,20 @@
 </div>
 
 <div class="modal-body">
-  <div class="d-flex justify-content-around float-right">
-    <a href="{% url "categories:manga:edit" object.id %}">
-      <i class="fas fa-edit"></i>
-    </a>
+  <div class="dropdown float-right">
+    <button class="text-button" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+      <i class="fas fa-ellipsis-v"></i>
+    </button>
 
-    <a href="{% url "categories:manga:delete" object.id %}">
-      <i class="fas fa-trash"></i>
-    </a>
+    <div class="dropdown-menu dropdown-menu-right">
+      <a class="dropdown-item" href="{% url "categories:manga:edit" object.id %}">
+        <i class="fas fa-edit"></i> Edit
+      </a>
+
+      <a class="dropdown-item" href="{% url "categories:manga:delete" object.id %}">
+        <i class="fas fa-trash"></i> Delete
+      </a>
+    </div>
   </div>
 
   {% if object.baka_info %}
