@@ -1,10 +1,7 @@
-from urllib.parse import urlparse
-
 from django.contrib.staticfiles.templatetags.staticfiles import static
 from django.db import models
-from ordered_model.models import OrderedModel
 
-from .base import TimestampedModel, NamedModel, MediaItem
+from .base import TimestampedModel, NamedModel, MediaItem, ItemURL
 
 STATUS_CHOICES = (
     ('U', 'Unknown Status'),
@@ -18,7 +15,6 @@ DEFAULT_STATUS_CHOICE = STATUS_CHOICES[0][0]
 
 
 class MangaSeries(MediaItem):
-    alternate_title = models.CharField(blank=True, max_length=255)
     volumes = models.IntegerField(blank=True, null=True)
     has_omnibus = models.BooleanField(default=False)
     is_completed = models.BooleanField(default=False)
@@ -120,13 +116,6 @@ class MangaPerson(NamedModel, TimestampedModel):
     pass
 
 
-class MangaURL(OrderedModel):
-    url = models.URLField()
+class MangaURL(ItemURL):
     series = models.ForeignKey("MangaSeries", related_name="urls", on_delete=models.CASCADE)
     order_with_respect_to = 'series'
-
-    def __str__(self):
-        return self.url
-
-    def hostname(self):
-        return urlparse(self.url).hostname

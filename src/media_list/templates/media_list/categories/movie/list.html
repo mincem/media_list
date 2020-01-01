@@ -1,0 +1,92 @@
+{% extends 'media_list/base.html' %}
+{% load static thumbnail %}
+
+{% block title %}Browse{% endblock title %}
+
+{% block content %}
+
+  <header class="title">
+    <h1>Media List</h1>
+  </header>
+
+  <section class="content">
+    <aside class="sidebar"></aside>
+
+    <article class="main-content">
+      <div id="media-list">
+        <table class="table table-hover table-bordered table-responsive" id="media-list-table">
+          <thead>
+          <tr>
+            <th class="ml-column ml-column-source">Source</th>
+            <th class="ml-column ml-column-title">Title</th>
+            <th class="ml-column ml-column-interest">Interest</th>
+            <th class="ml-column ml-column-status">Status</th>
+          </tr>
+          </thead>
+
+          <tbody>
+          {% for item in items %}
+            <tr class="ml-row" data-series-id="{{ item.id }}" data-url="{% url 'categories:movies:detail' item.id %}"
+                data-source="{{ item.source }}">
+              <td data-search="{{ item.source }}">
+                {% if item.source %}
+                  <img class="source-icon" src="{{ item.source.icon.url }}" alt="{{ item.source }}"
+                       title="{{ item.source }}">
+                {% endif %}
+              </td>
+
+              <td class="ml-cell-title">
+                <b>{{ item.title }}</b>
+                {% if item.alternate_title %}
+                  [{{ item.alternate_title }}]
+                {% endif %}
+              </td>
+
+              <td class="ml-cell-interest text-center" data-search="{{ item.interest }}">
+                <span class="badge" style="background-color: {{ item.interest_color }}">
+                  {{ item.interest }}
+                </span>
+              </td>
+
+              <td class="ml-cell-status text-center">
+                <span class="badge media-download-status-{{ item.status }}">
+                  {{ item.get_status_display }}
+                </span>
+              </td>
+            </tr>
+          {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </article>
+  </section>
+
+  <div class="modal fade" id="details-modal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+      <div class="modal-content"></div>
+    </div>
+  </div>
+
+{% endblock content %}
+
+{% block extra_js %}
+  <script src="{% static 'media_list/js/djangoCookies.js' %}"></script>
+
+  <script src="{% static 'media_list/js/list.js' %}"></script>
+
+  <script src="{% static 'media_list/js/datatable.js' %}"></script>
+
+  <script src="{% static 'media_list/js/listView.js' %}"></script>
+
+  <script src="{% static 'media_list/js/detailView.js' %}"></script>
+
+  <script src="{% static 'media_list/js/rangeField.js' %}"></script>
+
+  <script>
+    $(document).ready(function () {
+      let seriesID = {{ series_id|default:'null' }};
+      let viewURL = "{% url 'categories:movies:detail' series_id|default:0 %}";
+      if (seriesID) renderDetailView(seriesID, viewURL);
+    });
+  </script>
+{% endblock %}

@@ -1,15 +1,16 @@
 from django.contrib import admin
 
-from .models import MangaSeries, BakaSeries, MangaSource, MangaGenre, MangaPerson, MangaURL, MangaSeriesKeyword
+from .models import MangaSeries, BakaSeries, MangaSource, MangaGenre, MangaPerson, MangaURL, MangaSeriesKeyword, \
+    Movie, MovieURL
 
 
-class URLInline(admin.TabularInline):
+class MangaURLInline(admin.TabularInline):
     model = MangaURL
 
 
 @admin.register(MangaSeries)
 class MangaSeriesAdmin(admin.ModelAdmin):
-    inlines = [URLInline]
+    inlines = [MangaURLInline]
     search_fields = ['title']
 
 
@@ -41,3 +42,13 @@ class MangaURLAdmin(admin.ModelAdmin):
 @admin.register(MangaSeriesKeyword)
 class MangaKeywordAdmin(admin.ModelAdmin):
     list_display = ['keyword', 'baka_series', 'score']
+
+
+class MovieURLInline(admin.TabularInline):
+    model = MovieURL
+
+
+@admin.register(Movie)
+class MovieAdmin(admin.ModelAdmin):
+    inlines = [MovieURLInline]
+    search_fields = ['title']
