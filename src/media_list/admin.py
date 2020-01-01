@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import MangaSeries, BakaSeries, MangaSource, MangaGenre, MangaPerson, MangaURL
+from .models import MangaSeries, BakaSeries, MangaSource, MangaGenre, MangaPerson, MangaURL, MangaSeriesKeyword
 
 
 class URLInline(admin.TabularInline):
@@ -36,3 +36,8 @@ class MangaPersonAdmin(admin.ModelAdmin):
 @admin.register(MangaURL)
 class MangaURLAdmin(admin.ModelAdmin):
     pass
+
+
+@admin.register(MangaSeriesKeyword)
+class MangaKeywordAdmin(admin.ModelAdmin):
+    list_display = ['keyword', 'baka_series', 'score']

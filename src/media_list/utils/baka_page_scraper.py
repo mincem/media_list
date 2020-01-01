@@ -40,7 +40,7 @@ class BakaPageScraper:
 
     def parse_keywords(self):
         keywords = self.contents["Categories"]
-        if keywords is None:
+        if keywords is None or keywords.find("ul") is None:
             return []
         return [self.parse_keyword(item) for item in keywords.find("ul").find_all("li")]
 

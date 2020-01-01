@@ -110,7 +110,7 @@ class MangaSeriesKeyword(models.Model):
 
     baka_series = models.ForeignKey("BakaSeries", related_name="weighed_keywords", on_delete=models.CASCADE)
     keyword = models.ForeignKey("MangaKeyword", on_delete=models.CASCADE)
-    score = models.PositiveSmallIntegerField(blank=True, null=True)
+    score = models.SmallIntegerField(blank=True, null=True)
 
     def __str__(self):
         return str(self.keyword)
