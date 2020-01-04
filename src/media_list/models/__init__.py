@@ -1,3 +1,3 @@
-from .base import *
-from .manga import *
-from .movie import Movie, MovieURL
+from .base_models import *
+from .manga_models import *
+from .movie_models import Movie, MovieURL

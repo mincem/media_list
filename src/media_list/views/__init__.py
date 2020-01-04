@@ -1,3 +1,3 @@
-from .base import *
-from .manga import *
-from .movie import *
+from .base_views import *
+from .manga_views import *
+from .movie_views import *

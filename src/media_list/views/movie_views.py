@@ -1,6 +1,6 @@
 from django.views import generic
 
-from .base import EditInterestView
+from .base_views import EditInterestView
 from ..models import Movie, VideoSource
 
 

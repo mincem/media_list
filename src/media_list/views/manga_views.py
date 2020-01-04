@@ -2,7 +2,7 @@ from django.urls import reverse_lazy
 from django.views import generic
 from extra_views import CreateWithInlinesView, UpdateWithInlinesView
 
-from .base import EditInterestView
+from .base_views import EditInterestView
 from ..forms import MangaSeriesCreateForm, MangaURLInline
 from ..models import MangaSeries, MangaSource
 from ..utils import BakaFinder, BakaParser

@@ -1,7 +1,7 @@
 from django.contrib.staticfiles.templatetags.staticfiles import static
 from django.db import models
 
-from .base import TimestampedModel, NamedModel, MediaItem, ItemURL
+from .base_models import TimestampedModel, NamedModel, MediaItem, ItemURL
 
 STATUS_CHOICES = (
     ('U', 'Unknown Status'),
