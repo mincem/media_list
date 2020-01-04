@@ -1,5 +1,7 @@
 {% extends 'media_list/base.html' %}
 
+{% load all_categories %}
+
 {% block title %}Home{% endblock title %}
 
 {% block content %}
@@ -9,11 +11,16 @@
 
   <section class="content">
     <ul class="list-group">
-      <li class="list-group-item">
-        <a href="{% url 'categories:manga:list' %}">
-          Manga
-        </a>
-      </li>
+      {% all_categories as categories %}
+      {% for category in categories %}
+        <li class="list-group-item">
+          {% with 'categories:'|add:category.path|add:':list' as path %}
+            <a href="{% url path %}">
+              {{ category.name|title }}
+            </a>
+          {% endwith %}
+        </li>
+      {% endfor %}
     </ul>
   </section>
 {% endblock content %}

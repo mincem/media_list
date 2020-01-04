@@ -1,4 +1,4 @@
-{% load static %}
+{% load static all_categories %}
 
 <html lang="en">
 <head>
@@ -14,21 +14,37 @@
 
 <body>
 
-<nav class="navbar sticky-top navbar-expand-lg navbar-light bg-light ">
+<nav class="navbar sticky-top navbar-expand-lg navbar-light bg-light">
   <a class="navbar-brand" href="{% url 'landing' %}">Media Lists</a>
 
   <div class="collapse navbar-collapse">
     <ul class="navbar-nav mr-auto">
-      <li class="nav-item">
-        <a class="nav-link" href="{% url 'categories:manga:list' %}">Manga list</a>
+       <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown">
+          Lists
+        </a>
+        <div class="dropdown-menu">
+          {% all_categories as categories %}
+          {% for category in categories %}
+            {% with 'categories:'|add:category.path|add:':list' as path %}
+              <a class="dropdown-item" href="{% url path %}">
+                {{ category.name|title }}
+              </a>
+            {% endwith %}
+          {% endfor %}
+        </div>
       </li>
 
       <li class="nav-item">
-        <a class="nav-link" href="{% url 'categories:manga:create' %}">Create</a>
+        <a class="nav-link" href="{% url 'categories:manga:create' %}">
+          Create Manga
+        </a>
       </li>
 
       <li class="nav-item">
-        <a class="nav-link" href="{% url 'admin:index' %}">Admin</a>
+        <a class="nav-link" href="{% url 'admin:index' %}">
+          Admin
+        </a>
       </li>
     </ul>
   </div>
