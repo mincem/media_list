@@ -7,7 +7,7 @@ class DataTableView {
 
   bindEvents(eventBindings) {
     for (let i = 0; i < eventBindings.length; i++) {
-      this.eventBindings[i](this.table);
+      eventBindings[i](this.table);
     }
   }
 

@@ -1,0 +1,44 @@
+{% extends 'media_list/base.html' %}
+{% load static %}
+
+{% block title %}Browse{% endblock title %}
+
+{% block content %}
+  <header class="title">
+    <h1>Media List</h1>
+  </header>
+
+  <section class="content">
+    <aside class="sidebar">
+      {% block filters %}{% endblock filters %}
+    </aside>
+
+    <article class="main-content">
+      <div id="media-list">
+        {% block table %}{% endblock table %}
+      </div>
+    </article>
+  </section>
+
+  <div class="modal fade" id="details-modal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+      <div class="modal-content"></div>
+    </div>
+  </div>
+{% endblock content %}
+
+{% block extra_js %}
+  <script src="{% static 'media_list/js/djangoCookies.js' %}"></script>
+
+  {% block category_js %}{% endblock category_js %}
+
+  <script src="{% static 'media_list/js/list.js' %}"></script>
+
+  <script src="{% static 'media_list/js/datatable.js' %}"></script>
+
+  <script src="{% static 'media_list/js/listView.js' %}"></script>
+
+  <script src="{% static 'media_list/js/detailView.js' %}"></script>
+
+  <script src="{% static 'media_list/js/rangeField.js' %}"></script>
+{% endblock %}

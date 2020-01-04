@@ -1,134 +1,103 @@
-{% extends 'media_list/base.html' %}
+{% extends 'media_list/categories/list.html' %}
+
 {% load static thumbnail %}
 
-{% block title %}Browse{% endblock title %}
+{% block filters %}
+  {% include 'media_list/categories/manga/_list_filters.html' %}
+{% endblock filters %}
 
-{% block content %}
+{% block table %}
+  <table class="table table-hover table-bordered table-responsive" id="media-list-table">
+    <thead>
+    <tr>
+      <th class="ml-column"></th>
+      <th class="ml-column ml-column-source">Source</th>
+      <th class="ml-column ml-column-title">Title</th>
+      <th class="ml-column ml-column-staff">Staff</th>
+      <th class="ml-column ml-column-year">Year</th>
+      <th class="ml-column ml-column-volumes">Volumes</th>
+      <th class="ml-column ml-column-interest">Interest</th>
+      <th class="ml-column ml-column-status">Status</th>
+      <th class="ml-column">Actions</th>
+    </tr>
+    </thead>
 
-  <header class="title">
-    <h1>Media List</h1>
-  </header>
+    <tbody>
+    {% for series in series_list %}
+      <tr class="ml-row" data-series-id="{{ series.id }}" data-url="{% url 'categories:manga:detail' series.id %}"
+          data-source="{{ series.source }}" data-completed="{{ series.is_completed }}"
+          data-baka-info="{{ series.baka_info_id|yesno:"True,False" }}">
+        <td class="ml-cell-thumbnail">
+          {% if series.baka_info.image %}
+            <img src="{{ series.baka_info.image|thumbnail_url:'list' }}" alt="{{ series.title }}"/>
+          {% endif %}
+        </td>
 
-  <section class="content">
-    <aside class="sidebar">
-      {% include 'media_list/categories/manga/_list_filters.html' %}
-    </aside>
+        <td data-search="{{ series.source }}">
+          {% if series.source %}
+            <img class="source-icon" src="{{ series.source.icon.url }}" alt="{{ series.source }}"
+                 title="{{ series.source }}">
+          {% endif %}
+        </td>
 
-    <article class="main-content">
-      <div id="media-list">
-        <table class="table table-hover table-bordered table-responsive" id="media-list-table">
-          <thead>
-          <tr>
-            <th class="ml-column"></th>
-            <th class="ml-column ml-column-source">Source</th>
-            <th class="ml-column ml-column-title">Title</th>
-            <th class="ml-column ml-column-staff">Staff</th>
-            <th class="ml-column ml-column-year">Year</th>
-            <th class="ml-column ml-column-volumes">Volumes</th>
-            <th class="ml-column ml-column-interest">Interest</th>
-            <th class="ml-column ml-column-status">Status</th>
-            <th class="ml-column">Actions</th>
-          </tr>
-          </thead>
+        <td class="ml-cell-title">
+          <b>{{ series.title }}</b>
+          {% if series.alternate_title %}
+            [{{ series.alternate_title }}]
+          {% endif %}
+        </td>
 
-          <tbody>
-          {% for series in series_list %}
-            <tr class="ml-row" data-series-id="{{ series.id }}" data-url="{% url 'categories:manga:detail' series.id %}"
-                data-source="{{ series.source }}" data-completed="{{ series.is_completed }}"
-                data-baka-info="{{ series.baka_info_id|yesno:"True,False" }}">
-              <td class="ml-cell-thumbnail">
-                {% if series.baka_info.image %}
-                  <img src="{{ series.baka_info.image|thumbnail_url:'list' }}" alt="{{ series.title }}"/>
-                {% endif %}
-              </td>
+        <td class="ml-cell-staff">
+          {% for member in series.baka_info.staff %}
+            <span class="badge badge-info">{{ member }}</span>
+          {% endfor %}
 
-              <td data-search="{{ series.source }}">
-                {% if series.source %}
-                  <img class="source-icon" src="{{ series.source.icon.url }}" alt="{{ series.source }}"
-                       title="{{ series.source }}">
-                {% endif %}
-              </td>
+          {% if series.baka_info.has_extra_staff %}
+            <span class="badge badge-info">...</span>
+          {% endif %}
+        </td>
 
-              <td class="ml-cell-title">
-                <b>{{ series.title }}</b>
-                {% if series.alternate_title %}
-                  [{{ series.alternate_title }}]
-                {% endif %}
-              </td>
+        <td class="text-center">
+          {{ series.baka_info.year }}
+        </td>
 
-              <td class="ml-cell-staff">
-                {% for member in series.baka_info.staff %}
-                  <span class="badge badge-info">{{ member }}</span>
-                {% endfor %}
+        <td class="ml-cell-volumes {{ series.is_completed|yesno:"complete,incomplete" }}"
+            data-order="{{ series.volumes }}" data-search="{{ series.is_completed }}">
+          {{ series.display_volumes }}
+          <i class="fas fa-{{ series.is_completed|yesno:"check,times" }}"></i>
+        </td>
 
-                {% if series.baka_info.has_extra_staff %}
-                  <span class="badge badge-info">...</span>
-                {% endif %}
-              </td>
-
-              <td class="text-center">
-                {{ series.baka_info.year }}
-              </td>
-
-              <td class="ml-cell-volumes {{ series.is_completed|yesno:"complete,incomplete" }}"
-                  data-order="{{ series.volumes }}" data-search="{{ series.is_completed }}">
-                {{ series.display_volumes }}
-                <i class="fas fa-{{ series.is_completed|yesno:"check,times" }}"></i>
-              </td>
-
-              <td class="ml-cell-interest text-center" data-search="{{ series.interest }}">
+        <td class="ml-cell-interest text-center" data-search="{{ series.interest }}">
                 <span class="badge" style="background-color: {{ series.interest_color }}">
                   {{ series.interest }}
                 </span>
-              </td>
+        </td>
 
-              <td class="ml-cell-status text-center">
+        <td class="ml-cell-status text-center">
                 <span class="badge media-download-status-{{ series.status }}">
                   {{ series.get_status_display }}
                 </span>
-              </td>
+        </td>
 
-              <td>
-                <div class="d-flex justify-content-around">
-                  <a href="{% url "categories:manga:edit" series.id %}">
-                    <i class="fas fa-edit"></i>
-                  </a>
+        <td>
+          <div class="d-flex justify-content-around">
+            <a href="{% url "categories:manga:edit" series.id %}">
+              <i class="fas fa-edit"></i>
+            </a>
 
-                  <a href="{% url "categories:manga:delete" series.id %}">
-                    <i class="fas fa-trash"></i>
-                  </a>
-                </div>
-              </td>
-            </tr>
-          {% endfor %}
-          </tbody>
-        </table>
-      </div>
-    </article>
-  </section>
+            <a href="{% url "categories:manga:delete" series.id %}">
+              <i class="fas fa-trash"></i>
+            </a>
+          </div>
+        </td>
+      </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+{% endblock table %}
 
-  <div class="modal fade" id="details-modal" tabindex="-1" role="dialog" aria-hidden="true">
-    <div class="modal-dialog modal-xl">
-      <div class="modal-content"></div>
-    </div>
-  </div>
-
-{% endblock content %}
-
-{% block extra_js %}
-  <script src="{% static 'media_list/js/djangoCookies.js' %}"></script>
-
+{% block category_js %}
   <script src="{% static 'media_list/js/manga.js' %}"></script>
-
-  <script src="{% static 'media_list/js/list.js' %}"></script>
-
-  <script src="{% static 'media_list/js/datatable.js' %}"></script>
-
-  <script src="{% static 'media_list/js/listView.js' %}"></script>
-
-  <script src="{% static 'media_list/js/detailView.js' %}"></script>
-
-  <script src="{% static 'media_list/js/rangeField.js' %}"></script>
 
   <script>
     $(document).ready(function () {
@@ -137,4 +106,4 @@
       if (seriesID) renderDetailView(seriesID, viewURL);
     });
   </script>
-{% endblock %}
+{% endblock category_js %}
