@@ -21,6 +21,7 @@ movies_urls = [
     path('grid/', views.MovieGridView.as_view(), name='grid'),
     path('<int:pk>/', views.MovieListView.as_view(), name='index_and_modal'),
     path('<int:pk>/detail/', views.MovieDetailView.as_view(), name='detail'),
+    path('<int:pk>/edit_interest/', views.MovieEditInterestView.as_view(), name='edit_interest'),
 ]
 
 categories_urls = [

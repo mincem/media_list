@@ -1,9 +1,10 @@
 from django.urls import reverse_lazy
 from django.views import generic
-from extra_views import InlineFormSetFactory, CreateWithInlinesView, UpdateWithInlinesView
+from extra_views import CreateWithInlinesView, UpdateWithInlinesView
 
-from ..forms import MangaSeriesCreateForm
-from ..models import MangaSeries, MangaSource, MangaURL
+from .base import EditInterestView
+from ..forms import MangaSeriesCreateForm, MangaURLInline
+from ..models import MangaSeries, MangaSource
 from ..utils import BakaFinder, BakaParser
 
 
@@ -54,15 +55,10 @@ class MangaSwapTitlesView(MangaDetailView):
         return super().get(self, request, *args, **kwargs)
 
 
-class URLInline(InlineFormSetFactory):
-    model = MangaURL
-    fields = ['url']
-
-
 class MangaCreateView(CreateWithInlinesView):
     model = MangaSeries
     form_class = MangaSeriesCreateForm
-    inlines = [URLInline]
+    inlines = [MangaURLInline]
     template_name = "media_list/categories/manga/forms/manga_series_create_form.html"
 
     def get_success_url(self):
@@ -74,19 +70,16 @@ class MangaCreateView(CreateWithInlinesView):
 class MangaEditView(UpdateWithInlinesView):
     model = MangaSeries
     form_class = MangaSeriesCreateForm
-    inlines = [URLInline]
+    inlines = [MangaURLInline]
     template_name = "media_list/categories/manga/forms/manga_series_edit_form.html"
 
     def get_success_url(self):
         return reverse_lazy("categories:manga:index_and_modal", kwargs={"pk": self.object.id})
 
 
-class MangaEditInterestView(generic.UpdateView):
+class MangaEditInterestView(EditInterestView):
     model = MangaSeries
-    fields = ['interest']
-
-    def get_success_url(self):
-        return reverse_lazy("categories:manga:detail", kwargs={"pk": self.object.id})
+    category = 'manga'
 
 
 class MangaDeleteView(generic.DeleteView):

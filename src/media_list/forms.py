@@ -1,5 +1,7 @@
 from django.forms import ModelForm, Textarea
-from .models import MangaSeries
+from extra_views import InlineFormSetFactory
+
+from .models import MangaSeries, MangaURL
 from .widgets import RangeInput
 
 
@@ -23,3 +25,8 @@ class MangaSeriesCreateForm(ModelForm):
             'interest': RangeInput(attrs={'min': 0, 'max': 100}),
             'notes': Textarea(attrs={'rows': 3}),
         }
+
+
+class MangaURLInline(InlineFormSetFactory):
+    model = MangaURL
+    fields = ['url']

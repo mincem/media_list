@@ -1,4 +1,6 @@
 from django.views import generic
+
+from .base import EditInterestView
 from ..models import Movie, VideoSource
 
 
@@ -25,3 +27,8 @@ class MovieGridView(MovieCollectionView):
 class MovieDetailView(generic.DetailView):
     model = Movie
     template_name = 'media_list/categories/movie/detail.html'
+
+
+class MovieEditInterestView(EditInterestView):
+    model = Movie
+    category = 'movies'
