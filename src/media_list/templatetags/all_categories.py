@@ -1,17 +1,10 @@
 from django import template
 
+from .. import categories
+
 register = template.Library()
 
 
 @register.simple_tag
 def all_categories():
-    return [
-        {
-            "name": "manga",
-            "path": "manga",
-        },
-        {
-            "name": "movies",
-            "path": "movies",
-        },
-    ]
+    return categories.all_categories()

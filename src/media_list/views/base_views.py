@@ -12,11 +12,13 @@ class EditInterestView(generic.UpdateView):
 
     def get_success_url(self):
         return reverse_lazy(
-            f"categories:{self.get_category()}:detail",
+            f"categories:{self.get_category().path}:detail",
             kwargs={"pk": self.object.id}
         )
 
     def get_category(self):
         if self.category:
             return self.category
+        if self.model and self.model.category:
+            return self.model.category
         raise NotImplementedError

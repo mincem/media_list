@@ -2,6 +2,7 @@ from django.contrib.staticfiles.templatetags.staticfiles import static
 from django.db import models
 
 from .base_models import MediaItem, ItemURL
+from ..categories import movie_category
 
 STATUS_CHOICES = (
     ('U', 'Unknown Status'),
@@ -13,6 +14,8 @@ DEFAULT_STATUS_CHOICE = STATUS_CHOICES[0][0]
 
 
 class Movie(MediaItem):
+    category = movie_category
+
     is_watched = models.BooleanField(default=False)
     status = models.CharField(max_length=1, choices=STATUS_CHOICES, default=DEFAULT_STATUS_CHOICE)
     source = models.ForeignKey("VideoSource", blank=True, null=True, on_delete=models.SET_NULL)

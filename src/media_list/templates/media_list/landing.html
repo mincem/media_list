@@ -16,7 +16,7 @@
         <li class="list-group-item">
           {% with 'categories:'|add:category.path|add:':list' as path %}
             <a href="{% url path %}">
-              {{ category.name|title }}
+              {{ category.verbose_name_plural|title }}
             </a>
           {% endwith %}
         </li>

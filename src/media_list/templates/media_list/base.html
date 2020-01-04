@@ -28,7 +28,7 @@
           {% for category in categories %}
             {% with 'categories:'|add:category.path|add:':list' as path %}
               <a class="dropdown-item" href="{% url path %}">
-                {{ category.name|title }}
+                {{ category.verbose_name_plural|title }}
               </a>
             {% endwith %}
           {% endfor %}

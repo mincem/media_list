@@ -31,4 +31,3 @@ class MovieDetailView(generic.DetailView):
 
 class MovieEditInterestView(EditInterestView):
     model = Movie
-    category = 'movies'

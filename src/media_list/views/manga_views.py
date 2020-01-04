@@ -79,7 +79,6 @@ class MangaEditView(UpdateWithInlinesView):
 
 class MangaEditInterestView(EditInterestView):
     model = MangaSeries
-    category = 'manga'
 
 
 class MangaDeleteView(generic.DeleteView):

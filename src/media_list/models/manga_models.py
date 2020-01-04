@@ -2,6 +2,7 @@ from django.contrib.staticfiles.templatetags.staticfiles import static
 from django.db import models
 
 from .base_models import TimestampedModel, NamedModel, MediaItem, ItemURL
+from ..categories import manga_category
 
 STATUS_CHOICES = (
     ('U', 'Unknown Status'),
@@ -15,6 +16,8 @@ DEFAULT_STATUS_CHOICE = STATUS_CHOICES[0][0]
 
 
 class MangaSeries(MediaItem):
+    category = manga_category
+
     volumes = models.IntegerField(blank=True, null=True)
     has_omnibus = models.BooleanField(default=False)
     is_completed = models.BooleanField(default=False)
