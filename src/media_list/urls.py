@@ -16,7 +16,7 @@ manga_urls = [
     path('<int:pk>/swap_titles/', views.MangaSwapTitlesView.as_view(), name='swap_titles'),
 ]
 
-movies_urls = [
+movie_urls = [
     path('', views.MovieListView.as_view(), name='list'),
     path('grid/', views.MovieGridView.as_view(), name='grid'),
     path('<int:pk>/', views.MovieListView.as_view(), name='index_and_modal'),
@@ -26,7 +26,7 @@ movies_urls = [
 
 categories_urls = [
     path('manga/', include((manga_urls, 'manga'))),
-    path('movies/', include((movies_urls, 'movies'))),
+    path('movie/', include((movie_urls, 'movie'))),
 ]
 
 urlpatterns = [

@@ -41,7 +41,7 @@
   <script>
     $(document).ready(function () {
       let seriesID = {{ series_id|default:'null' }};
-      let viewURL = "{% url 'categories:movies:detail' series_id|default:0 %}";
+      let viewURL = "{% url 'categories:movie:detail' series_id|default:0 %}";
       if (seriesID) renderDetailView(seriesID, viewURL);
     });
   </script>

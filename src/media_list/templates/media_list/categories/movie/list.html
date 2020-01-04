@@ -15,7 +15,7 @@
 
     <tbody>
     {% for item in items %}
-      <tr class="ml-row" data-series-id="{{ item.id }}" data-url="{% url 'categories:movies:detail' item.id %}"
+      <tr class="ml-row" data-series-id="{{ item.id }}" data-url="{% url 'categories:movie:detail' item.id %}"
           data-source="{{ item.source }}">
         <td data-search="{{ item.source }}">
           {% if item.source %}
@@ -54,7 +54,7 @@
   <script>
     $(document).ready(function () {
       let seriesID = {{ series_id|default:'null' }};
-      let viewURL = "{% url 'categories:movies:detail' series_id|default:0 %}";
+      let viewURL = "{% url 'categories:movie:detail' series_id|default:0 %}";
       if (seriesID) renderDetailView(seriesID, viewURL);
     });
   </script>
