@@ -1,9 +1,30 @@
 from django.urls import reverse_lazy
 from django.views import generic
+from extra_views import CreateWithInlinesView, UpdateWithInlinesView
 
 
 class LandingView(generic.TemplateView):
     template_name = 'media_list/landing.html'
+
+
+class MediaCreateView(CreateWithInlinesView):
+
+    def get_template_names(self):
+        return [f"media_list/categories/{self.model.category.path}/create.html"]
+
+    def get_success_url(self):
+        if "add_another" in self.request.POST:
+            return reverse_lazy(f"categories:{self.model.category.path}:create")
+        return reverse_lazy(f"categories:{self.model.category.path}:index_and_modal", kwargs={"pk": self.object.id})
+
+
+class MediaEditView(UpdateWithInlinesView):
+
+    def get_template_names(self):
+        return [f"media_list/categories/{self.model.category.path}/edit.html"]
+
+    def get_success_url(self):
+        return reverse_lazy(f"categories:{self.model.category.path}:index_and_modal", kwargs={"pk": self.object.id})
 
 
 class EditInterestView(generic.UpdateView):

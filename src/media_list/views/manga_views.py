@@ -1,8 +1,7 @@
 from django.urls import reverse_lazy
 from django.views import generic
-from extra_views import CreateWithInlinesView, UpdateWithInlinesView
 
-from .base_views import EditInterestView
+from .base_views import EditInterestView, MediaCreateView, MediaEditView
 from ..forms import MangaForm, MangaURLInline
 from ..models import MangaSeries, MangaSource
 from ..utils import BakaFinder, BakaParser
@@ -54,26 +53,16 @@ class MangaSwapTitlesView(MangaDetailView):
         return super().get(self, request, *args, **kwargs)
 
 
-class MangaCreateView(CreateWithInlinesView):
+class MangaCreateView(MediaCreateView):
     model = MangaSeries
     form_class = MangaForm
     inlines = [MangaURLInline]
-    template_name = "media_list/categories/manga/create.html"
-
-    def get_success_url(self):
-        if "add_another" in self.request.POST:
-            return reverse_lazy('categories:manga:create')
-        return reverse_lazy("categories:manga:index_and_modal", kwargs={"pk": self.object.id})
 
 
-class MangaEditView(UpdateWithInlinesView):
+class MangaEditView(MediaEditView):
     model = MangaSeries
     form_class = MangaForm
     inlines = [MangaURLInline]
-    template_name = "media_list/categories/manga/edit.html"
-
-    def get_success_url(self):
-        return reverse_lazy("categories:manga:index_and_modal", kwargs={"pk": self.object.id})
 
 
 class MangaEditInterestView(EditInterestView):
