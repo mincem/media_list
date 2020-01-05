@@ -28,7 +28,7 @@ movie_urls = [
     path('create/', views.MovieCreateView.as_view(), name='create'),
     path('<int:pk>/edit/', views.MovieEditView.as_view(), name='edit'),
     path('<int:pk>/edit_interest/', views.MovieEditInterestView.as_view(), name='edit_interest'),
-    path('<int:pk>/delete/', generic.View.as_view(), name='delete'),
+    path('<int:pk>/delete/', views.MovieDeleteView.as_view(), name='delete'),
 
     path('<int:pk>/swap_titles/', generic.View.as_view(), name='swap_titles'),
 ]

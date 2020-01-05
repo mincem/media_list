@@ -1,6 +1,6 @@
 from django.views import generic
 
-from .base_views import EditInterestView, MediaCreateView, MediaEditView
+from .base_views import EditInterestView, MediaCreateView, MediaEditView, MediaDeleteView
 from ..forms import MovieForm, MovieURLInline
 from ..models import Movie, VideoSource
 
@@ -42,4 +42,8 @@ class MovieEditView(MediaEditView):
 
 
 class MovieEditInterestView(EditInterestView):
+    model = Movie
+
+
+class MovieDeleteView(MediaDeleteView):
     model = Movie

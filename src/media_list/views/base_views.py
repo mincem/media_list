@@ -43,3 +43,10 @@ class EditInterestView(generic.UpdateView):
         if self.model and self.model.category:
             return self.model.category
         raise NotImplementedError
+
+
+class MediaDeleteView(generic.DeleteView):
+    template_name = "media_list/categories/confirm_delete.html"
+
+    def get_success_url(self):
+        return reverse_lazy(f"categories:{self.model.category.path}:list")

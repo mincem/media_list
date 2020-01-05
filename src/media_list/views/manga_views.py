@@ -1,7 +1,6 @@
-from django.urls import reverse_lazy
 from django.views import generic
 
-from .base_views import EditInterestView, MediaCreateView, MediaEditView
+from .base_views import EditInterestView, MediaCreateView, MediaEditView, MediaDeleteView
 from ..forms import MangaForm, MangaURLInline
 from ..models import MangaSeries, MangaSource
 from ..utils import BakaFinder, BakaParser
@@ -69,6 +68,5 @@ class MangaEditInterestView(EditInterestView):
     model = MangaSeries
 
 
-class MangaDeleteView(generic.DeleteView):
+class MangaDeleteView(MediaDeleteView):
     model = MangaSeries
-    success_url = reverse_lazy("categories:manga:list")
