@@ -1,21 +1,5 @@
-{% extends 'media_list/base.html' %}
+{% extends 'media_list/categories/create.html' %}
 
-{% load static %}
-
-{% block title %}Create Media Series{% endblock title %}
-
-{% block content %}
-  <h1>Add Media Series</h1>
-
-  <div class="row justify-content-center">
-    {% include 'media_list/categories/manga/forms/_manga_series_form.html' %}
-  </div>
-{% endblock %}
-
-{% block extra_js %}
-  <script src="{% static 'media_list/js/rangeField.js' %}"></script>
-
-  <script>
-    new RangeField($('.interest-field'));
-  </script>
-{% endblock %}
+{% block form %}
+  {% include 'media_list/categories/manga/forms/_manga_series_form.html' %}
+{% endblock form %}

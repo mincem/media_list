@@ -1,0 +1,21 @@
+{% extends 'media_list/base.html' %}
+
+{% load static %}
+
+{% block title %}Edit Media Series{% endblock title %}
+
+{% block content %}
+  <h1>Edit Media Series</h1>
+
+  <div class="row justify-content-center">
+    {% block form %}{% endblock form %}
+  </div>
+{% endblock %}
+
+{% block extra_js %}
+  <script src="{% static 'media_list/js/rangeField.js' %}"></script>
+
+  <script>
+    new RangeField($('.interest-field'));
+  </script>
+{% endblock %}

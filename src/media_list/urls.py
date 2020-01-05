@@ -25,8 +25,8 @@ movie_urls = [
     path('<int:pk>/', views.MovieListView.as_view(), name='index_and_modal'),
     path('<int:pk>/detail/', views.MovieDetailView.as_view(), name='detail'),
 
-    path('create/', generic.View.as_view(), name='create'),
-    path('<int:pk>/edit/', generic.View.as_view(), name='edit'),
+    path('create/', views.MovieCreateView.as_view(), name='create'),
+    path('<int:pk>/edit/', views.MovieEditView.as_view(), name='edit'),
     path('<int:pk>/edit_interest/', views.MovieEditInterestView.as_view(), name='edit_interest'),
     path('<int:pk>/delete/', generic.View.as_view(), name='delete'),
 

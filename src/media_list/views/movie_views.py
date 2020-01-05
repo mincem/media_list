@@ -1,6 +1,7 @@
 from django.views import generic
 
-from .base_views import EditInterestView
+from .base_views import EditInterestView, MediaCreateView, MediaEditView
+from ..forms import MovieForm, MovieURLInline
 from ..models import Movie, VideoSource
 
 
@@ -26,6 +27,18 @@ class MovieGridView(MovieCollectionView):
 class MovieDetailView(generic.DetailView):
     model = Movie
     template_name = 'media_list/categories/movie/detail.html'
+
+
+class MovieCreateView(MediaCreateView):
+    model = Movie
+    form_class = MovieForm
+    inlines = [MovieURLInline]
+
+
+class MovieEditView(MediaEditView):
+    model = Movie
+    form_class = MovieForm
+    inlines = [MovieURLInline]
 
 
 class MovieEditInterestView(EditInterestView):
