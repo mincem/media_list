@@ -1,12 +1,11 @@
-from django.forms import ModelForm, Textarea
 from extra_views import InlineFormSetFactory
 
-from .models import MangaSeries, MangaURL
-from .widgets import RangeInput
+from .base_forms import MediaItemForm
+from ..models import MangaSeries, MangaURL
 
 
-class MangaSeriesCreateForm(ModelForm):
-    class Meta:
+class MangaForm(MediaItemForm):
+    class Meta(MediaItemForm.Meta):
         model = MangaSeries
         fields = [
             "title",
@@ -21,10 +20,6 @@ class MangaSeriesCreateForm(ModelForm):
             "notes",
             "baka_id",
         ]
-        widgets = {
-            'interest': RangeInput(attrs={'min': 0, 'max': 100}),
-            'notes': Textarea(attrs={'rows': 3}),
-        }
 
 
 class MangaURLInline(InlineFormSetFactory):

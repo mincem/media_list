@@ -3,7 +3,7 @@ from django.views import generic
 from extra_views import CreateWithInlinesView, UpdateWithInlinesView
 
 from .base_views import EditInterestView
-from ..forms import MangaSeriesCreateForm, MangaURLInline
+from ..forms import MangaForm, MangaURLInline
 from ..models import MangaSeries, MangaSource
 from ..utils import BakaFinder, BakaParser
 
@@ -56,7 +56,7 @@ class MangaSwapTitlesView(MangaDetailView):
 
 class MangaCreateView(CreateWithInlinesView):
     model = MangaSeries
-    form_class = MangaSeriesCreateForm
+    form_class = MangaForm
     inlines = [MangaURLInline]
     template_name = "media_list/categories/manga/create.html"
 
@@ -68,7 +68,7 @@ class MangaCreateView(CreateWithInlinesView):
 
 class MangaEditView(UpdateWithInlinesView):
     model = MangaSeries
-    form_class = MangaSeriesCreateForm
+    form_class = MangaForm
     inlines = [MangaURLInline]
     template_name = "media_list/categories/manga/edit.html"
 
