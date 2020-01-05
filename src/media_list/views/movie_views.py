@@ -5,7 +5,6 @@ from ..models import Movie, VideoSource
 
 
 class MovieCollectionView(generic.ListView):
-    context_object_name = 'items'
     model = Movie
 
     def get_context_data(self, **kwargs):

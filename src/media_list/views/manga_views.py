@@ -9,7 +9,6 @@ from ..utils import BakaFinder, BakaParser
 
 
 class MangaCollectionView(generic.ListView):
-    context_object_name = 'series_list'
     model = MangaSeries
 
     def get_context_data(self, **kwargs):

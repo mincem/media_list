@@ -1,5 +1,5 @@
 {% extends 'media_list/base.html' %}
-{% load static %}
+{% load static category_url %}
 
 {% block title %}Browse{% endblock title %}
 
@@ -41,4 +41,14 @@
   <script src="{% static 'media_list/js/detailView.js' %}"></script>
 
   <script src="{% static 'media_list/js/rangeField.js' %}"></script>
+
+  {% if series_id %}
+    <script>
+      $(document).ready(function () {
+        let seriesID = {{ series_id }};
+        let viewURL = "{% category_url object_list.0.get_category 'detail' series_id|default:0 %}";
+        if (seriesID) renderDetailView(seriesID, viewURL);
+      });
+    </script>
+  {% endif %}
 {% endblock %}

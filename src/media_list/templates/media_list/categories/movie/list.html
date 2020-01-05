@@ -14,32 +14,32 @@
     </thead>
 
     <tbody>
-    {% for item in items %}
-      <tr class="ml-row" data-series-id="{{ item.id }}" data-url="{% category_url item.get_category 'detail' item.id %}"
-          data-source="{{ item.source }}">
-        <td data-search="{{ item.source }}">
-          {% if item.source %}
-            <img class="source-icon" src="{{ item.source.icon.url }}" alt="{{ item.source }}"
-                 title="{{ item.source }}">
+    {% for object in object_list %}
+      <tr class="ml-row" data-url="{% category_url object.get_category 'detail' object.id %}"
+          data-series-id="{{ object.id }}" data-source="{{ object.source }}">
+        <td data-search="{{ object.source }}">
+          {% if object.source %}
+            <img class="source-icon" src="{{ object.source.icon.url }}" alt="{{ object.source }}"
+                 title="{{ object.source }}">
           {% endif %}
         </td>
 
         <td class="ml-cell-title">
-          <b>{{ item.title }}</b>
-          {% if item.alternate_title %}
-            [{{ item.alternate_title }}]
+          <b>{{ object.title }}</b>
+          {% if object.alternate_title %}
+            [{{ object.alternate_title }}]
           {% endif %}
         </td>
 
-        <td class="ml-cell-interest text-center" data-search="{{ item.interest }}">
-          <span class="badge" style="background-color: {{ item.interest_color }}">
-            {{ item.interest }}
+        <td class="ml-cell-interest text-center" data-search="{{ object.interest }}">
+          <span class="badge" style="background-color: {{ object.interest_color }}">
+            {{ object.interest }}
           </span>
         </td>
 
         <td class="ml-cell-status text-center">
-          <span class="badge media-download-status-{{ item.status }}">
-            {{ item.get_status_display }}
+          <span class="badge media-download-status-{{ object.status }}">
+            {{ object.get_status_display }}
           </span>
         </td>
       </tr>
@@ -50,14 +50,4 @@
 
 {% block category_js %}
   <script src="{% static 'media_list/js/movie.js' %}"></script>
-
-  {% if series_id %}
-    <script>
-      $(document).ready(function () {
-        let seriesID = {{ series_id }};
-        let viewURL = "{% category_url items.0.get_category 'detail' series_id|default:0 %}";
-        if (seriesID) renderDetailView(seriesID, viewURL);
-      });
-    </script>
-  {% endif %}
 {% endblock category_js %}

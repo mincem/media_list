@@ -23,69 +23,69 @@
     </thead>
 
     <tbody>
-    {% for series in series_list %}
-      <tr class="ml-row" data-url="{% category_url series.get_category 'detail' series.id %}"
-          data-series-id="{{ series.id }}" data-source="{{ series.source }}" data-completed="{{ series.is_completed }}"
-          data-baka-info="{{ series.baka_info_id|yesno:"True,False" }}">
+    {% for object in object_list %}
+      <tr class="ml-row" data-url="{% category_url object.get_category 'detail' object.id %}"
+          data-series-id="{{ object.id }}" data-source="{{ object.source }}" data-completed="{{ object.is_completed }}"
+          data-baka-info="{{ object.baka_info_id|yesno:"True,False" }}">
         <td class="ml-cell-thumbnail">
-          {% if series.baka_info.image %}
-            <img src="{{ series.baka_info.image|thumbnail_url:'list' }}" alt="{{ series.title }}"/>
+          {% if object.baka_info.image %}
+            <img src="{{ object.baka_info.image|thumbnail_url:'list' }}" alt="{{ object.title }}"/>
           {% endif %}
         </td>
 
-        <td data-search="{{ series.source }}">
-          {% if series.source %}
-            <img class="source-icon" src="{{ series.source.icon.url }}" alt="{{ series.source }}"
-                 title="{{ series.source }}">
+        <td data-search="{{ object.source }}">
+          {% if object.source %}
+            <img class="source-icon" src="{{ object.source.icon.url }}" alt="{{ object.source }}"
+                 title="{{ object.source }}">
           {% endif %}
         </td>
 
         <td class="ml-cell-title">
-          <b>{{ series.title }}</b>
-          {% if series.alternate_title %}
-            [{{ series.alternate_title }}]
+          <b>{{ object.title }}</b>
+          {% if object.alternate_title %}
+            [{{ object.alternate_title }}]
           {% endif %}
         </td>
 
         <td class="ml-cell-staff">
-          {% for member in series.baka_info.staff %}
+          {% for member in object.baka_info.staff %}
             <span class="badge badge-info">{{ member }}</span>
           {% endfor %}
 
-          {% if series.baka_info.has_extra_staff %}
+          {% if object.baka_info.has_extra_staff %}
             <span class="badge badge-info">...</span>
           {% endif %}
         </td>
 
         <td class="text-center">
-          {{ series.baka_info.year }}
+          {{ object.baka_info.year }}
         </td>
 
-        <td class="ml-cell-volumes {{ series.is_completed|yesno:"complete,incomplete" }}"
-            data-order="{{ series.volumes }}" data-search="{{ series.is_completed }}">
-          {{ series.display_volumes }}
-          <i class="fas fa-{{ series.is_completed|yesno:"check,times" }}"></i>
+        <td class="ml-cell-volumes {{ object.is_completed|yesno:"complete,incomplete" }}"
+            data-order="{{ object.volumes }}" data-search="{{ object.is_completed }}">
+          {{ object.display_volumes }}
+          <i class="fas fa-{{ object.is_completed|yesno:"check,times" }}"></i>
         </td>
 
-        <td class="ml-cell-interest text-center" data-search="{{ series.interest }}">
-                <span class="badge" style="background-color: {{ series.interest_color }}">
-                  {{ series.interest }}
+        <td class="ml-cell-interest text-center" data-search="{{ object.interest }}">
+                <span class="badge" style="background-color: {{ object.interest_color }}">
+                  {{ object.interest }}
                 </span>
         </td>
 
         <td class="ml-cell-status text-center">
-                <span class="badge media-download-status-{{ series.status }}">
-                  {{ series.get_status_display }}
+                <span class="badge media-download-status-{{ object.status }}">
+                  {{ object.get_status_display }}
                 </span>
         </td>
 
         <td>
           <div class="d-flex justify-content-around">
-            <a href="{% category_url series.get_category 'edit' series.id %}">
+            <a href="{% category_url object.get_category 'edit' object.id %}">
               <i class="fas fa-edit"></i>
             </a>
 
-            <a href="{% category_url series.get_category 'delete' series.id %}">
+            <a href="{% category_url object.get_category 'delete' object.id %}">
               <i class="fas fa-trash"></i>
             </a>
           </div>
@@ -98,14 +98,4 @@
 
 {% block category_js %}
   <script src="{% static 'media_list/js/manga.js' %}"></script>
-
-  {% if series_id %}
-    <script>
-      $(document).ready(function () {
-        let seriesID = {{ series_id }};
-        let viewURL = "{% category_url series_list.0.get_category 'detail' series_id|default:0 %}";
-        if (seriesID) renderDetailView(seriesID, viewURL);
-      });
-    </script>
-  {% endif %}
 {% endblock category_js %}
