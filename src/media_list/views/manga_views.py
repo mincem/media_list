@@ -58,7 +58,7 @@ class MangaCreateView(CreateWithInlinesView):
     model = MangaSeries
     form_class = MangaSeriesCreateForm
     inlines = [MangaURLInline]
-    template_name = "media_list/categories/manga/forms/manga_series_create_form.html"
+    template_name = "media_list/categories/manga/create.html"
 
     def get_success_url(self):
         if "add_another" in self.request.POST:
@@ -70,7 +70,7 @@ class MangaEditView(UpdateWithInlinesView):
     model = MangaSeries
     form_class = MangaSeriesCreateForm
     inlines = [MangaURLInline]
-    template_name = "media_list/categories/manga/forms/manga_series_edit_form.html"
+    template_name = "media_list/categories/manga/edit.html"
 
     def get_success_url(self):
         return reverse_lazy("categories:manga:index_and_modal", kwargs={"pk": self.object.id})
