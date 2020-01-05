@@ -1,0 +1,52 @@
+{% extends 'media_list/base.html' %}
+{% load static thumbnail category_url %}
+
+{% block title %}Browse{% endblock title %}
+
+{% block content %}
+
+  <header class="title">
+    <h1>Media List</h1>
+  </header>
+
+  <section class="content">
+    <aside class="sidebar">
+      {% block filters %}{% endblock %}
+    </aside>
+
+    <article class="main-content">
+      <div class="media-grid">
+        {% for object in object_list %}
+          <div class="grid-thumbnail">
+            <img src="{{ object.image_url }}" alt="{{ object.title }}" title="{{ object.title }}"/>
+          </div>
+        {% endfor %}
+      </div>
+    </article>
+  </section>
+
+  <div class="modal fade" id="details-modal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+      <div class="modal-content"></div>
+    </div>
+  </div>
+
+{% endblock content %}
+
+{% block extra_js %}
+  <script src="{% static 'media_list/js/djangoCookies.js' %}"></script>
+
+  <script src="{% static 'media_list/js/detailView.js' %}"></script>
+
+  <script src="{% static 'media_list/js/rangeField.js' %}"></script>
+
+  {% if series_id %}
+    <script>
+      $(document).ready(function () {
+        let seriesID = {{ series_id }};
+        let viewURL = "{% category_url object_list.0.get_category 'detail' series_id|default:0 %}";
+        if (seriesID) renderDetailView(seriesID, viewURL);
+      });
+    </script>
+  {% endif %}
+{% endblock %}
