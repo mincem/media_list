@@ -1,6 +1,6 @@
 {% extends 'media_list/categories/list.html' %}
 
-{% load static thumbnail %}
+{% load static thumbnail category_url %}
 
 {% block table %}
   <table class="table table-hover table-bordered table-responsive" id="media-list-table">
@@ -15,7 +15,7 @@
 
     <tbody>
     {% for item in items %}
-      <tr class="ml-row" data-series-id="{{ item.id }}" data-url="{% url 'categories:movie:detail' item.id %}"
+      <tr class="ml-row" data-series-id="{{ item.id }}" data-url="{% category_url item.get_category 'detail' item.id %}"
           data-source="{{ item.source }}">
         <td data-search="{{ item.source }}">
           {% if item.source %}
@@ -51,11 +51,13 @@
 {% block category_js %}
   <script src="{% static 'media_list/js/movie.js' %}"></script>
 
-  <script>
-    $(document).ready(function () {
-      let seriesID = {{ series_id|default:'null' }};
-      let viewURL = "{% url 'categories:movie:detail' series_id|default:0 %}";
-      if (seriesID) renderDetailView(seriesID, viewURL);
-    });
-  </script>
+  {% if series_id %}
+    <script>
+      $(document).ready(function () {
+        let seriesID = {{ series_id }};
+        let viewURL = "{% category_url items.0.get_category 'detail' series_id|default:0 %}";
+        if (seriesID) renderDetailView(seriesID, viewURL);
+      });
+    </script>
+  {% endif %}
 {% endblock category_js %}

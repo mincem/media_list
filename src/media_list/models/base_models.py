@@ -27,6 +27,8 @@ class MediaItem(TimestampedModel):
         abstract = True
         ordering = ('title',)
 
+    category = None
+
     title = models.CharField(max_length=255)
     alternate_title = models.CharField(blank=True, max_length=255)
     interest = models.IntegerField()
@@ -39,6 +41,12 @@ class MediaItem(TimestampedModel):
     def interest_color(self):
         from ..utils import ColorPicker
         return ColorPicker().color_for(self.interest)
+
+    @property
+    def get_category(self):
+        if not type(self).category:
+            return f"Undefined category for model {type(self)}"
+        return type(self).category
 
 
 class ItemURL(OrderedModel):

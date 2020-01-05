@@ -1,4 +1,4 @@
-{% load static all_categories %}
+{% load static all_categories category_url %}
 
 <html lang="en">
 <head>
@@ -19,24 +19,22 @@
 
   <div class="collapse navbar-collapse">
     <ul class="navbar-nav mr-auto">
-       <li class="nav-item dropdown">
+      <li class="nav-item dropdown">
         <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown">
           Lists
         </a>
         <div class="dropdown-menu">
           {% all_categories as categories %}
           {% for category in categories %}
-            {% with 'categories:'|add:category.path|add:':list' as path %}
-              <a class="dropdown-item" href="{% url path %}">
-                {{ category.verbose_name_plural|title }}
-              </a>
-            {% endwith %}
+            <a class="dropdown-item" href="{% category_url category 'list' %}">
+              {{ category.verbose_name_plural|title }}
+            </a>
           {% endfor %}
         </div>
       </li>
 
       <li class="nav-item">
-        <a class="nav-link" href="{% url 'categories:manga:create' %}">
+        <a class="nav-link" href="{% category_url categories.0 'create' %}">
           Create Manga
         </a>
       </li>

@@ -1,5 +1,5 @@
 {% extends 'media_list/base.html' %}
-{% load static thumbnail %}
+{% load static thumbnail category_url %}
 
 {% block title %}Browse{% endblock title %}
 
@@ -38,11 +38,13 @@
 
   <script src="{% static 'media_list/js/rangeField.js' %}"></script>
 
-  <script>
-    $(document).ready(function () {
-      let seriesID = {{ series_id|default:'null' }};
-      let viewURL = "{% url 'categories:movie:detail' series_id|default:0 %}";
-      if (seriesID) renderDetailView(seriesID, viewURL);
-    });
-  </script>
+  {% if series_id %}
+    <script>
+      $(document).ready(function () {
+        let seriesID = {{ series_id }};
+        let viewURL = "{% category_url items.0.get_category 'detail' series_id|default:0 %}";
+        if (seriesID) renderDetailView(seriesID, viewURL);
+      });
+    </script>
+  {% endif %}
 {% endblock %}

@@ -1,6 +1,6 @@
 {% extends 'media_list/categories/list.html' %}
 
-{% load static thumbnail %}
+{% load static thumbnail category_url %}
 
 {% block filters %}
   {% include 'media_list/categories/manga/_list_filters.html' %}
@@ -24,8 +24,8 @@
 
     <tbody>
     {% for series in series_list %}
-      <tr class="ml-row" data-series-id="{{ series.id }}" data-url="{% url 'categories:manga:detail' series.id %}"
-          data-source="{{ series.source }}" data-completed="{{ series.is_completed }}"
+      <tr class="ml-row" data-url="{% category_url series.get_category 'detail' series.id %}"
+          data-series-id="{{ series.id }}" data-source="{{ series.source }}" data-completed="{{ series.is_completed }}"
           data-baka-info="{{ series.baka_info_id|yesno:"True,False" }}">
         <td class="ml-cell-thumbnail">
           {% if series.baka_info.image %}
@@ -81,11 +81,11 @@
 
         <td>
           <div class="d-flex justify-content-around">
-            <a href="{% url "categories:manga:edit" series.id %}">
+            <a href="{% category_url series.get_category 'edit' series.id %}">
               <i class="fas fa-edit"></i>
             </a>
 
-            <a href="{% url "categories:manga:delete" series.id %}">
+            <a href="{% category_url series.get_category 'delete' series.id %}">
               <i class="fas fa-trash"></i>
             </a>
           </div>
@@ -99,11 +99,13 @@
 {% block category_js %}
   <script src="{% static 'media_list/js/manga.js' %}"></script>
 
-  <script>
-    $(document).ready(function () {
-      let seriesID = {{ series_id|default:'null' }};
-      let viewURL = "{% url 'categories:manga:detail' series_id|default:0 %}";
-      if (seriesID) renderDetailView(seriesID, viewURL);
-    });
-  </script>
+  {% if series_id %}
+    <script>
+      $(document).ready(function () {
+        let seriesID = {{ series_id }};
+        let viewURL = "{% category_url series_list.0.get_category 'detail' series_id|default:0 %}";
+        if (seriesID) renderDetailView(seriesID, viewURL);
+      });
+    </script>
+  {% endif %}
 {% endblock category_js %}

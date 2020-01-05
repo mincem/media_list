@@ -1,6 +1,6 @@
 {% extends 'media_list/base.html' %}
 
-{% load all_categories %}
+{% load all_categories category_url %}
 
 {% block title %}Home{% endblock title %}
 
@@ -14,11 +14,9 @@
       {% all_categories as categories %}
       {% for category in categories %}
         <li class="list-group-item">
-          {% with 'categories:'|add:category.path|add:':list' as path %}
-            <a href="{% url path %}">
-              {{ category.verbose_name_plural|title }}
-            </a>
-          {% endwith %}
+          <a href="{% category_url category 'list' %}">
+            {{ category.verbose_name_plural|title }}
+          </a>
         </li>
       {% endfor %}
     </ul>

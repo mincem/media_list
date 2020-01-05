@@ -1,3 +1,5 @@
+{% load category_url %}
+
 <div class="modal-header">
   <div class="modal-title">
     <h4>
@@ -13,7 +15,7 @@
         [{{ object.alternate_title }}]
 
         <button id="action-swap-titles" type="button" class="btn btn-primary"
-                data-url="{% url 'categories:manga:swap_titles' object.id %}">
+                data-url="{% category_url object.get_category 'swap_titles' object.id %}">
           <i class="fas fa-exchange-alt"></i>
         </button>
       </h6>
@@ -32,11 +34,11 @@
     </button>
 
     <div class="dropdown-menu dropdown-menu-right">
-      <a class="dropdown-item" href="{% url "categories:manga:edit" object.id %}">
+      <a class="dropdown-item" href="{% category_url object.get_category 'edit' object.id %}">
         <i class="fas fa-edit"></i> Edit
       </a>
 
-      <a class="dropdown-item" href="{% url "categories:manga:delete" object.id %}">
+      <a class="dropdown-item" href="{% category_url object.get_category 'delete' object.id %}">
         <i class="fas fa-trash"></i> Delete
       </a>
     </div>
@@ -47,14 +49,14 @@
   <div class="media-actions">
     {% if not object.baka_id %}
       <button id="action-find-baka-id" type="button" class="btn btn-primary"
-              data-url="{% url 'categories:manga:get_baka_id' object.id %}">
+              data-url="{% category_url object.get_category 'get_baka_id' object.id %}">
         Find Mangaupdates ID
       </button>
     {% endif %}
 
     {% if object.baka_id and not object.baka_info %}
       <button id="action-get-baka-data" type="button" class="btn btn-primary"
-              data-url="{% url 'categories:manga:get_baka_info' object.id %}">
+              data-url="{% category_url object.get_category 'get_baka_info' object.id %}">
         Get Info from Mangaupdates
       </button>
     {% endif %}
