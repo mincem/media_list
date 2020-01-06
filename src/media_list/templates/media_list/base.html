@@ -1,5 +1,7 @@
 {% load static all_categories category_url %}
 
+{% all_categories as categories %}
+
 <html lang="en">
 <head>
   <title>{% block title %}Media List{% endblock title %} - Media List</title>
@@ -23,8 +25,8 @@
         <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown">
           Lists
         </a>
+
         <div class="dropdown-menu">
-          {% all_categories as categories %}
           {% for category in categories %}
             <a class="dropdown-item" href="{% category_url category 'list' %}">
               {{ category.verbose_name_plural|title }}
@@ -33,10 +35,18 @@
         </div>
       </li>
 
-      <li class="nav-item">
-        <a class="nav-link" href="{% category_url categories.0 'create' %}">
-          Create Manga
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown">
+          Create
         </a>
+
+        <div class="dropdown-menu">
+          {% for category in categories %}
+            <a class="dropdown-item" href="{% category_url category 'create' %}">
+              New {{ category.verbose_name|title }}
+            </a>
+          {% endfor %}
+        </div>
       </li>
 
       <li class="nav-item">
