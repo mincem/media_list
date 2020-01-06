@@ -1,0 +1,11 @@
+{% load widget_tweaks %}
+
+<div class="col-3 col-form-label text-right">
+  {{ interest_field.label_tag }}
+</div>
+
+<div class="col-9 interest-field centered-flex">
+  {{ interest_field|add_class:'interest-range range-input form-control-range flex-grow-1' }}
+
+  <output class="interest-value value-output">{{ interest_field.value }}</output>
+</div>
