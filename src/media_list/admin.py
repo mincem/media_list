@@ -1,54 +1,58 @@
 from django.contrib import admin
 
-from .models import MangaSeries, BakaSeries, MangaSource, MangaGenre, MangaPerson, MangaURL, MangaSeriesKeyword, \
-    Movie, MovieURL
+from . import models
 
 
 class MangaURLInline(admin.TabularInline):
-    model = MangaURL
+    model = models.MangaURL
 
 
-@admin.register(MangaSeries)
+@admin.register(models.MangaSeries)
 class MangaSeriesAdmin(admin.ModelAdmin):
     inlines = [MangaURLInline]
     search_fields = ['title']
 
 
-@admin.register(BakaSeries)
+@admin.register(models.BakaSeries)
 class BakaSeriesAdmin(admin.ModelAdmin):
     pass
 
 
-@admin.register(MangaSource)
+@admin.register(models.MangaSource)
 class MangaSourceAdmin(admin.ModelAdmin):
     pass
 
 
-@admin.register(MangaGenre)
+@admin.register(models.MangaGenre)
 class MangaGenreAdmin(admin.ModelAdmin):
     pass
 
 
-@admin.register(MangaPerson)
+@admin.register(models.MangaPerson)
 class MangaPersonAdmin(admin.ModelAdmin):
     pass
 
 
-@admin.register(MangaURL)
+@admin.register(models.MangaURL)
 class MangaURLAdmin(admin.ModelAdmin):
     pass
 
 
-@admin.register(MangaSeriesKeyword)
+@admin.register(models.MangaSeriesKeyword)
 class MangaKeywordAdmin(admin.ModelAdmin):
     list_display = ['keyword', 'baka_series', 'score']
 
 
 class MovieURLInline(admin.TabularInline):
-    model = MovieURL
+    model = models.MovieURL
 
 
-@admin.register(Movie)
+@admin.register(models.Movie)
 class MovieAdmin(admin.ModelAdmin):
     inlines = [MovieURLInline]
     search_fields = ['title']
+
+
+@admin.register(models.VideoSource)
+class VideoSourceAdmin(admin.ModelAdmin):
+    pass

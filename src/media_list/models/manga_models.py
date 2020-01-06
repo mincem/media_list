@@ -1,7 +1,7 @@
 from django.contrib.staticfiles.templatetags.staticfiles import static
 from django.db import models
 
-from .base_models import TimestampedModel, NamedModel, MediaItem, ItemURL
+from .base_models import TimestampedModel, NamedModel, MediaItem, ItemURL, MediaSource
 from ..categories import manga_category
 
 STATUS_CHOICES = (
@@ -91,8 +91,8 @@ class BakaSeries(TimestampedModel):
         return self.authors.count() + self.artists.count() > 2
 
 
-class MangaSource(NamedModel, TimestampedModel):
-    icon = models.ImageField(upload_to="source_icons/", blank=True, null=True)
+class MangaSource(MediaSource):
+    pass
 
 
 class MangaGenre(NamedModel):

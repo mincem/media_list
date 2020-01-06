@@ -62,5 +62,12 @@ class ItemURL(OrderedModel):
         return urlparse(self.url).hostname
 
 
-class VideoSource(NamedModel, TimestampedModel):
+class MediaSource(NamedModel, TimestampedModel):
+    class Meta:
+        abstract = True
+
     icon = models.ImageField(upload_to="source_icons/", blank=True, null=True)
+
+
+class VideoSource(MediaSource):
+    pass

@@ -11,6 +11,7 @@ class MovieForm(MediaItemForm):
             "title",
             "alternate_title",
             "is_watched",
+            "source",
             "interest",
             "status",
             "notes",
