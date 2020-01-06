@@ -15,7 +15,7 @@ class MediaCreateView(CreateWithInlinesView):
     def get_success_url(self):
         if "add_another" in self.request.POST:
             return reverse_lazy(f"categories:{self.model.category.path}:create")
-        return reverse_lazy(f"categories:{self.model.category.path}:index_and_modal", kwargs={"pk": self.object.id})
+        return reverse_lazy(f"categories:{self.model.category.path}:list", kwargs={"pk": self.object.id})
 
 
 class MediaEditView(UpdateWithInlinesView):
@@ -24,7 +24,7 @@ class MediaEditView(UpdateWithInlinesView):
         return [f"media_list/categories/{self.model.category.path}/edit.html"]
 
     def get_success_url(self):
-        return reverse_lazy(f"categories:{self.model.category.path}:index_and_modal", kwargs={"pk": self.object.id})
+        return reverse_lazy(f"categories:{self.model.category.path}:list", kwargs={"pk": self.object.id})
 
 
 class EditInterestView(generic.UpdateView):
