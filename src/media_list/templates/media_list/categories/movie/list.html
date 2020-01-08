@@ -1,4 +1,4 @@
-{% extends 'media_list/categories/list.html' %}
+{% extends 'media_list/categories/base/list.html' %}
 
 {% load static thumbnail category_url %}
 
@@ -18,7 +18,7 @@
       <tr class="ml-row" data-url="{% category_url object.get_category 'detail' object.id %}"
           data-series-id="{{ object.id }}" data-source="{{ object.source }}">
         <td data-search="{{ object.source }}">
-          {% if object.source %}
+          {% if object.source and object.source.icon %}
             <img class="source-icon" src="{{ object.source.icon.url }}" alt="{{ object.source }}"
                  title="{{ object.source }}">
           {% endif %}
