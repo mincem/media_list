@@ -1,8 +1,14 @@
-from dataclasses import make_dataclass
+from dataclasses import dataclass
 
 __all__ = ["all_categories", "manga_category", "movie_category"]
 
-Category = make_dataclass("Category", ["verbose_name", "verbose_name_plural", "path"])
+
+@dataclass
+class Category:
+    verbose_name: str
+    verbose_name_plural: str
+    path: str
+
 
 manga_category = Category(
     verbose_name="manga",

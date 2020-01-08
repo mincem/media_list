@@ -1,44 +1,33 @@
 from django.urls import path, include
-from django.views import generic
 
-from . import views
+from . import viewsets
+from .views import base_views
 
-manga_urls = [
-    path('', views.MangaListView.as_view(), name='list'),
-    path('<int:pk>/', views.MangaListView.as_view(), name='list'),
-    path('grid/', views.MangaGridView.as_view(), name='grid'),
-    path('<int:pk>/detail/', views.MangaDetailView.as_view(), name='detail'),
 
-    path('create/', views.MangaCreateView.as_view(), name='create'),
-    path('<int:pk>/edit/', views.MangaEditView.as_view(), name='edit'),
-    path('<int:pk>/edit_interest/', views.MangaEditInterestView.as_view(), name='edit_interest'),
-    path('<int:pk>/delete/', views.MangaDeleteView.as_view(), name='delete'),
+def category_urls(viewset):
+    return [
+        path('', viewset.list_view.as_view(), name='list'),
+        path('<int:pk>/', viewset.list_view.as_view(), name='list'),
+        path('grid/', viewset.grid_view.as_view(), name='grid'),
+        path('<int:pk>/detail/', viewset.detail_view.as_view(), name='detail'),
 
-    path('<int:pk>/get_baka_id/', views.MangaFetchBakaIDView.as_view(), name='get_baka_id'),
-    path('<int:pk>/get_baka_info/', views.MangaFetchBakaInfoView.as_view(), name='get_baka_info'),
-    path('<int:pk>/swap_titles/', views.MangaSwapTitlesView.as_view(), name='swap_titles'),
-]
+        path('create/', viewset.create_view.as_view(), name='create'),
+        path('<int:pk>/edit/', viewset.edit_view.as_view(), name='edit'),
+        path('<int:pk>/edit_interest/', viewset.edit_interest_view.as_view(), name='edit_interest'),
+        path('<int:pk>/delete/', viewset.delete_view.as_view(), name='delete'),
 
-movie_urls = [
-    path('', views.MovieListView.as_view(), name='list'),
-    path('<int:pk>/', views.MovieListView.as_view(), name='list'),
-    path('grid/', views.MovieGridView.as_view(), name='grid'),
-    path('<int:pk>/detail/', views.MovieDetailView.as_view(), name='detail'),
+        path('<int:pk>/get_baka_id/', viewset.find_external_id_view.as_view(), name='get_baka_id'),
+        path('<int:pk>/get_baka_info/', viewset.find_external_data_view.as_view(), name='get_baka_info'),
+        path('<int:pk>/swap_titles/', viewset.swap_titles_view.as_view(), name='swap_titles'),
+    ]
 
-    path('create/', views.MovieCreateView.as_view(), name='create'),
-    path('<int:pk>/edit/', views.MovieEditView.as_view(), name='edit'),
-    path('<int:pk>/edit_interest/', views.MovieEditInterestView.as_view(), name='edit_interest'),
-    path('<int:pk>/delete/', views.MovieDeleteView.as_view(), name='delete'),
-
-    path('<int:pk>/swap_titles/', generic.View.as_view(), name='swap_titles'),
-]
 
 categories_urls = [
-    path('manga/', include((manga_urls, 'manga'))),
-    path('movie/', include((movie_urls, 'movie'))),
+    path('manga/', include((category_urls(viewsets.manga_viewset), 'manga'))),
+    path('movie/', include((category_urls(viewsets.movie_viewset), 'movie'))),
 ]
 
 urlpatterns = [
     path('categories/', include((categories_urls, 'categories'), namespace='categories')),
-    path('', views.LandingView.as_view(), name='landing'),
+    path('', base_views.LandingView.as_view(), name='landing'),
 ]
