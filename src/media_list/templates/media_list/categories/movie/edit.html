@@ -1,17 +1,5 @@
 {% extends 'media_list/categories/base/edit.html' %}
 
 {% block form %}
-  <form method="POST" class="post-form">
-    {% csrf_token %}
-
-    {{ form.as_p }}
-
-    {% for formset in inlines %}
-      {{ formset.as_p }}
-    {% endfor %}
-
-    <button type="submit" class="btn btn-primary">
-      Save
-    </button>
-  </form>
+  {% include 'media_list/categories/movie/_form.html' %}
 {% endblock form %}

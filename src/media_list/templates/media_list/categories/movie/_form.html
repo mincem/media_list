@@ -1,0 +1,13 @@
+{% extends "media_list/categories/base/_form.html" %}
+
+{% block category_fields %}
+  <div class="form-group row">
+    {% include 'media_list/categories/base/form/_boolean_field.html' with field=form.is_watched only %}
+    {% include 'media_list/categories/base/form/_half_size_field.html' with field=form.imdb_id only %}
+  </div>
+
+  <div class="form-group row">
+    {% include 'media_list/categories/base/form/_half_size_field.html' with field=form.source only %}
+    {% include 'media_list/categories/base/form/_half_size_field.html' with field=form.status only %}
+  </div>
+{% endblock category_fields %}

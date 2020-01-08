@@ -1,0 +1,28 @@
+<div class="col-6">
+  <form method="POST" class="post-form">
+    {{ form.errors }}
+    {% csrf_token %}
+
+    <div class="form-group row">
+      {% include 'media_list/categories/base/form/_full_size_field.html' with field=form.title only %}
+    </div>
+
+    <div class="form-group row">
+      {% include 'media_list/categories/base/form/_full_size_field.html' with field=form.alternate_title only %}
+    </div>
+
+    {% block category_fields %}{% endblock category_fields %}
+
+    <div class="form-group row">
+      {% include 'media_list/categories/base/form/_interest_field.html' with interest_field=form.interest only %}
+    </div>
+
+    <div class="form-group row">
+      {% include 'media_list/categories/base/form/_full_size_field.html' with field=form.notes only %}
+    </div>
+
+    {% include 'media_list/categories/base/form/_url_inlines.html' with inlines=inlines only %}
+
+    {% include 'media_list/categories/base/form/_submit_buttons.html' %}
+  </form>
+</div>
