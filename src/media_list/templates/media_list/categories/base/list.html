@@ -15,7 +15,17 @@
 
     <article class="main-content">
       <div id="media-list">
-        {% block table %}{% endblock table %}
+        <table class="table table-hover table-bordered table-responsive" id="media-list-table">
+          <thead>
+          <tr>
+            {% block table_header_row %}{% endblock table_header_row %}
+          </tr>
+          </thead>
+
+          <tbody>
+          {% block table_body %}{% endblock table_body %}
+          </tbody>
+        </table>
       </div>
     </article>
   </section>

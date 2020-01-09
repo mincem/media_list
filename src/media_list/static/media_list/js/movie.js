@@ -24,4 +24,10 @@ const dataTableColumns = [
     searchable: false,
     width: '10px',
   },
+  {
+    name: 'actions',
+    orderable: false,
+    searchable: false,
+    width: '10px',
+  },
 ];
