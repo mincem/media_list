@@ -1,0 +1,35 @@
+{% load category_url %}
+
+<div class="modal-header">
+  <div class="modal-title">
+    {% block modal_title %}{% endblock modal_title %}
+  </div>
+
+  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+
+<div class="modal-body">
+  <div class="dropdown float-right">
+    <button class="text-button" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+      <i class="fas fa-ellipsis-v"></i>
+    </button>
+
+    <div class="dropdown-menu dropdown-menu-right">
+      <a class="dropdown-item" href="{% category_url object.get_category 'edit' object.id %}">
+        <i class="fas fa-edit"></i> Edit
+      </a>
+
+      <a class="dropdown-item" href="{% category_url object.get_category 'delete' object.id %}">
+        <i class="fas fa-trash"></i> Delete
+      </a>
+    </div>
+  </div>
+
+  {% include 'media_list/categories/manga/_media_detail_with_external.html' %}
+
+  <div class="media-actions">
+    {% block actions %}{% endblock actions %}
+  </div>
+</div>

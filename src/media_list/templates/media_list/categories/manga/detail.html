@@ -1,64 +1,40 @@
+{% extends "media_list/categories/base/detail.html" %}
+
 {% load category_url %}
 
-<div class="modal-header">
-  <div class="modal-title">
-    <h4>
-      {{ object }}
+{% block modal_title %}
+  <h4>
+    {{ object }}
 
-      {% if object.baka_info.year %}
-          <span class="badge badge-info">{{ object.baka_info.year }}</span>
-      {% endif %}
-    </h4>
-
-    {% if object.alternate_title %}
-      <h6 class="modal-title">
-        [{{ object.alternate_title }}]
-
-        <button id="action-swap-titles" type="button" class="btn btn-primary"
-                data-url="{% category_url object.get_category 'swap_titles' object.id %}">
-          <i class="fas fa-exchange-alt"></i>
-        </button>
-      </h6>
+    {% if object.baka_info.year %}
+      <span class="badge badge-info">{{ object.baka_info.year }}</span>
     {% endif %}
-  </div>
+  </h4>
 
-  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-    <span aria-hidden="true">&times;</span>
-  </button>
-</div>
+  {% if object.alternate_title %}
+    <h6 class="modal-title">
+      [{{ object.alternate_title }}]
 
-<div class="modal-body">
-  <div class="dropdown float-right">
-    <button class="text-button" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-      <i class="fas fa-ellipsis-v"></i>
+      <button id="action-swap-titles" type="button" class="btn btn-primary"
+              data-url="{% category_url object.get_category 'swap_titles' object.id %}">
+        <i class="fas fa-exchange-alt"></i>
+      </button>
+    </h6>
+  {% endif %}
+{% endblock modal_title %}
+
+{% block actions %}
+  {% if not object.baka_id %}
+    <button id="action-find-baka-id" type="button" class="btn btn-primary"
+            data-url="{% category_url object.get_category 'get_baka_id' object.id %}">
+      Find Mangaupdates ID
     </button>
+  {% endif %}
 
-    <div class="dropdown-menu dropdown-menu-right">
-      <a class="dropdown-item" href="{% category_url object.get_category 'edit' object.id %}">
-        <i class="fas fa-edit"></i> Edit
-      </a>
-
-      <a class="dropdown-item" href="{% category_url object.get_category 'delete' object.id %}">
-        <i class="fas fa-trash"></i> Delete
-      </a>
-    </div>
-  </div>
-
-  {% include 'media_list/categories/manga/_media_detail_with_external.html' %}
-
-  <div class="media-actions">
-    {% if not object.baka_id %}
-      <button id="action-find-baka-id" type="button" class="btn btn-primary"
-              data-url="{% category_url object.get_category 'get_baka_id' object.id %}">
-        Find Mangaupdates ID
-      </button>
-    {% endif %}
-
-    {% if object.baka_id and not object.baka_info %}
-      <button id="action-get-baka-data" type="button" class="btn btn-primary"
-              data-url="{% category_url object.get_category 'get_baka_info' object.id %}">
-        Get Info from Mangaupdates
-      </button>
-    {% endif %}
-  </div>
-</div>
+  {% if object.baka_id and not object.baka_info %}
+    <button id="action-get-baka-data" type="button" class="btn btn-primary"
+            data-url="{% category_url object.get_category 'get_baka_info' object.id %}">
+      Get Info from Mangaupdates
+    </button>
+  {% endif %}
+{% endblock actions %}

@@ -3,16 +3,6 @@
     <div class="media-picture">
       <img src="{{ object.image_url }}" alt="{{ object }}">
 
-      <div class="media-interest">
-        <div class="progress">
-          <div class="progress-bar" role="progressbar"
-               style="width: {{ object.interest }}%; background-color: {{ object.interest_color }}"
-               aria-valuenow="{{ object.interest }}" aria-valuemin="0" aria-valuemax="100">
-            {{ object.interest }}
-          </div>
-        </div>
-      </div>
-
       {% include 'media_list/categories/base/_interest_form.html' with object=object only %}
     </div>
 

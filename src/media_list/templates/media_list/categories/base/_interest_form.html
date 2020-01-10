@@ -1,5 +1,15 @@
 {% load category_url %}
 
+<div class="media-interest">
+  <div class="progress">
+    <div class="progress-bar" role="progressbar"
+         style="width: {{ object.interest }}%; background-color: {{ object.interest_color }}"
+         aria-valuenow="{{ object.interest }}" aria-valuemin="0" aria-valuemax="100">
+      {{ object.interest }}
+    </div>
+  </div>
+</div>
+
 <form class="media-interest-form centered-flex"
       data-url="{% category_url object.get_category 'edit_interest' object.id %}">
   <label for="id_interest"></label>
