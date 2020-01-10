@@ -18,3 +18,21 @@
     </h6>
   {% endif %}
 {% endblock modal_title %}
+
+{% block external_detail %}
+  <ul class="external-detail">
+    <li class="md-column md-column-status">
+      <b>Download status:</b>
+      <span class="badge media-download-status-{{ object.status }}">
+        {{ object.get_status_display }}
+      </span>
+    </li>
+
+    {% if object.notes %}
+      <li class="md-column md-column-notes">
+        <b>My notes:</b>
+        <p>{{ object.notes }}</p>
+      </li>
+    {% endif %}
+  </ul>
+{% endblock external_detail %}
