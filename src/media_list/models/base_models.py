@@ -48,6 +48,10 @@ class MediaItem(TimestampedModel):
             return f"Undefined category for model {type(self)}"
         return type(self).category
 
+    def swap_titles(self):
+        self.title, self.alternate_title = self.alternate_title, self.title
+        self.save()
+
 
 class ItemURL(OrderedModel):
     class Meta:

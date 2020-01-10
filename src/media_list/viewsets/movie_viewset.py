@@ -9,4 +9,5 @@ movie_viewset = Viewset(
     edit_view=movie_views.MovieEditView,
     edit_interest_view=movie_views.MovieEditInterestView,
     delete_view=movie_views.MovieDeleteView,
+    swap_titles_view=movie_views.MovieSwapTitlesView,
 )

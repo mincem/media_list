@@ -29,6 +29,12 @@ class MovieDetailView(generic.DetailView):
     template_name = 'media_list/categories/movie/detail.html'
 
 
+class MovieSwapTitlesView(MovieDetailView):
+    def get(self, request, *args, **kwargs):
+        self.get_object().swap_titles()
+        return super().get(self, request, *args, **kwargs)
+
+
 class MovieCreateView(MediaCreateView):
     model = Movie
     form_class = MovieForm
