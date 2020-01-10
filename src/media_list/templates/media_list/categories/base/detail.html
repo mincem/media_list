@@ -27,7 +27,32 @@
     </div>
   </div>
 
-  {% include 'media_list/categories/manga/_media_detail_with_external.html' %}
+  <div class="media-detail">
+    <div class="media-introduction d-flex">
+      <div class="media-picture">
+        <img src="{{ object.image_url }}" alt="{{ object }}">
+
+        {% include 'media_list/categories/base/_interest_form.html' with object=object only %}
+      </div>
+
+      <div class="media-description">
+        {% block description %}{% endblock description %}
+      </div>
+    </div>
+
+    {% block external_detail %}{% endblock external_detail %}
+  </div>
+</div>
+
+<div class="modal-footer justify-content-start">
+  {% block extra_links %}{% endblock extra_links %}
+
+  {% for url in object.urls.all %}
+    <a class="btn btn-primary btn-sm media-link" href="{{ url }}" target="_blank" rel="noopener">
+      {{ url.hostname }} page
+      <i class="fas fa-external-link-alt"></i>
+    </a>
+  {% endfor %}
 
   <div class="media-actions">
     {% block actions %}{% endblock actions %}
