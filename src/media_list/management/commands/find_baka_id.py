@@ -1,6 +1,6 @@
 from django.core.management.base import BaseCommand
 
-from ...utils import BakaFinder
+from ...id_finders import BakaIDFinder
 from ...models import MangaSeries
 
 
@@ -14,5 +14,5 @@ class Command(BaseCommand):
         for series_id in options["series_ids"]:
             series = MangaSeries.objects.get(pk=series_id)
             if not series.baka_id:
-                series.baka_id = BakaFinder(series.title).baka_id()
+                series.baka_id = BakaIDFinder(series.title).get_id()
                 series.save()

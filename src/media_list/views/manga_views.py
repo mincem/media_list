@@ -2,8 +2,9 @@ from django.views import generic
 
 from .base_views import EditInterestView, MediaCreateView, MediaEditView, MediaDeleteView
 from ..forms import MangaForm, MangaURLInline
+from ..id_finders import BakaIDFinder
 from ..models import MangaSeries, MangaSource
-from ..utils import BakaFinder, BakaParser
+from ..utils import BakaParser
 
 
 class MangaCollectionView(generic.ListView):
@@ -33,7 +34,7 @@ class MangaDetailView(generic.DetailView):
 class MangaFetchBakaIDView(MangaDetailView):
     def get(self, request, *args, **kwargs):
         series = self.get_object()
-        series.baka_id = BakaFinder(series.title).baka_id()
+        series.baka_id = BakaIDFinder(series.title).get_id()
         series.save()
         return super().get(self, request, *args, **kwargs)
 

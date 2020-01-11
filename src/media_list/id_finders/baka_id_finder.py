@@ -1,13 +1,14 @@
 from google import google
 from urllib.parse import urlparse, parse_qs
 
+from . import ExternalIDFinder
 
-class BakaFinder:
+class BakaIDFinder(ExternalIDFinder):
     def __init__(self, series_title, link_fetcher=None):
-        self.series_title = series_title
+        super().__init__(series_title)
         self.link_fetcher = link_fetcher or LinkFetcher()
 
-    def baka_id(self):
+    def get_id(self):
         link = self.fetch_link()
         url = urlparse(link)
         if not self.source_is_correct(url):
