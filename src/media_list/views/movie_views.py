@@ -38,6 +38,11 @@ class MovieFetchExternalIDView(MovieDetailView):
         return super().get(self, request, *args, **kwargs)
 
 
+class MovieFetchExternalItemView(MovieDetailView):
+    def get(self, request, *args, **kwargs):
+        return super().get(self, request, *args, **kwargs)
+
+
 class MovieSwapTitlesView(MovieDetailView):
     def get(self, request, *args, **kwargs):
         self.get_object().swap_titles()

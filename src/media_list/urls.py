@@ -17,7 +17,7 @@ def category_urls(viewset):
         path('<int:pk>/delete/', viewset.delete_view.as_view(), name='delete'),
 
         path('<int:pk>/get_external_id/', viewset.find_external_id_view.as_view(), name='get_external_id'),
-        path('<int:pk>/get_baka_info/', viewset.find_external_data_view.as_view(), name='get_baka_info'),
+        path('<int:pk>/get_external_item/', viewset.find_external_data_view.as_view(), name='get_external_item'),
         path('<int:pk>/swap_titles/', viewset.swap_titles_view.as_view(), name='swap_titles'),
     ]
 

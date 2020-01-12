@@ -10,5 +10,6 @@ movie_viewset = Viewset(
     edit_interest_view=movie_views.MovieEditInterestView,
     delete_view=movie_views.MovieDeleteView,
     find_external_id_view=movie_views.MovieFetchExternalIDView,
+    find_external_data_view=movie_views.MovieFetchExternalItemView,
     swap_titles_view=movie_views.MovieSwapTitlesView,
 )

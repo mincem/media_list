@@ -45,6 +45,13 @@
       Find IMDb ID
     </button>
   {% endif %}
+
+  {% if object.imdb_id %}
+    <button id="action-get-baka-data" type="button" class="btn btn-primary"
+            data-url="{% category_url object.get_category 'get_external_item' object.id %}">
+      Get Info from IMDb
+    </button>
+  {% endif %}
 {% endblock actions %}
 
 
