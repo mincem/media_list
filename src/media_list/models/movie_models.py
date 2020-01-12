@@ -26,6 +26,11 @@ class Movie(MediaItem):
     def image_url(self):
         return static('media_list/images/default_cover_2.jpg')
 
+    def external_url(self):
+        if not self.imdb_id:
+            raise Exception("IMDb URL has not been retrieved yet.")
+        return f"https://www.imdb.com/title/tt{str(self.imdb_id).zfill(7)}/"
+
 
 class MovieURL(ItemURL):
     movie = models.ForeignKey("Movie", related_name="urls", on_delete=models.CASCADE)

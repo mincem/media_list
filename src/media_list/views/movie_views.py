@@ -2,6 +2,7 @@ from django.views import generic
 
 from .base_views import EditInterestView, MediaCreateView, MediaEditView, MediaDeleteView
 from ..forms import MovieForm, MovieURLInline
+from ..id_finders import MovieIDFinder
 from ..models import Movie, VideoSource
 
 
@@ -27,6 +28,14 @@ class MovieGridView(MovieCollectionView):
 class MovieDetailView(generic.DetailView):
     model = Movie
     template_name = 'media_list/categories/movie/detail.html'
+
+
+class MovieFetchExternalIDView(MovieDetailView):
+    def get(self, request, *args, **kwargs):
+        movie = self.get_object()
+        movie.imdb_id = MovieIDFinder(movie.title).get_id()
+        movie.save()
+        return super().get(self, request, *args, **kwargs)
 
 
 class MovieSwapTitlesView(MovieDetailView):

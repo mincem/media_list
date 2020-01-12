@@ -41,9 +41,9 @@ class DetailView {
     this.$modal.find('.modal-content').html(htmlData);
     this.$modal.modal('show');
     this.displayInterestForm();
-    const findBakaIDButton = document.getElementById('action-find-baka-id');
+    const findBakaIDButton = document.getElementById('action-find-external-id');
     findBakaIDButton && findBakaIDButton.addEventListener('click', (event) => {
-      this.findBakaID(event);
+      this.findExternalID(event);
     });
     const getBakaDataButton = document.getElementById('action-get-baka-data');
     getBakaDataButton && getBakaDataButton.addEventListener('click', (event) => {
@@ -63,8 +63,8 @@ class DetailView {
     });
   }
 
-  findBakaID(event) {
-    const button = document.getElementById('action-find-baka-id');
+  findExternalID(event) {
+    const button = document.getElementById('action-find-external-id');
     this.showLoadingAnimation(button);
     $.ajax({
       url: event.currentTarget.dataset.url,

@@ -36,3 +36,23 @@
     {% endif %}
   </ul>
 {% endblock external_detail %}
+
+
+{% block actions %}
+  {% if not object.imdb_id %}
+    <button id="action-find-external-id" type="button" class="btn btn-primary"
+            data-url="{% category_url object.get_category 'get_external_id' object.id %}">
+      Find IMDb ID
+    </button>
+  {% endif %}
+{% endblock actions %}
+
+
+{% block extra_links %}
+  {% if object.imdb_id %}
+    <a class="btn btn-sm media-link" href="{{ object.external_url }}" target="_blank" rel="noopener">
+      IMDb page
+      <i class="fas fa-external-link-alt"></i>
+    </a>
+  {% endif %}
+{% endblock extra_links %}
