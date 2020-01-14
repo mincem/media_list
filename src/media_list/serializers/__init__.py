@@ -1,0 +1,1 @@
+from .imdb_movie_serializer import IMDBMovieSerializer
