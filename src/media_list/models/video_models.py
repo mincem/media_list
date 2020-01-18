@@ -1,3 +1,5 @@
+from django.db import models
+
 from . import base_models
 
 
@@ -14,7 +16,7 @@ class VideoKeyword(base_models.NamedModel):
 
 
 class VideoPerson(base_models.NamedModel, base_models.TimestampedModel):
-    pass
+    imdb_id = models.PositiveSmallIntegerField()
 
 
 class VideoCountry(base_models.NamedModel):
