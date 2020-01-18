@@ -1,1 +1,2 @@
 from .baka_series_repository import BakaSeriesRepository
+from .imdb_movie_repository import IMDBMovieRepository

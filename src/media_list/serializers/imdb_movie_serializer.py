@@ -7,7 +7,7 @@ class IMDBMovieSerializer:
 
     def serialize(self):
         return {
-            "id": self.api_movie.movieID,
+            "imdb_id": self.api_movie.movieID,
             "title": self.api_movie.get("title"),
             "plots": self.api_movie.get("plot", []),
             "outline": self.api_movie.get("plot outline"),
