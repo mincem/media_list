@@ -16,7 +16,7 @@ class IMDBMovieSerializer:
             "year": self.api_movie.get("year"),
             "countries": self.api_movie.get("countries", []),
             "genres": self.api_movie.get("genres", []),
-            "keywords": None,
+            "keywords": self.parse_keywords(),
             "cast": self.parse_cast(),
             "directors": self.parse_directors(),
             "rating": self.api_movie.get("rating"),  # float
@@ -36,6 +36,9 @@ class IMDBMovieSerializer:
     def parse_directors(self):
         return [parse_person(director) for director in (self.api_movie.get("directors", []))]
 
+    def parse_keywords(self):
+        return self.api_movie.get("keywords", [])[:10]
+
 
 def parse_person(imdb_person):
     return {
@@ -45,7 +48,9 @@ def parse_person(imdb_person):
 
 
 def parse_person_in_role(imdb_person):
-    return parse_person(imdb_person).update(role=parse_role(imdb_person))
+    person = parse_person(imdb_person)
+    person["role"] = parse_role(imdb_person)
+    return person
 
 
 def parse_role(imdb_person):
