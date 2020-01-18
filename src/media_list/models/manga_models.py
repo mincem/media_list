@@ -1,7 +1,7 @@
 from django.contrib.staticfiles.templatetags.staticfiles import static
 from django.db import models
 
-from .base_models import TimestampedModel, NamedModel, MediaItem, ItemURL, MediaSource
+from .base_models import TimestampedModel, NamedModel, MediaItem, ItemURL, MediaSource, ExternalMediaItem
 from ..categories import manga_category
 
 STATUS_CHOICES = (
@@ -48,16 +48,13 @@ class MangaSeries(MediaItem):
             return static('media_list/images/default_cover_2.jpg')
 
 
-class BakaSeries(TimestampedModel):
+class BakaSeries(ExternalMediaItem):
     baka_id = models.PositiveSmallIntegerField()  # TODO: unique, or save history?
-    title = models.CharField(max_length=255)
     genres = models.ManyToManyField("MangaGenre", related_name="series")
     keywords = models.ManyToManyField("MangaKeyword", related_name="series", through="MangaSeriesKeyword")
-    description = models.TextField(blank=True)
     status = models.CharField(max_length=255, blank=True)
     authors = models.ManyToManyField("MangaPerson", related_name="series_as_author")
     artists = models.ManyToManyField("MangaPerson", related_name="series_as_artist")
-    year = models.PositiveSmallIntegerField(blank=True, null=True)
     original_publisher = models.CharField(max_length=255, blank=True)
     english_publisher = models.CharField(max_length=255, blank=True)
     image = models.ImageField(upload_to="manga_images/", blank=True, null=True)

@@ -3,7 +3,6 @@ class IMDBMovieRepository:
                imdb_id=None,
                title=None,
                plots=None,
-               outline=None,
                description=None,
                runtime=None,
                year=None,

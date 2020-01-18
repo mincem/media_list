@@ -10,7 +10,6 @@ class IMDBMovieSerializer:
             "imdb_id": self.api_movie.movieID,
             "title": self.api_movie.get("title"),
             "plots": self.api_movie.get("plot", []),
-            "outline": self.api_movie.get("plot outline"),
             "description": self.api_movie.get("synopsis", [])[0],
             "runtime": self.parse_runtime(),
             "year": self.api_movie.get("year"),

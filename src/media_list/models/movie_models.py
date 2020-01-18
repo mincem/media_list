@@ -1,7 +1,8 @@
 from django.contrib.staticfiles.templatetags.staticfiles import static
 from django.db import models
+from ordered_model.models import OrderedModel
 
-from .base_models import MediaItem, ItemURL
+from .base_models import MediaItem, ItemURL, ExternalMediaItem
 from ..categories import movie_category
 
 STATUS_CHOICES = (
@@ -20,7 +21,7 @@ class Movie(MediaItem):
     status = models.CharField(max_length=1, choices=STATUS_CHOICES, default=DEFAULT_STATUS_CHOICE)
     source = models.ForeignKey("VideoSource", blank=True, null=True, on_delete=models.SET_NULL)
     imdb_id = models.PositiveSmallIntegerField(blank=True, null=True)
-    # imdb_info = models.ForeignKey("ImdbMovie", blank=True, null=True, on_delete=models.SET_NULL)
+    # imdb_info = models.ForeignKey("IMDBMovie", blank=True, null=True, on_delete=models.SET_NULL)
 
     @property
     def image_url(self):
@@ -35,3 +36,40 @@ class Movie(MediaItem):
 class MovieURL(ItemURL):
     movie = models.ForeignKey("Movie", related_name="urls", on_delete=models.CASCADE)
     order_with_respect_to = 'movie'
+
+
+class IMDBMovie(ExternalMediaItem):
+    imdb_id = models.PositiveSmallIntegerField()
+    runtime = models.DurationField(blank=True, null=True)
+    countries = models.ManyToManyField("VideoCountry", related_name="movies")
+    genres = models.ManyToManyField("VideoGenre", related_name="movies")
+    keywords = models.ManyToManyField("VideoKeyword", related_name="movies", through="MovieItemKeyword")
+    cast = models.ManyToManyField("VideoPerson", related_name="movies_as_cast", through="MovieCastMember")
+    directors = models.ManyToManyField("VideoPerson", related_name="movies_as_director")
+    rating = models.DecimalField(max_digits=3, decimal_places=1)
+    image = models.ImageField(upload_to="movie_images/", blank=True, null=True)
+
+
+class MoviePlot(OrderedModel):
+    movie = models.ForeignKey("IMDBMovie", related_name="plots", on_delete=models.CASCADE)
+    text = models.TextField(blank=True)
+    order_with_respect_to = 'movie'
+
+
+class MovieItemKeyword(OrderedModel):
+    movie = models.ForeignKey("IMDBMovie", related_name="ordered_keywords", on_delete=models.CASCADE)
+    keyword = models.ForeignKey("VideoKeyword", on_delete=models.CASCADE)
+    order_with_respect_to = 'movie'
+
+    def __str__(self):
+        return str(self.keyword)
+
+
+class MovieCastMember(OrderedModel):
+    movie = models.ForeignKey("IMDBMovie", related_name="ordered_cast", on_delete=models.CASCADE)
+    member = models.ForeignKey("VideoPerson", on_delete=models.CASCADE)
+    role = models.CharField(max_length=255, unique=True)
+    order_with_respect_to = 'movie'
+
+    def __str__(self):
+        return str(self.member)
