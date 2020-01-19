@@ -43,7 +43,7 @@ class IMDBMovie(ExternalMediaItem):
     runtime = models.DurationField(blank=True, null=True)
     countries = models.ManyToManyField("VideoCountry", related_name="movies")
     genres = models.ManyToManyField("VideoGenre", related_name="movies")
-    keywords = models.ManyToManyField("VideoKeyword", related_name="movies", through="MovieItemKeyword")
+    keywords = models.ManyToManyField("VideoKeyword", related_name="movies")
     cast = models.ManyToManyField("VideoPerson", related_name="movies_as_cast", through="MovieCastMember")
     directors = models.ManyToManyField("VideoPerson", related_name="movies_as_director")
     rating = models.DecimalField(max_digits=3, decimal_places=1)
@@ -55,14 +55,8 @@ class MoviePlot(OrderedModel):
     text = models.TextField(blank=True)
     order_with_respect_to = 'movie'
 
-
-class MovieItemKeyword(OrderedModel):
-    movie = models.ForeignKey("IMDBMovie", related_name="ordered_keywords", on_delete=models.CASCADE)
-    keyword = models.ForeignKey("VideoKeyword", on_delete=models.CASCADE)
-    order_with_respect_to = 'movie'
-
     def __str__(self):
-        return str(self.keyword)
+        return str(self.text)
 
 
 class MovieCastMember(OrderedModel):

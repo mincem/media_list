@@ -1,4 +1,4 @@
-from ..models import IMDBMovie, VideoGenre, VideoCountry, MoviePlot, VideoPerson, VideoKeyword
+from ..models import IMDBMovie, VideoGenre, VideoCountry, VideoPerson, MovieCastMember
 
 
 class IMDBMovieRepository:
@@ -25,7 +25,8 @@ class IMDBMovieRepository:
             year=year,
             rating=rating,
         )
-        imdb_movie.plots.add(*plots_from_texts(plots))
+        for plot in plots:
+            imdb_movie.plots.create(text=plot)
         imdb_movie.countries.add(*countries_from_names(countries))
         imdb_movie.genres.add(*genres_from_names(genres))
         add_keywords(keywords, imdb_movie)
@@ -34,10 +35,6 @@ class IMDBMovieRepository:
         if image is not None:
             imdb_movie.image.save(**image)
         return imdb_movie
-
-
-def plots_from_texts(texts):
-    return [MoviePlot.objects.create(text=text)[0] for text in texts]
 
 
 def genres_from_names(names):
@@ -50,14 +47,17 @@ def countries_from_names(names):
 
 def add_keywords(keyword_names, imdb_movie):
     for keyword_name in keyword_names:
-        keyword = VideoKeyword.objects.get_or_create(name=keyword_name)[0]
-        imdb_movie.keywords.add(keyword)
+        imdb_movie.keywords.get_or_create(name=keyword_name)
 
 
 def add_cast(cast_data, imdb_movie):
     for cast_member_data in cast_data:
         cast_member = get_or_create_person(cast_member_data)
-        imdb_movie.ordered_cast.add(cast_member, through_defaults={"role": cast_member_data["role"]})
+        MovieCastMember.objects.create(
+            movie=imdb_movie,
+            member=cast_member,
+            role=cast_member_data["role"],
+        )
 
 
 def directors_from_data(directors_data):
