@@ -55,4 +55,4 @@ def parse_person_in_role(imdb_person):
 def parse_role(imdb_person):
     if imdb_person.currentRole is None:
         return ""
-    return imdb_person.currentRole.get("name", "")
+    return str(imdb_person.currentRole)

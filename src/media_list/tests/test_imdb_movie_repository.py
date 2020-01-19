@@ -83,3 +83,12 @@ class IMDBMovieRepositoryTests(TestCase):
         self.assertEquals("Rick Blaine", self.imdb_movie.ordered_cast.first().role)
         self.assertEquals(7, self.imdb_movie.ordered_cast.first().member.imdb_id)
         self.assertEquals(10, self.imdb_movie.ordered_cast.count())
+
+    def test_store_correct_directors(self):
+        self.assertEquals("Michael Curtiz", str(self.imdb_movie.directors.first()))
+
+    def test_store_correct_rating(self):
+        self.assertEquals(8.5, self.imdb_movie.rating)
+
+    def test_store_image_in_correct_path(self):
+        self.assertIn("/media/movie_images/", self.imdb_movie.image.url)
