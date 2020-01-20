@@ -56,3 +56,8 @@ class MovieAdmin(admin.ModelAdmin):
 @admin.register(models.VideoSource)
 class VideoSourceAdmin(admin.ModelAdmin):
     pass
+
+
+@admin.register(models.IMDBMovie)
+class IMDBMovieAdmin(admin.ModelAdmin):
+    pass

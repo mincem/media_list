@@ -1,6 +1,7 @@
 from django.views import generic
 
 from .base_views import EditInterestView, MediaCreateView, MediaEditView, MediaDeleteView
+from ..data_fetchers import MovieDataFetcher
 from ..forms import MovieForm, MovieURLInline
 from ..id_finders import MovieIDFinder
 from ..models import Movie, VideoSource
@@ -40,6 +41,9 @@ class MovieFetchExternalIDView(MovieDetailView):
 
 class MovieFetchExternalItemView(MovieDetailView):
     def get(self, request, *args, **kwargs):
+        object = self.get_object()
+        object.imdb_info = MovieDataFetcher(movie=object).get_data()
+        object.save()
         return super().get(self, request, *args, **kwargs)
 
 
