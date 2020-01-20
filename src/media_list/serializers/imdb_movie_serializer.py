@@ -1,3 +1,4 @@
+import re
 from datetime import timedelta
 
 
@@ -10,7 +11,7 @@ class IMDBMovieSerializer:
             "imdb_id": self.api_movie.movieID,
             "title": self.api_movie.get("title"),
             "plots": self.api_movie.get("plot", []),
-            "description": self.api_movie.get("synopsis", [])[0],
+            "description": self.parse_description(),
             "runtime": self.parse_runtime(),
             "year": self.api_movie.get("year"),
             "countries": self.api_movie.get("countries", []),
@@ -18,9 +19,13 @@ class IMDBMovieSerializer:
             "keywords": self.parse_keywords(),
             "cast": self.parse_cast(),
             "directors": self.parse_directors(),
-            "rating": self.api_movie.get("rating"),  # float
+            "rating": self.api_movie.get("rating"),
             "image_url": self.api_movie.get("full-size cover url"),
         }
+
+    def parse_description(self):
+        synopsis = self.api_movie.get("synopsis", [])[0]
+        return re.sub("\.(?!\s|$)", ".\n\n", synopsis)
 
     def parse_runtime(self):
         runtimes = self.api_movie.get("runtime")
