@@ -27,6 +27,10 @@ class MangaSeries(MediaItem):
     baka_id = models.PositiveSmallIntegerField(blank=True, null=True)
     baka_info = models.ForeignKey("BakaSeries", blank=True, null=True, on_delete=models.SET_NULL)
 
+    @property
+    def external_info(self):
+        return self.baka_info
+
     def display_volumes(self):
         if self.volumes == 1 and self.is_completed:
             return 'Omnibus One-shot' if self.has_omnibus else 'One-shot'
@@ -42,8 +46,8 @@ class MangaSeries(MediaItem):
 
     @property
     def image_url(self):
-        if self.baka_info and self.baka_info.image:
-            return self.baka_info.image.url
+        if self.external_info and self.external_info.image:
+            return self.external_info.image.url
         else:
             return static('media_list/images/default_cover_2.jpg')
 

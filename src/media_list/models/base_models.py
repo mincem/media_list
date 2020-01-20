@@ -38,6 +38,10 @@ class MediaItem(TimestampedModel):
         return self.title
 
     @property
+    def external_info(self):
+        raise NotImplementedError
+
+    @property
     def interest_color(self):
         from ..utils import ColorPicker
         return ColorPicker().color_for(self.interest)

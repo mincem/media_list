@@ -25,8 +25,8 @@
         data-series-id="{{ object.id }}" data-source="{{ object.source }}" data-completed="{{ object.is_completed }}"
         data-baka-info="{{ object.baka_info_id|yesno:"True,False" }}">
       <td class="ml-cell-thumbnail">
-        {% if object.baka_info.image %}
-          <img src="{{ object.baka_info.image|thumbnail_url:'list' }}" alt="{{ object.title }}"/>
+        {% if object.external_info.image %}
+          <img src="{{ object.external_info.image|thumbnail_url:'list' }}" alt="{{ object.title }}"/>
         {% endif %}
       </td>
 
@@ -45,17 +45,17 @@
       </td>
 
       <td class="ml-cell-staff">
-        {% for member in object.baka_info.staff %}
+        {% for member in object.external_info.staff %}
           <span class="badge badge-info">{{ member }}</span>
         {% endfor %}
 
-        {% if object.baka_info.has_extra_staff %}
+        {% if object.external_info.has_extra_staff %}
           <span class="badge badge-info">...</span>
         {% endif %}
       </td>
 
       <td class="text-center">
-        {{ object.baka_info.year }}
+        {{ object.external_info.year }}
       </td>
 
       <td class="ml-cell-volumes {{ object.is_completed|yesno:"complete,incomplete" }}"

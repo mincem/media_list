@@ -21,7 +21,11 @@ class Movie(MediaItem):
     status = models.CharField(max_length=1, choices=STATUS_CHOICES, default=DEFAULT_STATUS_CHOICE)
     source = models.ForeignKey("VideoSource", blank=True, null=True, on_delete=models.SET_NULL)
     imdb_id = models.PositiveSmallIntegerField(blank=True, null=True)
-    # imdb_info = models.ForeignKey("IMDBMovie", blank=True, null=True, on_delete=models.SET_NULL)
+    imdb_info = models.ForeignKey("IMDBMovie", blank=True, null=True, on_delete=models.SET_NULL)
+
+    @property
+    def external_info(self):
+        return self.imdb_info
 
     @property
     def image_url(self):
