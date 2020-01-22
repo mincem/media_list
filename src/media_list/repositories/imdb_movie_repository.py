@@ -1,4 +1,4 @@
-from ..models import IMDBMovie, VideoGenre, VideoCountry, VideoPerson, MovieCastMember
+from ..models import IMDBMovie, VideoGenre, VideoCountry, VideoPerson, VideoKeyword, MovieCastMember
 
 
 class IMDBMovieRepository:
@@ -29,7 +29,7 @@ class IMDBMovieRepository:
             imdb_movie.plots.create(text=plot)
         imdb_movie.countries.add(*countries_from_names(countries))
         imdb_movie.genres.add(*genres_from_names(genres))
-        add_keywords(keywords, imdb_movie)
+        imdb_movie.keywords.add(*keywords_from_names(keywords))
         add_cast(cast, imdb_movie)
         imdb_movie.directors.add(*directors_from_data(directors))
         if image is not None:
@@ -45,9 +45,8 @@ def countries_from_names(names):
     return [VideoCountry.objects.get_or_create(name=country_name)[0] for country_name in names]
 
 
-def add_keywords(keyword_names, imdb_movie):
-    for keyword_name in keyword_names:
-        imdb_movie.keywords.get_or_create(name=keyword_name)
+def keywords_from_names(names):
+    return [VideoKeyword.objects.get_or_create(name=keyword_name)[0] for keyword_name in names]
 
 
 def add_cast(cast_data, imdb_movie):

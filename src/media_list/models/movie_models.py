@@ -66,7 +66,7 @@ class MoviePlot(OrderedModel):
 class MovieCastMember(OrderedModel):
     movie = models.ForeignKey("IMDBMovie", related_name="ordered_cast", on_delete=models.CASCADE)
     member = models.ForeignKey("VideoPerson", on_delete=models.CASCADE)
-    role = models.CharField(max_length=255, unique=True)
+    role = models.CharField(max_length=255)
     order_with_respect_to = 'movie'
 
     def __str__(self):
