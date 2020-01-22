@@ -55,11 +55,46 @@
       </li>
     {% endif %}
 
+    {% if object.external_info.title %}
+      <li class="md-column">
+        <b>Title:</b> {{ object.external_info.title }}
+      </li>
+    {% endif %}
+
+    {% if object.external_info.title %}
+      <li class="md-column">
+        <b>Runtime:</b> {{ object.external_info.runtime }}
+      </li>
+    {% endif %}
+
+    {% if object.external_info.countries %}
+      <li class="md-column">
+        <b>Country:</b> {{ object.external_info.countries.all|join:', ' }}
+      </li>
+    {% endif %}
+
     {% if object.external_info.ordered_cast %}
-      <b>Cast:</b>
-      {% for cast_member in object.external_info.ordered_cast.all %}
-        <span class="badge" title="as {{ cast_member.role }}">{{ cast_member }}</span>
-      {% endfor %}
+      <li class="md-column">
+        <b>Cast:</b>
+        {% for cast_member in object.external_info.ordered_cast.all %}
+          <span class="badge" title="as {{ cast_member.role }}">{{ cast_member }}</span>
+        {% endfor %}
+      </li>
+    {% endif %}
+
+    {% if object.external_info.directors %}
+      <li class="md-column">
+        <b>Director:</b>
+        {% for director in object.external_info.directors.all %}
+          <span class="badge">{{ director }}</span>
+        {% endfor %}
+      </li>
+    {% endif %}
+
+    {% if object.external_info.rating %}
+      <li class="md-column">
+        <b>Rating:</b> {{ object.external_info.rating }}
+      </li>
     {% endif %}
   </ul>
 {% endblock external_detail %}
