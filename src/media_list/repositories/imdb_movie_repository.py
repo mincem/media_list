@@ -27,9 +27,9 @@ class IMDBMovieRepository:
         )
         for plot in plots:
             imdb_movie.plots.create(text=plot)
-        imdb_movie.countries.add(*countries_from_names(countries))
-        imdb_movie.genres.add(*genres_from_names(genres))
-        imdb_movie.keywords.add(*keywords_from_names(keywords))
+        imdb_movie.countries.add(*models_from_names(countries, VideoCountry))
+        imdb_movie.genres.add(*models_from_names(genres, VideoGenre))
+        imdb_movie.keywords.add(*models_from_names(keywords, VideoKeyword))
         add_cast(cast, imdb_movie)
         imdb_movie.directors.add(*directors_from_data(directors))
         if image is not None:
@@ -37,16 +37,8 @@ class IMDBMovieRepository:
         return imdb_movie
 
 
-def genres_from_names(names):
-    return [VideoGenre.objects.get_or_create(name=genre_name)[0] for genre_name in names]
-
-
-def countries_from_names(names):
-    return [VideoCountry.objects.get_or_create(name=country_name)[0] for country_name in names]
-
-
-def keywords_from_names(names):
-    return [VideoKeyword.objects.get_or_create(name=keyword_name)[0] for keyword_name in names]
+def models_from_names(names, model):
+    return [model.objects.get_or_create(name=name)[0] for name in names]
 
 
 def add_cast(cast_data, imdb_movie):
