@@ -54,6 +54,13 @@
         <p>{{ object.notes }}</p>
       </li>
     {% endif %}
+
+    {% if object.external_info.ordered_cast %}
+      <b>Cast:</b>
+      {% for cast_member in object.external_info.ordered_cast.all %}
+        <span class="badge" title="as {{ cast_member.role }}">{{ cast_member }}</span>
+      {% endfor %}
+    {% endif %}
   </ul>
 {% endblock external_detail %}
 

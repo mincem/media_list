@@ -10,7 +10,7 @@ class IMDBMovieSerializer:
         return {
             "imdb_id": self.api_movie.movieID,
             "title": self.api_movie.get("title"),
-            "plots": self.api_movie.get("plot", []),
+            "plots": self.parse_plots(),
             "description": self.parse_description(),
             "runtime": self.parse_runtime(),
             "year": self.api_movie.get("year"),
@@ -23,9 +23,12 @@ class IMDBMovieSerializer:
             "image_url": self.api_movie.get("full-size cover url"),
         }
 
+    def parse_plots(self):
+        return [text_without_author(plot) for plot in self.api_movie.get("plot", [])]
+
     def parse_description(self):
         synopsis = self.api_movie.get("synopsis", [])[0]
-        return re.sub("\.(?!\s|$)", ".\n\n", synopsis)
+        return re.sub(r"\.(?!\s|$)", ".\n\n", synopsis)
 
     def parse_runtime(self):
         runtimes = self.api_movie.get("runtime")
@@ -42,6 +45,12 @@ class IMDBMovieSerializer:
 
     def parse_keywords(self):
         return self.api_movie.get("keywords", [])[:10]
+
+
+def text_without_author(text):
+    if not isinstance(text, str):
+        return text
+    return text.split('::', 1)[0]
 
 
 def parse_person(imdb_person):
