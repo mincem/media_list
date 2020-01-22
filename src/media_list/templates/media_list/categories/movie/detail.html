@@ -61,6 +61,12 @@
       </li>
     {% endif %}
 
+    {% if object.external_info.original_title and object.external_info.original_title != object.external_info.title %}
+      <li class="md-column">
+        <b>Original title:</b> {{ object.external_info.original_title }}
+      </li>
+    {% endif %}
+
     {% if object.external_info.title %}
       <li class="md-column">
         <b>Runtime:</b> {{ object.external_info.runtime }}

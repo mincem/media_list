@@ -47,6 +47,7 @@ class MovieURL(ItemURL):
 
 class IMDBMovie(ExternalMediaItem):
     imdb_id = models.PositiveSmallIntegerField()
+    original_title = models.CharField(max_length=255)
     runtime = models.DurationField(blank=True, null=True)
     countries = models.ManyToManyField("VideoCountry", related_name="movies")
     genres = models.ManyToManyField("VideoGenre", related_name="movies")

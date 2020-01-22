@@ -14,7 +14,7 @@ class MovieDataFetcher:
         self.image_retriever_class = image_retriever_class or ImageRetriever
 
     def get_data(self):
-        api_movie = self.imdb_access.get_movie(self.movie.imdb_id, info=["main", "plot", "keywords"])
+        api_movie = self.imdb_access.get_movie(self.movie.imdb_id, info=["main", "plot", "keywords", "akas"])
         movie_dict = IMDBMovieSerializer(api_movie).serialize()
         image_url = movie_dict.pop("image_url")
         if image_url is not None:

@@ -10,6 +10,7 @@ class IMDBMovieSerializer:
         return {
             "imdb_id": self.api_movie.movieID,
             "title": self.api_movie.get("title"),
+            "original_title": self.parse_original_title(),
             "plots": self.parse_plots(),
             "description": self.parse_description(),
             "runtime": self.parse_runtime(),
@@ -22,6 +23,12 @@ class IMDBMovieSerializer:
             "rating": self.api_movie.get("rating"),
             "image_url": self.api_movie.get("full-size cover url"),
         }
+
+    def parse_original_title(self):
+        for alternate_title in self.api_movie.get("raw akas", []):
+            if "original title" in alternate_title.get("countries"):
+                return alternate_title.get("title")
+        return ""
 
     def parse_plots(self):
         return [text_without_author(plot) for plot in self.api_movie.get("plot", [])]

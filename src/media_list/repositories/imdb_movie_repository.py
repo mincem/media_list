@@ -5,6 +5,7 @@ class IMDBMovieRepository:
     def create(self,
                imdb_id=None,
                title=None,
+               original_title=None,
                plots=None,
                description=None,
                runtime=None,
@@ -20,6 +21,7 @@ class IMDBMovieRepository:
         imdb_movie = IMDBMovie.objects.create(
             imdb_id=imdb_id,
             title=title,
+            original_title=original_title,
             description=description,
             runtime=runtime,
             year=year,
