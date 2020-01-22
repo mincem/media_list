@@ -29,7 +29,10 @@ class Movie(MediaItem):
 
     @property
     def image_url(self):
-        return static('media_list/images/default_cover_2.jpg')
+        if self.external_info and self.external_info.image:
+            return self.external_info.image.url
+        else:
+            return static('media_list/images/default_cover_2.jpg')
 
     def external_url(self):
         if not self.imdb_id:

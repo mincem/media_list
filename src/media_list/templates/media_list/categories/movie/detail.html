@@ -5,6 +5,10 @@
 {% block modal_title %}
   <h4>
     {{ object }}
+
+    {% if object.external_info.year %}
+      <span class="badge badge-info">{{ object.external_info.year }}</span>
+    {% endif %}
   </h4>
 
   {% if object.alternate_title %}
@@ -18,6 +22,22 @@
     </h6>
   {% endif %}
 {% endblock modal_title %}
+
+{% block description %}
+  <p class="media-genres">
+    {% for genre in object.external_info.genres.all %}
+      <span class="badge badge-info">{{ genre }}</span>
+    {% endfor %}
+  </p>
+
+  <p class="media-keywords">
+    {% for keyword in object.external_info.keywords.all %}
+      <span class="badge badge-orange">{{ keyword }}</span>
+    {% endfor %}
+  </p>
+
+  {{ object.external_info.plots.first }}
+{% endblock description %}
 
 {% block external_detail %}
   <ul class="external-detail">
