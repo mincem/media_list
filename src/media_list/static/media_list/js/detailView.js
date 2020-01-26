@@ -58,6 +58,9 @@ class DetailView {
   displayInterestForm() {
     let $interestForm = this.$modal.find('.media-interest-form');
     new RangeField($interestForm);
+    this.$modal.find('.media-interest').click(() => {
+      $interestForm.css('display', 'flex');
+    });
     $interestForm.submit((event) => {
       this.updateInterest(event);
     });

@@ -84,11 +84,11 @@ table .ml-cell-status .badge {
     width: 125px;
 }
 
-.fa-check {
+table .fa-check {
     color: green;
 }
 
-.fa-times {
+table .fa-times {
     color: red;
 }
 
@@ -214,4 +214,16 @@ table .ml-cell-status .badge {
     -webkit-appearance: none;
     -moz-appearance: none;
     appearance: none;
+}
+
+.media-interest {
+    cursor: pointer;
+}
+
+.media-interest-form {
+    display: none;
+}
+
+.media-interest-form .interest-value {
+    margin-right: 4px;
 }
