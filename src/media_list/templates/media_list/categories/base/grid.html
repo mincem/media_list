@@ -17,8 +17,11 @@
     <article class="main-content">
       <div class="media-grid">
         {% for object in object_list %}
-          <div class="grid-thumbnail">
-            <img src="{{ object.image_url }}" alt="{{ object.title }}" title="{{ object.title }}"/>
+          <div class="media-grid-item" data-url="{% category_url object.get_category 'detail' object.id %}"
+               data-series-id="{{ object.id }}">
+            <div class="grid-thumbnail">
+              <img src="{{ object.image_url }}" alt="{{ object.title }}" title="{{ object.title }}"/>
+            </div>
           </div>
         {% endfor %}
       </div>
@@ -35,6 +38,8 @@
 
 {% block extra_js %}
   <script src="{% static 'media_list/js/djangoCookies.js' %}"></script>
+
+  <script src="{% static 'media_list/js/grid.js' %}"></script>
 
   <script src="{% static 'media_list/js/detailView.js' %}"></script>
 
