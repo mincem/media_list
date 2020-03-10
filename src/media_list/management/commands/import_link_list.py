@@ -40,16 +40,18 @@ class Command(BaseCommand):
 
 def parse_entry(text, url):
     full_text, title, volumes = parse_text(text)
-    if title:
-        print(f"text: {full_text}")
-        print(f"title: {title}")
-        print(f"volumes: {volumes}")
-
-        manga_best_match = best_match(title)
-        answer = input("Proceed?\n")
-        if answer == 'y':
-            if manga_best_match:
-                add_url(manga_best_match, url)
+    print(f"text: {full_text}")
+    if not title:
+        print("No data extracted")
+        return
+    print(f"title: {title}")
+    print(f"volumes: {volumes}")
+    best_match = manga_best_match(title)
+    if best_match:
+        print(f"best match: {best_match} ({best_match.volumes} volumes)")
+    answer = input("Proceed?\n")
+    if answer == 'y':
+        process_manga(title, volumes, url, best_match)
 
 
 def parse_text(text):
@@ -63,18 +65,32 @@ def parse_text(text):
     return full_text, title, volumes
 
 
-def add_url(manga, url):
-    manga.urls.create(url=url)
-
-
-def best_match(title):
+def manga_best_match(title):
     try:
-        manga = MangaSeries.objects.get(title__icontains=title)
+        return MangaSeries.objects.get(title__icontains=title)
     except ObjectDoesNotExist:
         try:
-            manga = MangaSeries.objects.get(alternate_title__icontains=title)
+            return MangaSeries.objects.get(alternate_title__icontains=title)
         except ObjectDoesNotExist:
-            manga = None
-    if manga:
-        print(f"best match: {manga} ({manga.volumes} volumes)")
-    return manga
+            return
+
+
+def process_manga(title, volumes, url, best_match):
+    if best_match:
+        add_url(best_match, url)
+    else:
+        save_new_manga(title, volumes, url)
+
+
+def save_new_manga(title, volumes, url):
+    manga = MangaSeries.objects.create(
+        title=title,
+        volumes=volumes,
+        interest=0,
+        status='N',
+    )
+    add_url(manga, url)
+
+
+def add_url(manga, url):
+    manga.urls.create(url=url)
