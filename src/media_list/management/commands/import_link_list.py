@@ -1,7 +1,6 @@
 import os
 import re
 
-from django.core.exceptions import ObjectDoesNotExist
 from django.core.management.base import BaseCommand
 
 from ...models import MangaSource, MangaSeries
@@ -24,7 +23,7 @@ class Command(BaseCommand):
     def parse(self, filename):
         if not os.path.isfile(filename):
             raise FileNotFoundError(f'File "{filename}" does not exist.')
-        with open(filename, 'r') as html_file:
+        with open(filename, 'r', encoding="utf8") as html_file:
             for line in html_file:
                 self.scan_contents(line)
 
@@ -39,7 +38,7 @@ class Command(BaseCommand):
 
     def parse_entry(self, text, url):
         full_text, title, volumes = parse_text(text)
-        print(f"text: {full_text}")
+        print(f"text: {text}")
         if not title:
             print("No data extracted")
             return
@@ -52,11 +51,15 @@ class Command(BaseCommand):
 
     def process_manga(self, title, volumes, url, best_match):
         if best_match:
-            answer = input("Update best match?\n")
-            if answer == 'y':
+            answer = input("Update best match? ('v' ignores volumes)\n")
+            if answer == 'v':
+                volumes = 0
+            if answer in ['y', 'v']:
                 return update_best_match(best_match, volumes, url)
-        answer = input("Add new manga?\n")
-        if answer == 'y':
+        answer = input("Add new manga? ('v' ignores volumes)\n")
+        if answer == 'v':
+            volumes = 0
+        if answer in ['y', 'v']:
             return self.save_new_manga(title, volumes, url)
 
     def save_new_manga(self, title, volumes, url):
@@ -88,8 +91,9 @@ def manga_best_match(title):
 
 
 def update_best_match(best_match, volumes, url):
-    best_match.volumes = volumes
-    best_match.save()
+    if volumes > 0:
+        best_match.volumes = volumes
+        best_match.save()
     add_url(best_match, url)
 
 
