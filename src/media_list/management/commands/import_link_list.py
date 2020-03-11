@@ -79,8 +79,8 @@ def parse_text(text):
     if match is None:
         return
     full_text = match.group(0)
-    title = match.group(1)
-    volumes = match.group(2)
+    title = match.group(1).strip()
+    volumes = int(match.group(2)) if match.group(2) else 0
     return full_text, title, volumes
 
 
@@ -91,7 +91,7 @@ def manga_best_match(title):
 
 
 def update_best_match(best_match, volumes, url):
-    if volumes > 0:
+    if int(volumes) > 0:
         best_match.volumes = volumes
         best_match.save()
     add_url(best_match, url)
