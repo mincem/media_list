@@ -1,6 +1,6 @@
 from django.views import generic
 
-from .base_views import EditInterestView, MediaCreateView, MediaEditView, MediaDeleteView, MediaSwapTitlesView
+from . import base_views as media_views
 from ..data_fetchers import MovieDataFetcher
 from ..forms import MovieForm, MovieURLInline
 from ..id_finders import MovieIDFinder
@@ -51,25 +51,25 @@ class MovieFetchExternalItemView(MovieDetailMixin, generic.DetailView):
         return super().get(self, request, *args, **kwargs)
 
 
-class MovieSwapTitlesView(MovieDetailMixin, MediaSwapTitlesView):
+class MovieSwapTitlesView(MovieDetailMixin, media_views.MediaSwapTitlesView):
     pass
 
 
-class MovieCreateView(MediaCreateView):
+class MovieCreateView(media_views.MediaCreateView):
     model = Movie
     form_class = MovieForm
     inlines = [MovieURLInline]
 
 
-class MovieEditView(MediaEditView):
+class MovieEditView(media_views.MediaEditView):
     model = Movie
     form_class = MovieForm
     inlines = [MovieURLInline]
 
 
-class MovieEditInterestView(EditInterestView):
+class MovieEditInterestView(media_views.EditInterestView):
     model = Movie
 
 
-class MovieDeleteView(MediaDeleteView):
+class MovieDeleteView(media_views.MediaDeleteView):
     model = Movie

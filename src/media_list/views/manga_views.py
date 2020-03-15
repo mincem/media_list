@@ -1,7 +1,6 @@
 from django.views import generic
 
-from .base_views import EditInterestView, MediaCreateView, MediaEditView, MediaDeleteView, MediaSwapTitlesView, \
-    EditTitleView, EditAlternateTitleView
+from . import base_views as media_views
 from ..forms import MangaForm, MangaURLInline
 from ..id_finders import BakaIDFinder
 from ..models import MangaSeries, MangaSource
@@ -52,33 +51,33 @@ class MangaFetchBakaInfoView(MangaDetailMixin, generic.DetailView):
         return super().get(self, request, *args, **kwargs)
 
 
-class MangaSwapTitlesView(MangaDetailMixin, MediaSwapTitlesView):
+class MangaSwapTitlesView(MangaDetailMixin, media_views.MediaSwapTitlesView):
     pass
 
 
-class MangaCreateView(MediaCreateView):
+class MangaCreateView(media_views.MediaCreateView):
     model = MangaSeries
     form_class = MangaForm
     inlines = [MangaURLInline]
 
 
-class MangaEditView(MediaEditView):
+class MangaEditView(media_views.MediaEditView):
     model = MangaSeries
     form_class = MangaForm
     inlines = [MangaURLInline]
 
 
-class MangaEditInterestView(EditInterestView):
+class MangaEditInterestView(media_views.EditInterestView):
     model = MangaSeries
 
 
-class MangaEditTitleView(EditTitleView):
+class MangaEditTitleView(media_views.EditTitleView):
     model = MangaSeries
 
 
-class MangaEditAlternateTitleView(EditAlternateTitleView):
+class MangaEditAlternateTitleView(media_views.EditAlternateTitleView):
     model = MangaSeries
 
 
-class MangaDeleteView(MediaDeleteView):
+class MangaDeleteView(media_views.MediaDeleteView):
     model = MangaSeries
