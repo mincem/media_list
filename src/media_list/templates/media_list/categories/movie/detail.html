@@ -58,6 +58,8 @@
     {% if object.external_info.title %}
       <li class="md-column">
         <b>Title:</b> {{ object.external_info.title }}
+
+        {% include 'media_list/categories/base/_set_title_buttons.html' with object=object field=object.external_info.title only %}
       </li>
     {% endif %}
 

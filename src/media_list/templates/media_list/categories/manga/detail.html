@@ -64,17 +64,7 @@
       <li class="md-column">
         <b>Title:</b> {{ object.external_info.title }}
 
-        <button id="action-edit-title" type="button" class="text-button" title="Set as title"
-                data-url="{% category_url object.get_category 'edit_title' object.id %}"
-                data-title="{{ object.external_info.title }}">
-          <i class="fas fa-angle-up"></i>
-        </button>
-
-        <button id="action-edit-alternate-title" type="button" class="text-button" title="Set as alternate title"
-                data-url="{% category_url object.get_category 'edit_alternate_title' object.id %}"
-                data-title="{{ object.external_info.title }}">
-          <i class="fas fa-angle-double-up"></i>
-        </button>
+        {% include 'media_list/categories/base/_set_title_buttons.html' with object=object field=object.external_info.title only %}
       </li>
     {% endif %}
 
