@@ -1,6 +1,7 @@
 from django.views import generic
 
-from .base_views import EditInterestView, MediaCreateView, MediaEditView, MediaDeleteView, MediaSwapTitlesView
+from .base_views import EditInterestView, MediaCreateView, MediaEditView, MediaDeleteView, MediaSwapTitlesView, \
+    EditTitleView, EditAlternateTitleView
 from ..forms import MangaForm, MangaURLInline
 from ..id_finders import BakaIDFinder
 from ..models import MangaSeries, MangaSource
@@ -68,6 +69,14 @@ class MangaEditView(MediaEditView):
 
 
 class MangaEditInterestView(EditInterestView):
+    model = MangaSeries
+
+
+class MangaEditTitleView(EditTitleView):
+    model = MangaSeries
+
+
+class MangaEditAlternateTitleView(EditAlternateTitleView):
     model = MangaSeries
 
 

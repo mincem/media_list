@@ -8,7 +8,6 @@ class LandingView(generic.TemplateView):
 
 
 class MediaCreateView(CreateWithInlinesView):
-
     def get_template_names(self):
         return [f"media_list/categories/{self.model.category.path}/create.html"]
 
@@ -19,7 +18,6 @@ class MediaCreateView(CreateWithInlinesView):
 
 
 class MediaEditView(UpdateWithInlinesView):
-
     def get_template_names(self):
         return [f"media_list/categories/{self.model.category.path}/edit.html"]
 
@@ -27,8 +25,7 @@ class MediaEditView(UpdateWithInlinesView):
         return reverse_lazy(f"categories:{self.model.category.path}:list", kwargs={"pk": self.object.id})
 
 
-class EditInterestView(generic.UpdateView):
-    fields = ['interest']
+class EditFieldsView(generic.UpdateView):
     category = None
 
     def get_success_url(self):
@@ -43,6 +40,18 @@ class EditInterestView(generic.UpdateView):
         if self.model and self.model.category:
             return self.model.category
         raise NotImplementedError
+
+
+class EditInterestView(EditFieldsView):
+    fields = ['interest']
+
+
+class EditTitleView(EditFieldsView):
+    fields = ['title']
+
+
+class EditAlternateTitleView(EditFieldsView):
+    fields = ['alternate_title']
 
 
 class MediaDeleteView(generic.DeleteView):

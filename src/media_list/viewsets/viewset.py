@@ -12,9 +12,9 @@ class Viewset:
     create_view: Any = generic.View
     edit_view: Any = generic.View
     edit_interest_view: Any = generic.View
+    edit_title_view: Any = generic.View
+    edit_alternate_title_view: Any = generic.View
     delete_view: Any = generic.View
     find_external_id_view: Any = generic.View
     find_external_data_view: Any = generic.View
     swap_titles_view: Any = generic.View
-
-movie_viewset = Viewset()
