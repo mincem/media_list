@@ -1,6 +1,6 @@
 from django.views import generic
 
-from .base_views import EditInterestView, MediaCreateView, MediaEditView, MediaDeleteView
+from .base_views import EditInterestView, MediaCreateView, MediaEditView, MediaDeleteView, MediaSwapTitlesView
 from ..forms import MangaForm, MangaURLInline
 from ..id_finders import BakaIDFinder
 from ..models import MangaSeries, MangaSource
@@ -26,12 +26,16 @@ class MangaGridView(MangaCollectionView):
     template_name = 'media_list/categories/manga/grid.html'
 
 
-class MangaDetailView(generic.DetailView):
+class MangaDetailMixin:
     model = MangaSeries
     template_name = 'media_list/categories/manga/detail.html'
 
 
-class MangaFetchBakaIDView(MangaDetailView):
+class MangaDetailView(MangaDetailMixin, generic.DetailView):
+    pass
+
+
+class MangaFetchBakaIDView(MangaDetailMixin, generic.DetailView):
     def get(self, request, *args, **kwargs):
         series = self.get_object()
         series.baka_id = BakaIDFinder(series.title).get_id()
@@ -39,7 +43,7 @@ class MangaFetchBakaIDView(MangaDetailView):
         return super().get(self, request, *args, **kwargs)
 
 
-class MangaFetchBakaInfoView(MangaDetailView):
+class MangaFetchBakaInfoView(MangaDetailMixin, generic.DetailView):
     def get(self, request, *args, **kwargs):
         series = self.get_object()
         series.baka_info = BakaParser(series.baka_id).perform()
@@ -47,10 +51,8 @@ class MangaFetchBakaInfoView(MangaDetailView):
         return super().get(self, request, *args, **kwargs)
 
 
-class MangaSwapTitlesView(MangaDetailView):
-    def get(self, request, *args, **kwargs):
-        self.get_object().swap_titles()
-        return super().get(self, request, *args, **kwargs)
+class MangaSwapTitlesView(MangaDetailMixin, MediaSwapTitlesView):
+    pass
 
 
 class MangaCreateView(MediaCreateView):

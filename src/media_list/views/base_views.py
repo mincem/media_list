@@ -50,3 +50,9 @@ class MediaDeleteView(generic.DeleteView):
 
     def get_success_url(self):
         return reverse_lazy(f"categories:{self.model.category.path}:list")
+
+
+class MediaSwapTitlesView(generic.DetailView):
+    def get(self, request, *args, **kwargs):
+        self.get_object().swap_titles()
+        return super().get(self, request, *args, **kwargs)

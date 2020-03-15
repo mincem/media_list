@@ -1,6 +1,6 @@
 from django.views import generic
 
-from .base_views import EditInterestView, MediaCreateView, MediaEditView, MediaDeleteView
+from .base_views import EditInterestView, MediaCreateView, MediaEditView, MediaDeleteView, MediaSwapTitlesView
 from ..data_fetchers import MovieDataFetcher
 from ..forms import MovieForm, MovieURLInline
 from ..id_finders import MovieIDFinder
@@ -26,31 +26,33 @@ class MovieGridView(MovieCollectionView):
     template_name = 'media_list/categories/movie/grid.html'
 
 
-class MovieDetailView(generic.DetailView):
+class MovieDetailMixin:
     model = Movie
     template_name = 'media_list/categories/movie/detail.html'
 
 
-class MovieFetchExternalIDView(MovieDetailView):
+class MovieDetailView(MovieDetailMixin, generic.DetailView):
+    pass
+
+
+class MovieFetchExternalIDView(MovieDetailMixin, generic.DetailView):
     def get(self, request, *args, **kwargs):
-        movie = self.get_object()
-        movie.imdb_id = MovieIDFinder(movie.title).get_id()
-        movie.save()
+        item = self.get_object()
+        item.imdb_id = MovieIDFinder(item.title).get_id()
+        item.save()
         return super().get(self, request, *args, **kwargs)
 
 
-class MovieFetchExternalItemView(MovieDetailView):
+class MovieFetchExternalItemView(MovieDetailMixin, generic.DetailView):
     def get(self, request, *args, **kwargs):
-        object = self.get_object()
-        object.imdb_info = MovieDataFetcher(movie=object).get_data()
-        object.save()
+        item = self.get_object()
+        item.imdb_info = MovieDataFetcher(movie=item).get_data()
+        item.save()
         return super().get(self, request, *args, **kwargs)
 
 
-class MovieSwapTitlesView(MovieDetailView):
-    def get(self, request, *args, **kwargs):
-        self.get_object().swap_titles()
-        return super().get(self, request, *args, **kwargs)
+class MovieSwapTitlesView(MovieDetailMixin, MediaSwapTitlesView):
+    pass
 
 
 class MovieCreateView(MediaCreateView):
