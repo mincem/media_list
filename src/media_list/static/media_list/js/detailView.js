@@ -53,6 +53,14 @@ class DetailView {
     swapTitlesButton && swapTitlesButton.addEventListener('click', (event) => {
       this.swapTitles(event);
     });
+    const editTitleButton = document.getElementById('action-edit-title');
+    editTitleButton && editTitleButton.addEventListener('click', (event) => {
+      this.editMainTitle(event);
+    });
+    const editAlternateTitleButton = document.getElementById('action-edit-alternate-title');
+    editAlternateTitleButton && editAlternateTitleButton.addEventListener('click', (event) => {
+      this.editAlternateTitle(event);
+    });
   }
 
   displayInterestForm() {
@@ -109,6 +117,35 @@ class DetailView {
         this.display(htmlData);
       }
     });
+  }
+
+  editTitle(event, titleField) {
+    $.ajax({
+      url: event.currentTarget.dataset.url,
+      type: 'POST',
+      dataType: 'html',
+      data: [
+        {
+          name: 'csrfmiddlewaretoken',
+          value: getCookie('csrftoken')
+        },
+        {
+          name: titleField,
+          value: event.currentTarget.dataset.title
+        },
+      ],
+      success: (htmlData) => {
+        this.display(htmlData);
+      }
+    });
+  }
+
+  editMainTitle(event) {
+    this.editTitle(event, 'title');
+  }
+
+  editAlternateTitle(event) {
+    this.editTitle(event, 'alternate_title');
   }
 
   updateInterest(event) {
