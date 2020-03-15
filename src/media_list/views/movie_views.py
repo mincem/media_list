@@ -71,5 +71,13 @@ class MovieEditInterestView(media_views.EditInterestView):
     model = Movie
 
 
+class MovieEditTitleView(media_views.EditTitleView):
+    model = Movie
+
+
+class MovieEditAlternateTitleView(media_views.EditAlternateTitleView):
+    model = Movie
+
+
 class MovieDeleteView(media_views.MediaDeleteView):
     model = Movie
