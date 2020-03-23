@@ -20,21 +20,12 @@ class MangaFormMixin(MangaMixin):
     inlines = [MangaURLInline]
 
 
-class MangaCollectionView(MangaMixin, generic.ListView):
-    def get_context_data(self, **kwargs):
-        return super().get_context_data(
-            sources=MangaSource.objects.all(),
-            series_id=self.kwargs.get('pk'),
-            **kwargs
-        )
+class MangaListView(MangaMixin, media_views.ListView):
+    source_class = MangaSource
 
 
-class MangaListView(MangaCollectionView):
-    template_name = 'media_list/categories/manga/list.html'
-
-
-class MangaGridView(MangaCollectionView):
-    template_name = 'media_list/categories/manga/grid.html'
+class MangaGridView(MangaMixin, media_views.GridView):
+    source_class = MangaSource
 
 
 class MangaDetailView(MangaDetailMixin, generic.DetailView):

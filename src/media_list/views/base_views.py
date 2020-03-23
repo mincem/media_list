@@ -7,6 +7,33 @@ class LandingView(generic.TemplateView):
     template_name = 'media_list/landing.html'
 
 
+class CollectionView(generic.ListView):
+    source_class = None
+
+    def get_sources(self):
+        if self.source_class:
+            return self.source_class.objects.all()
+        else:
+            return []
+
+    def get_context_data(self, **kwargs):
+        return super().get_context_data(
+            sources=self.get_sources(),
+            series_id=self.kwargs.get('pk'),
+            **kwargs
+        )
+
+
+class ListView(CollectionView):
+    def get_template_names(self):
+        return [f"media_list/categories/{self.model.category.path}/list.html"]
+
+
+class GridView(CollectionView):
+    def get_template_names(self):
+        return [f"media_list/categories/{self.model.category.path}/grid.html"]
+
+
 class CreateView(CreateWithInlinesView):
     def get_template_names(self):
         return [f"media_list/categories/{self.model.category.path}/create.html"]

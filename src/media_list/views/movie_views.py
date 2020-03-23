@@ -20,21 +20,12 @@ class MovieFormMixin(MovieMixin):
     inlines = [MovieURLInline]
 
 
-class MovieCollectionView(MovieMixin, generic.ListView):
-    def get_context_data(self, **kwargs):
-        return super().get_context_data(
-            sources=VideoSource.objects.all(),
-            series_id=self.kwargs.get('pk'),
-            **kwargs
-        )
+class MovieListView(MovieMixin, media_views.ListView):
+    source_class = VideoSource
 
 
-class MovieListView(MovieCollectionView):
-    template_name = 'media_list/categories/movie/list.html'
-
-
-class MovieGridView(MovieCollectionView):
-    template_name = 'media_list/categories/movie/grid.html'
+class MovieGridView(MovieMixin, media_views.GridView):
+    source_class = VideoSource
 
 
 class MovieDetailView(MovieDetailMixin, generic.DetailView):
