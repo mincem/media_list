@@ -2,6 +2,12 @@ const filterEvents = [];
 
 const dataTableColumns = [
   {
+    name: 'image',
+    orderable: false,
+    searchable: false,
+    width: '10px',
+  },
+  {
     name: 'source',
     orderable: false,
     searchable: true,
