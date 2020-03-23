@@ -57,15 +57,15 @@ class MovieFetchExternalItemView(MovieDetailMixin, generic.DetailView):
         return super().get(self, request, *args, **kwargs)
 
 
-class MovieSwapTitlesView(MovieDetailMixin, media_views.MediaSwapTitlesView):
+class MovieSwapTitlesView(MovieDetailMixin, media_views.SwapTitlesView):
     pass
 
 
-class MovieCreateView(MovieFormMixin, media_views.MediaCreateView):
+class MovieCreateView(MovieFormMixin, media_views.CreateView):
     pass
 
 
-class MovieEditView(MovieFormMixin, media_views.MediaEditView):
+class MovieEditView(MovieFormMixin, media_views.EditView):
     pass
 
 
@@ -81,5 +81,5 @@ class MovieEditAlternateTitleView(MovieMixin, media_views.EditAlternateTitleView
     pass
 
 
-class MovieDeleteView(MovieMixin, media_views.MediaDeleteView):
+class MovieDeleteView(MovieMixin, media_views.DeleteView):
     pass

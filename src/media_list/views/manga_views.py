@@ -57,15 +57,15 @@ class MangaFetchBakaInfoView(MangaDetailMixin, generic.DetailView):
         return super().get(self, request, *args, **kwargs)
 
 
-class MangaSwapTitlesView(MangaDetailMixin, media_views.MediaSwapTitlesView):
+class MangaSwapTitlesView(MangaDetailMixin, media_views.SwapTitlesView):
     pass
 
 
-class MangaCreateView(MangaFormMixin, media_views.MediaCreateView):
+class MangaCreateView(MangaFormMixin, media_views.CreateView):
     pass
 
 
-class MangaEditView(MangaFormMixin, media_views.MediaEditView):
+class MangaEditView(MangaFormMixin, media_views.EditView):
     pass
 
 
@@ -81,5 +81,5 @@ class MangaEditAlternateTitleView(MangaMixin, media_views.EditAlternateTitleView
     pass
 
 
-class MangaDeleteView(MangaMixin, media_views.MediaDeleteView):
+class MangaDeleteView(MangaMixin, media_views.DeleteView):
     pass
