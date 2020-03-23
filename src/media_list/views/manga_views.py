@@ -7,9 +7,20 @@ from ..models import MangaSeries, MangaSource
 from ..utils import BakaParser
 
 
-class MangaCollectionView(generic.ListView):
+class MangaMixin:
     model = MangaSeries
 
+
+class MangaDetailMixin(MangaMixin):
+    template_name = 'media_list/categories/manga/detail.html'
+
+
+class MangaFormMixin(MangaMixin):
+    form_class = MangaForm
+    inlines = [MangaURLInline]
+
+
+class MangaCollectionView(MangaMixin, generic.ListView):
     def get_context_data(self, **kwargs):
         return super().get_context_data(
             sources=MangaSource.objects.all(),
@@ -24,11 +35,6 @@ class MangaListView(MangaCollectionView):
 
 class MangaGridView(MangaCollectionView):
     template_name = 'media_list/categories/manga/grid.html'
-
-
-class MangaDetailMixin:
-    model = MangaSeries
-    template_name = 'media_list/categories/manga/detail.html'
 
 
 class MangaDetailView(MangaDetailMixin, generic.DetailView):
@@ -55,29 +61,25 @@ class MangaSwapTitlesView(MangaDetailMixin, media_views.MediaSwapTitlesView):
     pass
 
 
-class MangaCreateView(media_views.MediaCreateView):
-    model = MangaSeries
-    form_class = MangaForm
-    inlines = [MangaURLInline]
+class MangaCreateView(MangaFormMixin, media_views.MediaCreateView):
+    pass
 
 
-class MangaEditView(media_views.MediaEditView):
-    model = MangaSeries
-    form_class = MangaForm
-    inlines = [MangaURLInline]
+class MangaEditView(MangaFormMixin, media_views.MediaEditView):
+    pass
 
 
-class MangaEditInterestView(media_views.EditInterestView):
-    model = MangaSeries
+class MangaEditInterestView(MangaMixin, media_views.EditInterestView):
+    pass
 
 
-class MangaEditTitleView(media_views.EditTitleView):
-    model = MangaSeries
+class MangaEditTitleView(MangaMixin, media_views.EditTitleView):
+    pass
 
 
-class MangaEditAlternateTitleView(media_views.EditAlternateTitleView):
-    model = MangaSeries
+class MangaEditAlternateTitleView(MangaMixin, media_views.EditAlternateTitleView):
+    pass
 
 
-class MangaDeleteView(media_views.MediaDeleteView):
-    model = MangaSeries
+class MangaDeleteView(MangaMixin, media_views.MediaDeleteView):
+    pass

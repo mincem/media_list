@@ -7,9 +7,20 @@ from ..id_finders import MovieIDFinder
 from ..models import Movie, VideoSource
 
 
-class MovieCollectionView(generic.ListView):
+class MovieMixin:
     model = Movie
 
+
+class MovieDetailMixin(MovieMixin):
+    template_name = 'media_list/categories/movie/detail.html'
+
+
+class MovieFormMixin(MovieMixin):
+    form_class = MovieForm
+    inlines = [MovieURLInline]
+
+
+class MovieCollectionView(MovieMixin, generic.ListView):
     def get_context_data(self, **kwargs):
         return super().get_context_data(
             sources=VideoSource.objects.all(),
@@ -24,11 +35,6 @@ class MovieListView(MovieCollectionView):
 
 class MovieGridView(MovieCollectionView):
     template_name = 'media_list/categories/movie/grid.html'
-
-
-class MovieDetailMixin:
-    model = Movie
-    template_name = 'media_list/categories/movie/detail.html'
 
 
 class MovieDetailView(MovieDetailMixin, generic.DetailView):
@@ -55,29 +61,25 @@ class MovieSwapTitlesView(MovieDetailMixin, media_views.MediaSwapTitlesView):
     pass
 
 
-class MovieCreateView(media_views.MediaCreateView):
-    model = Movie
-    form_class = MovieForm
-    inlines = [MovieURLInline]
+class MovieCreateView(MovieFormMixin, media_views.MediaCreateView):
+    pass
 
 
-class MovieEditView(media_views.MediaEditView):
-    model = Movie
-    form_class = MovieForm
-    inlines = [MovieURLInline]
+class MovieEditView(MovieFormMixin, media_views.MediaEditView):
+    pass
 
 
-class MovieEditInterestView(media_views.EditInterestView):
-    model = Movie
+class MovieEditInterestView(MovieMixin, media_views.EditInterestView):
+    pass
 
 
-class MovieEditTitleView(media_views.EditTitleView):
-    model = Movie
+class MovieEditTitleView(MovieMixin, media_views.EditTitleView):
+    pass
 
 
-class MovieEditAlternateTitleView(media_views.EditAlternateTitleView):
-    model = Movie
+class MovieEditAlternateTitleView(MovieMixin, media_views.EditAlternateTitleView):
+    pass
 
 
-class MovieDeleteView(media_views.MediaDeleteView):
-    model = Movie
+class MovieDeleteView(MovieMixin, media_views.MediaDeleteView):
+    pass
