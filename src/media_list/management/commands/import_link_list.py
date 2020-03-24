@@ -28,7 +28,7 @@ class Command(BaseCommand):
                 self.scan_contents(line)
 
     def scan_contents(self, line):
-        markdown_link_pattern = re.compile(r"\[([\w\W\s\d]+?)\]\(((?:/|https?://)[\w\d./?=#]+)\)")
+        markdown_link_pattern = re.compile(r"\[([\w\W\s\d]+?)\]\(((?:/|https?://)[\w\W\s\d./?=#]+)\)")
         for match in re.finditer(markdown_link_pattern, line):
             self.parse_entry(
                 text=match.group(1),
@@ -42,6 +42,7 @@ class Command(BaseCommand):
         if not title:
             print("No data extracted")
             return
+        print(f"url: {url}")
         print(f"title: {title}")
         print(f"volumes: {volumes}")
         best_match = manga_best_match(title)
@@ -74,7 +75,7 @@ class Command(BaseCommand):
 
 
 def parse_text(text):
-    pattern = re.compile(r"(.*?)\(?[ v[\d]+-?([\d]+)]?")
+    pattern = re.compile(r"(.*?)\(?[ v[\d]+-?v?([\d]+)]?")
     match = re.match(pattern, text)
     if match is None:
         return
