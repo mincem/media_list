@@ -32,20 +32,14 @@ class MangaDetailView(MangaDetailMixin, generic.DetailView):
     pass
 
 
-class MangaFetchBakaIDView(MangaDetailMixin, generic.DetailView):
-    def get(self, request, *args, **kwargs):
-        series = self.get_object()
-        series.baka_id = BakaIDFinder(series.title).get_id()
-        series.save()
-        return super().get(self, request, *args, **kwargs)
+class MangaFetchExternalIDView(MangaDetailMixin, media_views.FetchExternalIDView):
+    def fetch_id(self):
+        return BakaIDFinder(self.get_object().title).get_id()
 
 
-class MangaFetchBakaInfoView(MangaDetailMixin, generic.DetailView):
-    def get(self, request, *args, **kwargs):
-        series = self.get_object()
-        series.baka_info = BakaParser(series.baka_id).perform()
-        series.save()
-        return super().get(self, request, *args, **kwargs)
+class MangaFetchExternalItemView(MangaDetailMixin, media_views.FetchExternalItemView):
+    def fetch_external_info(self):
+        return BakaParser(self.get_object().external_id).perform()
 
 
 class MangaSwapTitlesView(MangaDetailMixin, media_views.SwapTitlesView):

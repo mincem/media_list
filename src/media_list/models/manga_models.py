@@ -28,8 +28,20 @@ class MangaSeries(MediaItem):
     baka_info = models.ForeignKey("BakaSeries", blank=True, null=True, on_delete=models.SET_NULL)
 
     @property
+    def external_id(self):
+        return self.baka_id
+
+    @external_id.setter
+    def external_id(self, value):
+        self.baka_id = value
+
+    @property
     def external_info(self):
         return self.baka_info
+
+    @external_info.setter
+    def external_info(self, value):
+        self.baka_info = value
 
     def display_volumes(self):
         if self.volumes == 1 and self.is_completed:

@@ -11,7 +11,7 @@ manga_viewset = Viewset(
     edit_title_view=manga_views.MangaEditTitleView,
     edit_alternate_title_view=manga_views.MangaEditAlternateTitleView,
     delete_view=manga_views.MangaDeleteView,
-    find_external_id_view=manga_views.MangaFetchBakaIDView,
-    find_external_data_view=manga_views.MangaFetchBakaInfoView,
+    find_external_id_view=manga_views.MangaFetchExternalIDView,
+    find_external_data_view=manga_views.MangaFetchExternalItemView,
     swap_titles_view=manga_views.MangaSwapTitlesView,
 )

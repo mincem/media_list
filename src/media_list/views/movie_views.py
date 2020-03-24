@@ -32,20 +32,14 @@ class MovieDetailView(MovieDetailMixin, generic.DetailView):
     pass
 
 
-class MovieFetchExternalIDView(MovieDetailMixin, generic.DetailView):
-    def get(self, request, *args, **kwargs):
-        item = self.get_object()
-        item.imdb_id = MovieIDFinder(item.title).get_id()
-        item.save()
-        return super().get(self, request, *args, **kwargs)
+class MovieFetchExternalIDView(MovieDetailMixin, media_views.FetchExternalIDView):
+    def fetch_id(self):
+        return MovieIDFinder(self.get_object().title).get_id()
 
 
-class MovieFetchExternalItemView(MovieDetailMixin, generic.DetailView):
-    def get(self, request, *args, **kwargs):
-        item = self.get_object()
-        item.imdb_info = MovieDataFetcher(movie=item).get_data()
-        item.save()
-        return super().get(self, request, *args, **kwargs)
+class MovieFetchExternalItemView(MovieDetailMixin, media_views.FetchExternalItemView):
+    def fetch_external_info(self):
+        return MovieDataFetcher(movie=self.get_object()).get_data()
 
 
 class MovieSwapTitlesView(MovieDetailMixin, media_views.SwapTitlesView):

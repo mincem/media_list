@@ -34,6 +34,28 @@ class GridView(CollectionView):
         return [f"media_list/categories/{self.model.category.path}/grid.html"]
 
 
+class FetchExternalIDView(generic.DetailView):
+    def get(self, request, *args, **kwargs):
+        item = self.get_object()
+        item.external_id = self.fetch_id()
+        item.save()
+        return super().get(self, request, *args, **kwargs)
+
+    def fetch_id(self):
+        raise NotImplementedError
+
+
+class FetchExternalItemView(generic.DetailView):
+    def get(self, request, *args, **kwargs):
+        item = self.get_object()
+        item.external_info = self.fetch_external_info()
+        item.save()
+        return super().get(self, request, *args, **kwargs)
+
+    def fetch_external_info(self):
+        raise NotImplementedError
+
+
 class CreateView(CreateWithInlinesView):
     def get_template_names(self):
         return [f"media_list/categories/{self.model.category.path}/create.html"]

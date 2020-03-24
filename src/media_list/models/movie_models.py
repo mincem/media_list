@@ -24,8 +24,20 @@ class Movie(MediaItem):
     imdb_info = models.ForeignKey("IMDBMovie", blank=True, null=True, on_delete=models.SET_NULL)
 
     @property
+    def external_id(self):
+        return self.imdb_id
+
+    @external_id.setter
+    def external_id(self, value):
+        self.imdb_id = value
+
+    @property
     def external_info(self):
         return self.imdb_info
+
+    @external_info.setter
+    def external_info(self, value):
+        self.imdb_info = value
 
     @property
     def image_url(self):
