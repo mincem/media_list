@@ -34,7 +34,12 @@ class GridView(CollectionView):
         return [f"media_list/categories/{self.model.category.path}/grid.html"]
 
 
-class FetchExternalIDView(generic.DetailView):
+class DetailView(generic.DetailView):
+    def get_template_names(self):
+        return [f"media_list/categories/{self.model.category.path}/detail.html"]
+
+
+class FetchExternalIDView(DetailView):
     id_finder_class = None
 
     def get(self, request, *args, **kwargs):
@@ -44,7 +49,7 @@ class FetchExternalIDView(generic.DetailView):
         return super().get(self, request, *args, **kwargs)
 
 
-class FetchExternalItemView(generic.DetailView):
+class FetchExternalItemView(DetailView):
     def get(self, request, *args, **kwargs):
         item = self.get_object()
         item.external_info = self.fetch_external_info()
@@ -109,7 +114,7 @@ class DeleteView(generic.DeleteView):
         return reverse_lazy(f"categories:{self.model.category.path}:list")
 
 
-class SwapTitlesView(generic.DetailView):
+class SwapTitlesView(DetailView):
     def get(self, request, *args, **kwargs):
         self.get_object().swap_titles()
         return super().get(self, request, *args, **kwargs)

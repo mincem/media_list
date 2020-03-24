@@ -1,5 +1,3 @@
-from django.views import generic
-
 from . import base_views as media_views
 from ..data_fetchers import MovieDataFetcher
 from ..forms import MovieForm, MovieURLInline
@@ -9,10 +7,6 @@ from ..models import Movie, VideoSource
 
 class MovieMixin:
     model = Movie
-
-
-class MovieDetailMixin(MovieMixin):
-    template_name = 'media_list/categories/movie/detail.html'
 
 
 class MovieFormMixin(MovieMixin):
@@ -28,20 +22,20 @@ class MovieGridView(MovieMixin, media_views.GridView):
     source_class = VideoSource
 
 
-class MovieDetailView(MovieDetailMixin, generic.DetailView):
+class MovieDetailView(MovieMixin, media_views.DetailView):
     pass
 
 
-class MovieFetchExternalIDView(MovieDetailMixin, media_views.FetchExternalIDView):
+class MovieFetchExternalIDView(MovieMixin, media_views.FetchExternalIDView):
     id_finder_class = MovieIDFinder
 
 
-class MovieFetchExternalItemView(MovieDetailMixin, media_views.FetchExternalItemView):
+class MovieFetchExternalItemView(MovieMixin, media_views.FetchExternalItemView):
     def fetch_external_info(self):
         return MovieDataFetcher(movie=self.get_object()).get_data()
 
 
-class MovieSwapTitlesView(MovieDetailMixin, media_views.SwapTitlesView):
+class MovieSwapTitlesView(MovieMixin, media_views.SwapTitlesView):
     pass
 
 

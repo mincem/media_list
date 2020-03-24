@@ -1,5 +1,3 @@
-from django.views import generic
-
 from . import base_views as media_views
 from ..forms import MangaForm, MangaURLInline
 from ..id_finders import BakaIDFinder
@@ -9,10 +7,6 @@ from ..utils import BakaParser
 
 class MangaMixin:
     model = MangaSeries
-
-
-class MangaDetailMixin(MangaMixin):
-    template_name = 'media_list/categories/manga/detail.html'
 
 
 class MangaFormMixin(MangaMixin):
@@ -28,20 +22,20 @@ class MangaGridView(MangaMixin, media_views.GridView):
     source_class = MangaSource
 
 
-class MangaDetailView(MangaDetailMixin, generic.DetailView):
+class MangaDetailView(MangaMixin, media_views.DetailView):
     pass
 
 
-class MangaFetchExternalIDView(MangaDetailMixin, media_views.FetchExternalIDView):
+class MangaFetchExternalIDView(MangaMixin, media_views.FetchExternalIDView):
     id_finder_class = BakaIDFinder
 
 
-class MangaFetchExternalItemView(MangaDetailMixin, media_views.FetchExternalItemView):
+class MangaFetchExternalItemView(MangaMixin, media_views.FetchExternalItemView):
     def fetch_external_info(self):
         return BakaParser(self.get_object().external_id).perform()
 
 
-class MangaSwapTitlesView(MangaDetailMixin, media_views.SwapTitlesView):
+class MangaSwapTitlesView(MangaMixin, media_views.SwapTitlesView):
     pass
 
 
