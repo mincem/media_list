@@ -35,14 +35,13 @@ class GridView(CollectionView):
 
 
 class FetchExternalIDView(generic.DetailView):
+    id_finder_class = None
+
     def get(self, request, *args, **kwargs):
         item = self.get_object()
-        item.external_id = self.fetch_id()
+        item.external_id = self.id_finder_class(item.title).get_id()
         item.save()
         return super().get(self, request, *args, **kwargs)
-
-    def fetch_id(self):
-        raise NotImplementedError
 
 
 class FetchExternalItemView(generic.DetailView):

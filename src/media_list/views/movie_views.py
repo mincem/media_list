@@ -33,8 +33,7 @@ class MovieDetailView(MovieDetailMixin, generic.DetailView):
 
 
 class MovieFetchExternalIDView(MovieDetailMixin, media_views.FetchExternalIDView):
-    def fetch_id(self):
-        return MovieIDFinder(self.get_object().title).get_id()
+    id_finder_class = MovieIDFinder
 
 
 class MovieFetchExternalItemView(MovieDetailMixin, media_views.FetchExternalItemView):

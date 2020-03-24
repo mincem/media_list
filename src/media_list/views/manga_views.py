@@ -33,8 +33,7 @@ class MangaDetailView(MangaDetailMixin, generic.DetailView):
 
 
 class MangaFetchExternalIDView(MangaDetailMixin, media_views.FetchExternalIDView):
-    def fetch_id(self):
-        return BakaIDFinder(self.get_object().title).get_id()
+    id_finder_class = BakaIDFinder
 
 
 class MangaFetchExternalItemView(MangaDetailMixin, media_views.FetchExternalItemView):

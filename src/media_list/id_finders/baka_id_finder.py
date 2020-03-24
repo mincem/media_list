@@ -4,8 +4,8 @@ from urllib.parse import urlparse, parse_qs
 from . import ExternalIDFinder
 
 class BakaIDFinder(ExternalIDFinder):
-    def __init__(self, series_title, link_fetcher=None):
-        super().__init__(series_title)
+    def __init__(self, title, link_fetcher=None):
+        super().__init__(title)
         self.link_fetcher = link_fetcher or LinkFetcher()
 
     def get_id(self):
@@ -16,7 +16,7 @@ class BakaIDFinder(ExternalIDFinder):
         return int(parse_qs(url.query)["id"][0])
 
     def fetch_link(self):
-        return self.link_fetcher.get(self.series_title)
+        return self.link_fetcher.get(self.title)
 
     @staticmethod
     def source_is_correct(url):
