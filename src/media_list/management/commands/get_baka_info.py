@@ -14,5 +14,5 @@ class Command(BaseCommand):
         for series_id in options["series_ids"]:
             series = MangaSeries.objects.get(pk=series_id)
             if series.baka_id:
-                series.baka_info = ExternalMangaFetcher(series.baka_id).perform()
+                series.baka_info = ExternalMangaFetcher(series).fetch()
                 series.save()

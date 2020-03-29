@@ -31,7 +31,7 @@ class MangaFetchExternalIDView(MangaMixin, media_views.FetchExternalIDView):
 
 class MangaFetchExternalItemView(MangaMixin, media_views.FetchExternalItemView):
     def fetch_external_info(self):
-        return ExternalMangaFetcher(self.get_object().external_id).perform()
+        return ExternalMangaFetcher(self.get_object()).fetch()
 
 
 class MangaSwapTitlesView(MangaMixin, media_views.SwapTitlesView):

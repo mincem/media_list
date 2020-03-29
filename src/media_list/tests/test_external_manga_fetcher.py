@@ -6,7 +6,6 @@ from django.test import TestCase
 from ..data_fetchers import ExternalMangaFetcher
 
 MOCK_BAKA_ID = 1234567
-
 FMP_SIGMA_BAKA_ID = 913
 
 shingeki_authors = {"ISAYAMA Hajime"}
@@ -58,13 +57,18 @@ class MockImageRetriever:
         }
 
 
+class MockManga:
+    baka_id = MOCK_BAKA_ID
+    external_id = MOCK_BAKA_ID
+
+
 class ExternalMangaFetcherTests(TestCase):
     def setUp(self):
         self.baka_series = ExternalMangaFetcher(
-            baka_id=MOCK_BAKA_ID,
+            item=MockManga(),
             baka_retriever=ShingekiMockBakaRetriever(),
             image_retriever_class=MockImageRetriever,
-        ).perform()
+        ).fetch()
 
     # def test_pending(self):
     #     parser = ExternalMangaFetcher(FMP_SIGMA_BAKA_ID, MockBakaRetriever())
@@ -112,10 +116,10 @@ class ExternalMangaFetcherTests(TestCase):
 class MoreBakaParserTests(TestCase):
     def setUp(self):
         self.baka_series = ExternalMangaFetcher(
-            baka_id=MOCK_BAKA_ID,
+            item=MockManga(),
             baka_retriever=PrincessMockBakaRetriever(),
             image_retriever_class=MockImageRetriever,
-        ).perform()
+        ).fetch()
 
     def test_store_correct_authors(self):
         baka_series_authors = {str(author) for author in self.baka_series.authors.all()}
