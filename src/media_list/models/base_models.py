@@ -29,6 +29,7 @@ class MediaItem(TimestampedModel):
 
     category = None
     source_class = None
+    id_finder_class = None
 
     title = models.CharField(max_length=255)
     alternate_title = models.CharField(blank=True, max_length=255)

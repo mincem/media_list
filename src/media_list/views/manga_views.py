@@ -27,7 +27,7 @@ class MangaDetailView(MangaMixin, media_views.DetailView):
 
 
 class MangaFetchExternalIDView(MangaMixin, media_views.FetchExternalIDView):
-    id_finder_class = BakaIDFinder
+    pass
 
 
 class MangaFetchExternalItemView(MangaMixin, media_views.FetchExternalItemView):

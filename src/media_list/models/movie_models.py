@@ -5,6 +5,7 @@ from ordered_model.models import OrderedModel
 from .video_models import VideoSource
 from .base_models import MediaItem, ItemURL, ExternalMediaItem
 from ..categories import movie_category
+from ..id_finders import MovieIDFinder
 
 STATUS_CHOICES = (
     ('U', 'Unknown Status'),
@@ -18,6 +19,7 @@ DEFAULT_STATUS_CHOICE = STATUS_CHOICES[0][0]
 class Movie(MediaItem):
     category = movie_category
     source_class = VideoSource
+    id_finder_class = MovieIDFinder
 
     is_watched = models.BooleanField(default=False)
     status = models.CharField(max_length=1, choices=STATUS_CHOICES, default=DEFAULT_STATUS_CHOICE)

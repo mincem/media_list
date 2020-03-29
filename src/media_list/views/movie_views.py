@@ -27,7 +27,7 @@ class MovieDetailView(MovieMixin, media_views.DetailView):
 
 
 class MovieFetchExternalIDView(MovieMixin, media_views.FetchExternalIDView):
-    id_finder_class = MovieIDFinder
+    pass
 
 
 class MovieFetchExternalItemView(MovieMixin, media_views.FetchExternalItemView):
