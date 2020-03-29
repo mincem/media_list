@@ -1,8 +1,7 @@
 from . import base_views as media_views
+from ..data_fetchers import ExternalMangaFetcher
 from ..forms import MangaForm, MangaURLInline
-from ..id_finders import BakaIDFinder
 from ..models import MangaSeries
-from ..utils import BakaParser
 
 
 class MangaMixin:
@@ -32,7 +31,7 @@ class MangaFetchExternalIDView(MangaMixin, media_views.FetchExternalIDView):
 
 class MangaFetchExternalItemView(MangaMixin, media_views.FetchExternalItemView):
     def fetch_external_info(self):
-        return BakaParser(self.get_object().external_id).perform()
+        return ExternalMangaFetcher(self.get_object().external_id).perform()
 
 
 class MangaSwapTitlesView(MangaMixin, media_views.SwapTitlesView):

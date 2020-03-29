@@ -2,12 +2,11 @@ import json
 
 import requests
 
-from .baka_page_scraper import BakaPageScraper
-from .image_retriever import ImageRetriever
+from ..utils import BakaPageScraper, ImageRetriever
 from ..repositories import BakaSeriesRepository
 
 
-class BakaParser:
+class ExternalMangaFetcher:
     def __init__(self, baka_id, baka_retriever=None, image_retriever_class=None):
         self.baka_id = baka_id
         self.baka_retriever = baka_retriever or BakaRetriever()

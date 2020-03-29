@@ -3,7 +3,7 @@ from unittest import mock
 from django.core.files.base import File
 from django.test import TestCase
 
-from ..utils import BakaParser
+from ..data_fetchers import ExternalMangaFetcher
 
 MOCK_BAKA_ID = 1234567
 
@@ -58,16 +58,16 @@ class MockImageRetriever:
         }
 
 
-class BakaParserTests(TestCase):
+class ExternalMangaFetcherTests(TestCase):
     def setUp(self):
-        self.baka_series = BakaParser(
+        self.baka_series = ExternalMangaFetcher(
             baka_id=MOCK_BAKA_ID,
             baka_retriever=ShingekiMockBakaRetriever(),
             image_retriever_class=MockImageRetriever,
         ).perform()
 
     # def test_pending(self):
-    #     parser = BakaParser(FMP_SIGMA_BAKA_ID, MockBakaRetriever())
+    #     parser = ExternalMangaFetcher(FMP_SIGMA_BAKA_ID, MockBakaRetriever())
     #     print(parser.display_parsed_data())  # Full Metal Panic Sigma (check sigma char)
     #     self.assertTrue(False)
 
@@ -111,7 +111,7 @@ class BakaParserTests(TestCase):
 
 class MoreBakaParserTests(TestCase):
     def setUp(self):
-        self.baka_series = BakaParser(
+        self.baka_series = ExternalMangaFetcher(
             baka_id=MOCK_BAKA_ID,
             baka_retriever=PrincessMockBakaRetriever(),
             image_retriever_class=MockImageRetriever,
