@@ -8,11 +8,9 @@ class LandingView(generic.TemplateView):
 
 
 class CollectionView(generic.ListView):
-    source_class = None
-
     def get_sources(self):
-        if self.source_class:
-            return self.source_class.objects.all()
+        if self.model.source_class:
+            return self.model.source_class.objects.all()
         else:
             return []
 

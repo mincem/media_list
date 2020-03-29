@@ -15,8 +15,13 @@ STATUS_CHOICES = (
 DEFAULT_STATUS_CHOICE = STATUS_CHOICES[0][0]
 
 
+class MangaSource(MediaSource):
+    pass
+
+
 class MangaSeries(MediaItem):
     category = manga_category
+    source_class = MangaSource
 
     volumes = models.IntegerField(blank=True, null=True)
     has_omnibus = models.BooleanField(default=False)
@@ -98,10 +103,6 @@ class BakaSeries(ExternalMediaItem):
 
     def has_extra_staff(self):
         return self.authors.count() + self.artists.count() > 2
-
-
-class MangaSource(MediaSource):
-    pass
 
 
 class MangaGenre(NamedModel):

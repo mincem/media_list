@@ -1,7 +1,7 @@
 from . import base_views as media_views
 from ..forms import MangaForm, MangaURLInline
 from ..id_finders import BakaIDFinder
-from ..models import MangaSeries, MangaSource
+from ..models import MangaSeries
 from ..utils import BakaParser
 
 
@@ -15,11 +15,11 @@ class MangaFormMixin(MangaMixin):
 
 
 class MangaListView(MangaMixin, media_views.ListView):
-    source_class = MangaSource
+    pass
 
 
 class MangaGridView(MangaMixin, media_views.GridView):
-    source_class = MangaSource
+    pass
 
 
 class MangaDetailView(MangaMixin, media_views.DetailView):

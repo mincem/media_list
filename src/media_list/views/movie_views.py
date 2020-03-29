@@ -2,7 +2,7 @@ from . import base_views as media_views
 from ..data_fetchers import MovieDataFetcher
 from ..forms import MovieForm, MovieURLInline
 from ..id_finders import MovieIDFinder
-from ..models import Movie, VideoSource
+from ..models import Movie
 
 
 class MovieMixin:
@@ -15,11 +15,11 @@ class MovieFormMixin(MovieMixin):
 
 
 class MovieListView(MovieMixin, media_views.ListView):
-    source_class = VideoSource
+    pass
 
 
 class MovieGridView(MovieMixin, media_views.GridView):
-    source_class = VideoSource
+    pass
 
 
 class MovieDetailView(MovieMixin, media_views.DetailView):
