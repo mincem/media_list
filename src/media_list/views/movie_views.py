@@ -1,7 +1,6 @@
 from . import base_views as media_views
-from ..data_fetchers import MovieDataFetcher
+from ..data_fetchers import ExternalMovieFetcher
 from ..forms import MovieForm, MovieURLInline
-from ..id_finders import MovieIDFinder
 from ..models import Movie
 
 
@@ -32,7 +31,7 @@ class MovieFetchExternalIDView(MovieMixin, media_views.FetchExternalIDView):
 
 class MovieFetchExternalItemView(MovieMixin, media_views.FetchExternalItemView):
     def fetch_external_info(self):
-        return MovieDataFetcher(movie=self.get_object()).get_data()
+        return ExternalMovieFetcher(item=self.get_object()).fetch()
 
 
 class MovieSwapTitlesView(MovieMixin, media_views.SwapTitlesView):

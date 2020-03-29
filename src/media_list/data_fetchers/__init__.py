@@ -1,1 +1,1 @@
-from .movie_data_fetcher import MovieDataFetcher
+from .external_movie_fetcher import ExternalMovieFetcher
