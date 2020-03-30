@@ -1,17 +1,15 @@
 import json
-
 import requests
 
 from .external_item_fetcher import ExternalItemFetcher
-from ..utils import BakaPageScraper, ImageRetriever
+from ..utils import BakaPageScraper
 from ..repositories import BakaSeriesRepository
 
 
 class ExternalMangaFetcher(ExternalItemFetcher):
     def __init__(self, item, baka_retriever=None, image_retriever_class=None):
-        super().__init__(item)
+        super().__init__(item, image_retriever_class)
         self.baka_retriever = baka_retriever or BakaRetriever()
-        self.image_retriever_class = image_retriever_class or ImageRetriever
         self.web_page_html = None
 
     def fetch(self):

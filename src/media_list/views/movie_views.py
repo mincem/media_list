@@ -30,8 +30,7 @@ class MovieFetchExternalIDView(MovieMixin, media_views.FetchExternalIDView):
 
 
 class MovieFetchExternalItemView(MovieMixin, media_views.FetchExternalItemView):
-    def fetch_external_info(self):
-        return ExternalMovieFetcher(item=self.get_object()).fetch()
+    external_item_fetcher_class = ExternalMovieFetcher
 
 
 class MovieSwapTitlesView(MovieMixin, media_views.SwapTitlesView):

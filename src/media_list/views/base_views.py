@@ -46,14 +46,13 @@ class FetchExternalIDView(DetailView):
 
 
 class FetchExternalItemView(DetailView):
+    external_item_fetcher_class = None
+
     def get(self, request, *args, **kwargs):
         item = self.get_object()
-        item.external_info = self.fetch_external_info()
+        item.external_info = self.external_item_fetcher_class(item=item).fetch()
         item.save()
         return super().get(self, request, *args, **kwargs)
-
-    def fetch_external_info(self):
-        raise NotImplementedError
 
 
 class CreateView(CreateWithInlinesView):
