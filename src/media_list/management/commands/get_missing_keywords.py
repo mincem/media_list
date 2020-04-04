@@ -2,8 +2,9 @@ from time import sleep
 
 from django.core.management.base import BaseCommand
 
+from ...data_fetchers.external_manga_fetcher import BakaRetriever
 from ...models import BakaSeries, MangaKeyword
-from ...utils import BakaPageScraper, BakaRetriever
+from ...utils import BakaPageScraper
 
 
 class Command(BaseCommand):

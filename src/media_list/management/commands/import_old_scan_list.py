@@ -1,5 +1,5 @@
-from ...utils import OldScanListParser
 from .import_scan_list import Command as ImportScanListCommand
+from ...utils.scan_list_parser import OldScanListParser
 
 
 class Command(ImportScanListCommand):

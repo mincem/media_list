@@ -1,6 +1,6 @@
 from django.core.management.base import BaseCommand
 
-from ...utils import ScanListParser
+from ...utils.scan_list_parser import ScanListParser
 
 
 class Command(BaseCommand):

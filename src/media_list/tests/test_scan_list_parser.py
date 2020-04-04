@@ -1,6 +1,6 @@
 from django.test import TestCase
 
-from ..utils import ScanListParser
+from ..utils.scan_list_parser import ScanListParser
 
 MIN_INTEREST = 0
 MAX_INTEREST = 100
