@@ -1,5 +1,4 @@
 from . import base_views as media_views
-from ..data_fetchers import ExternalMangaFetcher
 from ..forms import MangaForm, MangaURLInline
 from ..models import MangaSeries
 
@@ -30,7 +29,7 @@ class MangaFetchExternalIDView(MangaMixin, media_views.FetchExternalIDView):
 
 
 class MangaFetchExternalItemView(MangaMixin, media_views.FetchExternalItemView):
-    external_item_fetcher_class = ExternalMangaFetcher
+    pass
 
 
 class MangaSwapTitlesView(MangaMixin, media_views.SwapTitlesView):

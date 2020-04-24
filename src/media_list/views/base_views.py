@@ -2,6 +2,8 @@ from django.urls import reverse_lazy
 from django.views import generic
 from extra_views import CreateWithInlinesView, UpdateWithInlinesView
 
+from ..data_fetchers import ExternalItemFetcher
+
 
 class LandingView(generic.TemplateView):
     template_name = 'media_list/landing.html'
@@ -46,11 +48,9 @@ class FetchExternalIDView(DetailView):
 
 
 class FetchExternalItemView(DetailView):
-    external_item_fetcher_class = None
-
     def get(self, request, *args, **kwargs):
         item = self.get_object()
-        item.external_info = self.external_item_fetcher_class(item=item).fetch()
+        item.external_info = ExternalItemFetcher.for_item(item).fetch()
         item.save()
         return super().get(self, request, *args, **kwargs)
 

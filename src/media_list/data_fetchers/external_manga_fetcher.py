@@ -2,6 +2,7 @@ import json
 import requests
 
 from .external_item_fetcher import ExternalItemFetcher
+from ..models import MangaSeries
 from ..utils import BakaPageScraper
 from ..repositories import BakaSeriesRepository
 
@@ -11,6 +12,10 @@ class ExternalMangaFetcher(ExternalItemFetcher):
         super().__init__(item, image_retriever_class)
         self.baka_retriever = baka_retriever or BakaRetriever()
         self.web_page_html = None
+
+    @classmethod
+    def accepts(cls, item):
+        return isinstance(item, MangaSeries)
 
     def fetch(self):
         parsed_series_data = self.parsed_series_data()
