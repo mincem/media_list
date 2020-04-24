@@ -3,7 +3,6 @@ from django.db import models
 
 from .base_models import TimestampedModel, NamedModel, MediaItem, ItemURL, MediaSource, ExternalMediaItem
 from ..categories import manga_category
-from ..id_finders import BakaIDFinder
 
 STATUS_CHOICES = (
     ('U', 'Unknown Status'),
@@ -23,7 +22,6 @@ class MangaSource(MediaSource):
 class MangaSeries(MediaItem):
     category = manga_category
     source_class = MangaSource
-    id_finder_class = BakaIDFinder
 
     volumes = models.IntegerField(blank=True, null=True)
     has_omnibus = models.BooleanField(default=False)

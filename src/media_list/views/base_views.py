@@ -3,6 +3,7 @@ from django.views import generic
 from extra_views import CreateWithInlinesView, UpdateWithInlinesView
 
 from ..data_fetchers import ExternalItemFetcher
+from ..id_finders import ExternalIDFinder
 
 
 class LandingView(generic.TemplateView):
@@ -42,7 +43,7 @@ class DetailView(generic.DetailView):
 class FetchExternalIDView(DetailView):
     def get(self, request, *args, **kwargs):
         item = self.get_object()
-        item.external_id = self.model.id_finder_class(item.title).get_id()
+        item.external_id = ExternalIDFinder.for_item(item).get_id()
         item.save()
         return super().get(self, request, *args, **kwargs)
 

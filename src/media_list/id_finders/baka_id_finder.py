@@ -2,11 +2,17 @@ from google import google
 from urllib.parse import urlparse, parse_qs
 
 from . import ExternalIDFinder
+from ..models import MangaSeries
+
 
 class BakaIDFinder(ExternalIDFinder):
     def __init__(self, title, link_fetcher=None):
         super().__init__(title)
         self.link_fetcher = link_fetcher or LinkFetcher()
+
+    @classmethod
+    def accepts(cls, item):
+        return isinstance(item, MangaSeries)
 
     def get_id(self):
         link = self.fetch_link()

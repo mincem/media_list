@@ -1,12 +1,17 @@
 import imdb
 
 from . import ExternalIDFinder
+from ..models import Movie
 
 
 class MovieIDFinder(ExternalIDFinder):
     def __init__(self, title, imdb_access=None):
         super().__init__(title)
         self.imdb_access = imdb_access or imdb.IMDb()
+
+    @classmethod
+    def accepts(cls, item):
+        return isinstance(item, Movie)
 
     def get_id(self):
         movie_results = self.imdb_access.search_movie(self.title)
