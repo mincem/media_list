@@ -3,7 +3,7 @@ from django.db import models
 from ordered_model.models import OrderedModel
 
 from .video_models import VideoSource
-from .base_models import MediaItem, ItemURL
+from .base_models import MediaItem
 from ..categories import movie_category
 
 STATUS_CHOICES = (
@@ -52,11 +52,6 @@ class Movie(MediaItem):
         if not self.imdb_id:
             raise Exception("IMDb URL has not been retrieved yet.")
         return f"https://www.imdb.com/title/tt{str(self.imdb_id).zfill(7)}/"
-
-
-class MovieURL(ItemURL):
-    movie = models.ForeignKey("Movie", related_name="urls", on_delete=models.CASCADE)
-    order_with_respect_to = 'movie'
 
 
 class MoviePlot(OrderedModel):

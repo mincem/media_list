@@ -1,6 +1,4 @@
 from django.db import models
-from urllib.parse import urlparse
-from ordered_model.models import OrderedModel
 
 
 class TimestampedModel(models.Model):
@@ -56,19 +54,6 @@ class MediaItem(TimestampedModel):
     def swap_titles(self):
         self.title, self.alternate_title = self.alternate_title, self.title
         self.save()
-
-
-class ItemURL(OrderedModel):
-    class Meta:
-        abstract = True
-
-    url = models.URLField()
-
-    def __str__(self):
-        return self.url
-
-    def hostname(self):
-        return urlparse(self.url).hostname
 
 
 class MediaSource(NamedModel, TimestampedModel):

@@ -1,7 +1,7 @@
 from django.contrib.staticfiles.templatetags.staticfiles import static
 from django.db import models
 
-from .base_models import TimestampedModel, NamedModel, MediaItem, ItemURL, MediaSource
+from .base_models import TimestampedModel, NamedModel, MediaItem, MediaSource
 from ..categories import manga_category
 
 STATUS_CHOICES = (
@@ -91,8 +91,3 @@ class MangaSeriesKeyword(models.Model):
 
 class MangaPerson(NamedModel, TimestampedModel):
     pass
-
-
-class MangaURL(ItemURL):
-    series = models.ForeignKey("MangaSeries", related_name="urls", on_delete=models.CASCADE)
-    order_with_respect_to = 'series'
