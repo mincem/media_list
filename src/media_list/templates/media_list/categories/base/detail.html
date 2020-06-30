@@ -41,18 +41,21 @@
     </div>
 
     {% block external_detail %}{% endblock external_detail %}
+
+    <ul>
+      {% for url in object.urls.all %}
+        <li>
+          <a href="{{ url }}" target="_blank" rel="noopener">
+            {{ url }} <i class="fas fa-external-link-alt"></i>
+          </a>
+        </li>
+      {% endfor %}
+    </ul>
   </div>
 </div>
 
 <div class="modal-footer justify-content-start">
   {% block extra_links %}{% endblock extra_links %}
-
-  {% for url in object.urls.all %}
-    <a class="btn btn-primary btn-sm media-link" href="{{ url }}" target="_blank" rel="noopener">
-      {{ url.hostname }} page
-      <i class="fas fa-external-link-alt"></i>
-    </a>
-  {% endfor %}
 
   <div class="media-actions">
     {% block actions %}{% endblock actions %}
