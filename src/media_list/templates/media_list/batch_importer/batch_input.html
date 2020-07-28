@@ -1,0 +1,39 @@
+<script>
+  Vue.component('batch-input', {
+    template: `
+     <div>
+       <div>Paste a Markdown file:</div>
+
+        <form class="batch-input-form"  v-on:submit.prevent="submitForm">
+          <textarea name="links" rows="20" cols="100"></textarea>
+          <button class="btn btn-primary" type="submit">Send</button>
+        </form>
+      </div>
+    `,
+    methods: {
+      submitForm: function (event) {
+        $.ajax({
+          url: {% url 'batch' %},
+          type: 'POST',
+          dataType: 'json',
+          data: [
+            {
+              name: 'csrfmiddlewaretoken',
+              value: getCookie('csrftoken')
+            },
+            {
+              name: 'links',
+              value: event.target.elements.links.value
+            },
+          ],
+          success: (json) => {
+            this.$emit('batchProcessed', json);
+          },
+          error: () => {
+            alert("Error!");
+          }
+        });
+      }
+    }
+  });
+</script>

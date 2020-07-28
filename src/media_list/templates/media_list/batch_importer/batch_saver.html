@@ -1,0 +1,13 @@
+<script>
+  Vue.component('batch-saver', {
+    delimiters: ['[[', ']]'],
+    props: ['links'],
+    template: `
+      <div>
+        Saver
+
+        <div v-for="link in links">[[link]]</div>
+      </div>
+    `
+  });
+</script>

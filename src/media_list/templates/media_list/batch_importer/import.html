@@ -1,0 +1,31 @@
+{% extends 'media_list/base.html' %}
+
+{% load static %}
+
+{% block title %}Batch Import{% endblock title %}
+
+{% block content %}
+  <header class="title">
+    <h1>Batch Import</h1>
+  </header>
+
+  <section class="content">
+    <div id="app">
+      <batch-router></batch-router>
+    </div>
+  </section>
+
+  <script src="{% static 'media_list/js/djangoCookies.js' %}"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
+  {% include 'media_list/batch_importer/batch_router.html' %}
+  {% include 'media_list/batch_importer/batch_input.html' %}
+  {% include 'media_list/batch_importer/batch_saver.html' %}
+
+  <script>
+    let app = new Vue({
+      delimiters: ['[[', ']]'],
+      el: '#app'
+    });
+  </script>
+{% endblock content %}

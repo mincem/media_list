@@ -1,0 +1,24 @@
+<script>
+  Vue.component('batch-router', {
+    template: `
+      <component :is="contentComponent" :links="links"  @batchProcessed="showSaver"></component>
+    `,
+    data: function () {
+      return {
+        processed: false,
+        links: []
+      }
+    },
+    methods: {
+      showSaver: function (json) {
+        this.$data.links = json.items;
+        this.$data.processed = true;
+      }
+    },
+    computed: {
+      contentComponent: function () {
+        return this.processed ? 'batch-saver' : 'batch-input';
+      }
+    }
+  });
+</script>

@@ -1,6 +1,6 @@
 from django.urls import path, include
 
-from . import viewsets
+from . import viewsets, views
 from .views import base_views
 
 
@@ -33,4 +33,5 @@ categories_urls = [
 urlpatterns = [
     path('categories/', include((categories_urls, 'categories'), namespace='categories')),
     path('', base_views.LandingView.as_view(), name='landing'),
+    path('batch/', views.BatchMangaImporterView.as_view(), name='batch'),
 ]
