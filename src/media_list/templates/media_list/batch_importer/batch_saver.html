@@ -2,12 +2,33 @@
   Vue.component('batch-saver', {
     delimiters: ['[[', ']]'],
     props: ['links'],
+    data: function () {
+      return {
+        currentIndex: 0
+      }
+    },
     template: `
       <div>
-        Saver
+        <batch-saver-item :item="currentItem"></batch-saver-item>
 
-        <div v-for="link in links">[[link]]</div>
+        <button class="btn btn-primary" @click="prev()">Prev</button>
+        <button class="btn btn-primary" @click="next()">Next</button>
+
+        <span>[[currentIndex + 1]]/[[this.links.length]]</span>
       </div>
-    `
+    `,
+    computed: {
+      currentItem: function () {
+        return this.links[this.currentIndex]
+      }
+    },
+    methods: {
+      prev: function () {
+        this.currentIndex = Math.max(0, this.currentIndex -1);
+      },
+      next: function () {
+        this.currentIndex = Math.min(this.links.length - 1, this.currentIndex + 1);
+      }
+    }
   });
 </script>
