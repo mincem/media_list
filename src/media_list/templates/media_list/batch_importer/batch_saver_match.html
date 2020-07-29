@@ -1,0 +1,21 @@
+<script>
+  Vue.component('batch-saver-match', {
+    delimiters: ['[[', ']]'],
+    props: ['match', 'index'],
+    template: `
+      <label class="container">
+        <input type="radio" :name="inputName">
+        [[matchDisplay]]
+      </label>
+    `,
+    computed: {
+      matchDisplay: function () {
+        if (this.match) return `${this.match.title} (${this.match.volumes} volumes)`;
+        else return 'Create new';
+      },
+      inputName: function () {
+        return `match-${this.index}`
+      }
+    }
+  });
+</script>

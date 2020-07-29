@@ -22,6 +22,15 @@ def data_1():
         "link": "https://example.com/1",
         "title": "An example",
         "volumes": 20,
+        "matches": [{
+            "id": 123,
+            "title": "An example",
+            "volumes": 19,
+            "links": [
+                {"id": 8, "url": "https://example.com/123"},
+                {"id": 9, "url": "https://example.com/456"},
+            ],
+        }],
     }
 
 
@@ -30,4 +39,5 @@ def data_2():
         "link": "https://example.com/2",
         "title": "Another example",
         "volumes": 5,
+        "matches": [],
     }

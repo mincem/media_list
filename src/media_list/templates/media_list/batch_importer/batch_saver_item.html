@@ -1,13 +1,19 @@
 <script>
   Vue.component('batch-saver-item', {
     delimiters: ['[[', ']]'],
-    props: ['item'],
+    props: ['item', 'index'],
     template: `
-      <ul>
-        <li><b>Link:</b> <a :href="item.link">[[item.link]]</a></li>
-        <li><b>Title:</b> [[item.title]]</li>
-        <li><b>Volumes:</b> [[item.volumes]]</li>
-      </ul>
+      <div>
+        <ul>
+          <li><b>Link:</b> <a :href="item.link">[[item.link]]</a></li>
+          <li><b>Title:</b> [[item.title]]</li>
+          <li><b>Volumes:</b> [[item.volumes]]</li>
+        </ul>
+
+        <div>Select matching item:</div>
+        <batch-saver-match v-for="match in item.matches" :key="match.id" :match="match" :index="index"></batch-saver-match>
+        <batch-saver-match :index="index"></batch-saver-match>
+      </div>
     `
   });
 </script>
