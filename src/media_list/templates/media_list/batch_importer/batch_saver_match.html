@@ -4,7 +4,7 @@
     props: ['match', 'index'],
     template: `
       <label class="batch-match">
-        <input type="radio" :name="inputName" @change="matchSelected" :checked="startChecked">
+        <input type="radio" :name="inputName" @change="matchSelected" :checked="startChecked" ref="radioButton">
         [[matchDisplay]]
       </label>
     `,
@@ -23,6 +23,14 @@
     methods: {
       matchSelected: function () {
         this.$emit('matchSelected', this.match || null);
+      },
+      resetChecked: function () {
+        this.$refs.radioButton.checked = !this.match;
+      }
+    },
+    watch: {
+      index: function () {
+        this.resetChecked();
       }
     }
   });
