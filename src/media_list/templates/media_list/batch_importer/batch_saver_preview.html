@@ -1,0 +1,39 @@
+<script>
+  Vue.component('batch-saver-preview', {
+    delimiters: ['[[', ']]'],
+    props: ['item', 'match'],
+    template: `
+      <div>
+        <div class="batch-preview-row">
+          <div class="batch-preview-field">
+            Title
+          </div>
+          <div class="batch-preview-match-value">
+            [[match ? match.title: '-']]
+          </div>
+          <div class="batch-preview-arrow">
+            <i class="fa fa-arrow-right" aria-hidden="true"></i>
+          </div>
+          <div class="batch-preview-input-value">
+            [[item.title]]
+          </div>
+        </div>
+
+        <div class="batch-preview-row">
+          <div class="batch-preview-field">
+            Volumes
+          </div>
+          <div class="batch-preview-match-value">
+            [[match ? match.volumes : '-']]
+          </div>
+          <div class="batch-preview-arrow">
+            <i class="fa fa-arrow-right" aria-hidden="true"></i>
+          </div>
+          <div class="batch-preview-input-value">
+            [[item.volumes]]
+          </div>
+        </div>
+      </div>
+    `
+  });
+</script>

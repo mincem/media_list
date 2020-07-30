@@ -1,5 +1,5 @@
 #app {
-    width: 60%;
+    width: 70%;
     margin: auto;
 }
 
@@ -18,12 +18,12 @@
 
 .batch-item {
     display: flex;
-    width: 80%;
     margin: 0 auto;
 }
 
 .batch-item-left, .batch-item-right {
     width: 50%;
+    padding: 10px;
     background: #d5dce3;
 }
 
@@ -33,4 +33,30 @@
 
 .batch-item-right {
     margin-left: 5px;
+}
+
+.batch-preview-row {
+    display: flex;
+    align-items: center;
+}
+
+.batch-preview-field {
+    flex-basis: 25%;
+    padding-left: 10px;
+    font-weight: bold;
+    color: #999999;
+}
+
+.batch-preview-match-value {
+    flex-basis: 35%;
+}
+
+.batch-preview-arrow {
+    flex-basis: 5%;
+    padding-right: 10px;
+    color: #999999;
+}
+
+.batch-preview-input-value {
+    flex-basis: 35%;
 }
