@@ -10,8 +10,10 @@
         integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
   <link rel="stylesheet" type="text/css"
         href="https://cdn.datatables.net/v/bs4/dt-1.10.18/b-1.5.6/fh-3.1.4/datatables.min.css"/>
-  <link rel="stylesheet" type="text/css" href="{% static 'media_list/style.css' %}">
+  <link rel="stylesheet" type="text/css" href="{% static 'media_list/css/style.css' %}">
   <link rel="shortcut icon" type="image/png" href="{% static 'favicon.ico' %}"/>
+
+  {% block extra_css %}{% endblock extra_css %}
 </head>
 
 <body>

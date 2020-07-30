@@ -3,16 +3,21 @@
     delimiters: ['[[', ']]'],
     props: ['item', 'index'],
     template: `
-      <div>
-        <ul>
-          <li><b>Link:</b> <a :href="item.link">[[item.link]]</a></li>
-          <li><b>Title:</b> [[item.title]]</li>
-          <li><b>Volumes:</b> [[item.volumes]]</li>
-        </ul>
+      <div class="batch-item">
+        <div class="batch-item-left">
+          <ul>
+            <li><b>Link:</b> <a :href="item.link">[[item.link]]</a></li>
+            <li><b>Title:</b> [[item.title]]</li>
+            <li><b>Volumes:</b> [[item.volumes]]</li>
+          </ul>
 
-        <div>Select matching item:</div>
-        <batch-saver-match v-for="match in item.matches" :key="match.id" :match="match" :index="index"></batch-saver-match>
-        <batch-saver-match :index="index"></batch-saver-match>
+          <div>Select matching item:</div>
+          <batch-saver-match v-for="match in item.matches" :key="match.id" :match="match" :index="index"></batch-saver-match>
+          <batch-saver-match :index="index"></batch-saver-match>
+        </div>
+
+        <div class="batch-item-right">
+        </div>
       </div>
     `
   });

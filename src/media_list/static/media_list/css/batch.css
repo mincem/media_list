@@ -1,0 +1,36 @@
+#app {
+    width: 60%;
+    margin: auto;
+}
+
+.batch-items-footer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.batch-items-counter {
+    margin: 0 10px;
+    font-weight: bold;
+    font-size: 16px;
+}
+
+.batch-item {
+    display: flex;
+    width: 80%;
+    margin: 0 auto;
+}
+
+.batch-item-left, .batch-item-right {
+    width: 50%;
+    background: #d5dce3;
+}
+
+.batch-item-left {
+    margin-right: 5px;
+}
+
+.batch-item-right {
+    margin-left: 5px;
+}
