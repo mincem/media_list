@@ -12,14 +12,30 @@
           </ul>
 
           <div>Select matching item:</div>
-          <batch-saver-match v-for="match in item.matches" :key="match.id" :match="match" :index="index"></batch-saver-match>
-          <batch-saver-match :index="index"></batch-saver-match>
+          <batch-saver-match v-for="match in item.matches" :key="match.id" :match="match" :index="index"
+                             @matchSelected="updateSelectedMatch"></batch-saver-match>
+          <batch-saver-match :index="index" @matchSelected="updateSelectedMatch"></batch-saver-match>
         </div>
 
         <div class="batch-item-right">
-          <batch-saver-preview :item="item" :match="item.matches[0]"></batch-saver-preview>
+          <batch-saver-preview :item="item" :match="selectedMatch"></batch-saver-preview>
         </div>
       </div>
-    `
+    `,
+    data: function () {
+      return {
+        selectedMatch: null
+      }
+    },
+    methods: {
+      updateSelectedMatch: function (match) {
+        this.selectedMatch = match;
+      }
+    },
+    watch: {
+      item: function () {
+        this.selectedMatch = null;
+      }
+    }
   });
 </script>

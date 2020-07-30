@@ -3,8 +3,8 @@
     delimiters: ['[[', ']]'],
     props: ['match', 'index'],
     template: `
-      <label class="container">
-        <input type="radio" :name="inputName">
+      <label class="batch-match">
+        <input type="radio" :name="inputName" @change="matchSelected" :checked="startChecked">
         [[matchDisplay]]
       </label>
     `,
@@ -15,6 +15,14 @@
       },
       inputName: function () {
         return `match-${this.index}`
+      },
+      startChecked: function () {
+        return !this.match;
+      }
+    },
+    methods: {
+      matchSelected: function () {
+        this.$emit('matchSelected', this.match || null);
       }
     }
   });

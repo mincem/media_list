@@ -1,5 +1,5 @@
 #app {
-    width: 70%;
+    width: 1100px;
     margin: auto;
 }
 
@@ -33,6 +33,20 @@
 
 .batch-item-right {
     margin-left: 5px;
+}
+
+.batch-match {
+    display: block;
+    background: lightsteelblue;
+    border: 1px solid gray;
+    border-radius: 5px;
+    margin: 10px 0;
+    padding: 5px;
+}
+
+.batch-match:hover {
+    background: cornflowerblue;
+    border: 1px solid black;
 }
 
 .batch-preview-row {
