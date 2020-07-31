@@ -49,6 +49,12 @@
     border: 1px solid black;
 }
 
+.batch-preview {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
 .batch-preview-row {
     display: flex;
     align-items: center;
@@ -73,4 +79,10 @@
 
 .batch-preview-input-value {
     flex-basis: 35%;
+}
+
+.batch-preview-submit {
+    align-self: flex-end;
+    margin-top: auto;
+    width: 125px;
 }

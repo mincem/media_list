@@ -3,7 +3,7 @@
     delimiters: ['[[', ']]'],
     props: ['item', 'match'],
     template: `
-      <div>
+      <form class="batch-preview" v-on:submit.prevent="submitForm">
         <div class="batch-preview-row">
           <div class="batch-preview-field">
             Title
@@ -15,7 +15,7 @@
             <i class="fa fa-arrow-right" aria-hidden="true"></i>
           </div>
           <div class="batch-preview-input-value">
-            [[item.title]]
+            <input type="text" :value="item.title">
           </div>
         </div>
 
@@ -30,10 +30,16 @@
             <i class="fa fa-arrow-right" aria-hidden="true"></i>
           </div>
           <div class="batch-preview-input-value">
-            [[item.volumes]]
+            <input type="number" :value="item.volumes">
           </div>
         </div>
-      </div>
-    `
+
+        <button class="btn btn-primary batch-preview-submit" type="submit">Send</button>
+      </form>
+    `,
+    methods: {
+      submitForm: function (event) {
+      }
+    }
   });
 </script>
