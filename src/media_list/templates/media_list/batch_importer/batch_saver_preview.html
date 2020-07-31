@@ -3,7 +3,9 @@
     delimiters: ['[[', ']]'],
     props: ['item', 'match'],
     template: `
-      <form class="batch-preview" v-on:submit.prevent="submitForm">
+      <form class="batch-preview" v-on:submit.prevent="submitForm" action="{% url "categories:manga:create" %}">
+        {% csrf_token %}
+
         <div class="batch-preview-row">
           <div class="batch-preview-field">
             Title
@@ -15,7 +17,7 @@
             <i class="fa fa-arrow-right" aria-hidden="true"></i>
           </div>
           <div class="batch-preview-input-value">
-            <input type="text" :value="item.title">
+            <input name="title" type="text" :value="item.title">
           </div>
         </div>
 
@@ -30,7 +32,7 @@
             <i class="fa fa-arrow-right" aria-hidden="true"></i>
           </div>
           <div class="batch-preview-input-value">
-            <input type="number" :value="item.volumes">
+            <input name="volumes" type="number" :value="item.volumes">
           </div>
         </div>
 
@@ -39,6 +41,18 @@
     `,
     methods: {
       submitForm: function (event) {
+        $.ajax({
+          url: event.target.action,
+          type: 'POST',
+          dataType: 'json',
+          data: $(event.target).serializeArray(),
+          success: (response) => {
+            console.log(response);
+          },
+          error: () => {
+            alert("Error!");
+          }
+        });
       }
     }
   });
