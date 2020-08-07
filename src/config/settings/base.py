@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'ordered_model',
     'widget_tweaks',
     'extra_views',
+    'rest_framework'
 ]
 
 MIDDLEWARE = [
