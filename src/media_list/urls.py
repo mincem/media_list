@@ -1,4 +1,5 @@
 from django.urls import path, include
+from rest_framework import routers
 
 from . import viewsets, views
 from .views import base_views
@@ -30,8 +31,12 @@ categories_urls = [
     path('movie/', include((category_urls(viewsets.movie_viewset), 'movie'))),
 ]
 
+router = routers.SimpleRouter()
+router.register('manga', viewsets.MangaApiViewSet, basename='manga')
+
 urlpatterns = [
     path('categories/', include((categories_urls, 'categories'), namespace='categories')),
+    path('api/', include(router.urls)),
     path('', base_views.LandingView.as_view(), name='landing'),
     path('batch/', views.BatchMangaImporterView.as_view(), name='batch'),
 ]
