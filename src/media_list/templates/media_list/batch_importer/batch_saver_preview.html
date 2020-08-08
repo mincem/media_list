@@ -36,9 +36,6 @@
           </div>
         </div>
 
-        <input name="interest" type="number" value="0" v-show="false">
-        <input name="status" type="text" value="N" v-show="false">
-
         <batch-saver-preview-urls :item="item" :match="match" ref="urls"></batch-saver-preview-urls>
 
         <button class="btn btn-primary batch-preview-submit" type="submit">Send</button>
@@ -47,25 +44,20 @@
     computed: {
       formUrl: function () {
         const baseApiUrl = '/api/categories/manga';
-        return this.match ? `${baseApiUrl}/${this.match.id}/edit/` : `${baseApiUrl}/`
+        return this.match ? `${baseApiUrl}/${this.match.id}/` : `${baseApiUrl}/`;
+      },
+      formMethod: function () {
+        return this.match ? "PATCH" : "POST";
       }
     },
     methods: {
       submitForm: function (event) {
-        const fields = event.target.elements;
         $.ajax({
           url: this.formUrl,
-          type: 'POST',
+          type: this.formMethod,
           dataType: 'json',
           contentType: "application/json; charset=utf-8",
-          data: JSON.stringify({
-            title: fields.title.value,
-            interest: +fields.interest.value,
-            status: fields.status.value,
-            volumes: +fields.volumes.value,
-            urls: [{"url": this.item.link}]
-            //urls: this.$refs.urls.fields()
-          }),
+          data: JSON.stringify(this.formData(event.target.elements)),
           success: (response) => {
             console.log(response);
           },
@@ -73,6 +65,15 @@
             alert("Error!");
           }
         });
+      },
+      formData: function (fields) {
+        const baseData = {
+          title: fields.title.value,
+          volumes: +fields.volumes.value,
+          urls: [{"url": this.item.link}]
+          //urls: this.$refs.urls.fields()
+        }
+        return this.match ? baseData : {...baseData, interest: 0, status: "N"};
       }
     }
   });

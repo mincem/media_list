@@ -25,7 +25,9 @@ class MangaSerializer(serializers.ModelSerializer):
 
     def update(self, instance, validated_data):
         urls_data = validated_data.pop("urls", [])
-        manga = MangaSeries.objects.update(**validated_data)
+        for attr, value in validated_data.items():
+            setattr(instance, attr, value)
+        instance.save()
         for url_data in urls_data:
-            manga.urls.get_or_create(**url_data)
-        return manga
+            instance.urls.get_or_create(**url_data)
+        return instance
