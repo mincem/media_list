@@ -32,7 +32,7 @@ categories_urls = [
 ]
 
 router = routers.SimpleRouter()
-router.register('manga', viewsets.MangaApiViewSet, basename='manga')
+router.register('categories/manga', viewsets.MangaApiViewSet, basename='manga')
 
 urlpatterns = [
     path('categories/', include((categories_urls, 'categories'), namespace='categories')),

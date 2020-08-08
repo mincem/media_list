@@ -1,0 +1,16 @@
+<script>
+  Vue.component('batch-saver-preview-url', {
+    delimiters: ['[[', ']]'],
+    props: ['link', 'match', 'index'],
+    template: `
+      <li>
+        <a :href="link.url">[[link.url]]</a>
+      </li>
+    `,
+    computed: {
+      fields: function () {
+        return {};
+      }
+    }
+  });
+</script>
