@@ -36,6 +36,26 @@
           </div>
         </div>
 
+        <div class="batch-preview-row">
+          <div class="batch-preview-field">
+            Completed?
+          </div>
+          <div class="batch-preview-match-value">
+            <span v-show="match">
+              <i class="fas" :class="completionIcon" aria-hidden="true"></i>
+            </span>
+            <span v-show="!match">
+              -
+            </span>
+          </div>
+          <div class="batch-preview-arrow">
+            <i class="fa fa-arrow-right" aria-hidden="true"></i>
+          </div>
+          <div class="batch-preview-input-value">
+            <input name="is_completed" type="checkbox">
+          </div>
+        </div>
+
         <batch-saver-preview-urls :item="item" :match="match" ref="urls"></batch-saver-preview-urls>
 
         <button class="btn btn-primary batch-preview-submit" type="submit">Send</button>
@@ -48,6 +68,9 @@
       },
       formMethod: function () {
         return this.match ? "PATCH" : "POST";
+      },
+      completionIcon: function () {
+        return this.match && this.match.is_completed ? 'fa-check' : 'fa-times';
       }
     },
     methods: {
@@ -70,6 +93,7 @@
         const baseData = {
           title: fields.title.value,
           volumes: +fields.volumes.value,
+          is_completed: fields.is_completed.checked,
           urls: [{"url": this.item.link}]
           //urls: this.$refs.urls.fields()
         }

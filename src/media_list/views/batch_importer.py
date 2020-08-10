@@ -26,6 +26,7 @@ def data_1():
             "id": 33,
             "title": "An example",
             "volumes": 19,
+            "is_completed": False,
             "links": [
                 {"id": 8, "url": "https://example.com/123"},
                 {"id": 9, "url": "https://example.com/456"},
