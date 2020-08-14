@@ -20,6 +20,21 @@
 
         <div class="batch-preview-row">
           <div class="batch-preview-field">
+            Alt. Title
+          </div>
+          <div class="batch-preview-match-value">
+            [[(match && match.alternate_title) ? match.alternate_title : '-']]
+          </div>
+          <div class="batch-preview-arrow">
+            <i class="fa fa-arrow-right" aria-hidden="true"></i>
+          </div>
+          <div class="batch-preview-input-value">
+            <input name="alternate_title" type="text" value="">
+          </div>
+        </div>
+
+        <div class="batch-preview-row">
+          <div class="batch-preview-field">
             Volumes
           </div>
           <div class="batch-preview-match-value">
@@ -95,6 +110,7 @@
           urls: [{"url": this.item.link}]
           //urls: this.$refs.urls.fields()
         }
+        if (fields.alternate_title.value) baseData.alternate_title = fields.alternate_title.value;
         return this.match ? baseData : {...baseData, interest: 0, status: "N"};
       }
     }

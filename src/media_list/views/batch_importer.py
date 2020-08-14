@@ -25,6 +25,7 @@ def data_1():
         "matches": [{
             "id": 33,
             "title": "An example",
+            "alternate_title": "An alternate",
             "volumes": 19,
             "is_completed": False,
             "links": [

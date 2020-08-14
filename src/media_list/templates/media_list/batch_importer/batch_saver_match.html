@@ -10,7 +10,7 @@
     `,
     computed: {
       matchDisplay: function () {
-        if (this.match) return `${this.match.title} (${this.match.volumes} volumes)`;
+        if (this.match) return `${this.match.title} [${this.match.alternate_title}] (${this.match.volumes} volumes)`;
         else return 'Create new';
       },
       inputName: function () {
