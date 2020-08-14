@@ -2,14 +2,30 @@
   Vue.component('batch-saver-preview-url', {
     delimiters: ['[[', ']]'],
     props: ['link', 'match', 'index'],
+    data: function () {
+      return {
+        deleted: false
+      }
+    },
     template: `
-      <li>
-        <a :href="link.url">[[link.url]]</a>
-      </li>
+      <div>
+        <a :href="link.url" target="_blank" rel="noopener" class="batch-preview-url" :class="{'deleted-url': deleted}">
+          [[link.url]] <i class="fas fa-external-link-alt"></i>
+        </a>
+
+        <button class="text-button batch-preview-url-delete" type="button" @click="toggleDelete">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
     `,
     computed: {
       fields: function () {
         return {};
+      }
+    },
+    methods: {
+      toggleDelete: function () {
+        this.deleted = !this.deleted;
       }
     }
   });

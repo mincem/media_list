@@ -87,3 +87,22 @@
     margin-top: auto;
     width: 125px;
 }
+
+.batch-preview-url {
+    font-weight: bold;
+}
+
+.batch-preview-url.deleted-url {
+    color: red;
+    font-weight: normal;
+    text-decoration: line-through;
+}
+
+.batch-preview-url-delete {
+    color: red;
+}
+
+.batch-preview-url-delete:hover {
+    color: #a00000;
+}
+
