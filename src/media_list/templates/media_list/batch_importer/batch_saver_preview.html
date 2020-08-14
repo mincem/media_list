@@ -2,10 +2,7 @@
   Vue.component('batch-saver-preview', {
     delimiters: ['[[', ']]'],
     props: ['item', 'match'],
-    template: `
-      <form class="batch-preview" v-on:submit.prevent="submitForm">
-        {% csrf_token %}
-
+    template: `<form class="batch-preview" v-on:submit.prevent="submitForm">
         <div class="batch-preview-row">
           <div class="batch-preview-field">
             Title
@@ -91,6 +88,7 @@
       },
       formData: function (fields) {
         const baseData = {
+          csrfmiddlewaretoken: getCookie('csrftoken'),
           title: fields.title.value,
           volumes: +fields.volumes.value,
           is_completed: fields.is_completed.checked,
