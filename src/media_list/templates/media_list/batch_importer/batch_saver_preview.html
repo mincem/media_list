@@ -108,10 +108,10 @@
           volumes: +fields.volumes.value,
           is_completed: fields.is_completed.checked,
           urls: [{"url": this.item.link}]
-          //urls: this.$refs.urls.fields()
         }
         if (fields.alternate_title.value) baseData.alternate_title = fields.alternate_title.value;
-        return this.match ? baseData : {...baseData, interest: 0, status: "N"};
+        if (this.match) return {...baseData, urls_to_delete: this.$refs.urls.allSelected()};
+        else return {...baseData, interest: 0, status: "N"};
       }
     }
   });

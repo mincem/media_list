@@ -13,8 +13,8 @@
       </div>
     `,
     methods: {
-      fields: function () {
-        return [];
+      allSelected: function () {
+        return this.$children.filter(child => child.$data.deleted).map(child => child.$props.link.id);
       }
     }
   });
