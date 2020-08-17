@@ -9,7 +9,7 @@
     },
     template: `
       <div>
-        <batch-saver-item :item="currentItem" :index="currentIndex"></batch-saver-item>
+        <batch-saver-item :item="currentItem" :index="currentIndex" @saved="next()"></batch-saver-item>
 
         <div class="batch-items-footer">
           <button class="btn btn-primary" @click="prev()">Prev</button>

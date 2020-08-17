@@ -18,7 +18,7 @@ class UrlsToDeleteSerializer(serializers.ListField):
 
 class MangaSerializer(serializers.ModelSerializer):
     urls = MangaURLSerializer(many=True, allow_null=True, required=False)
-    urls_to_delete = UrlsToDeleteSerializer()
+    urls_to_delete = UrlsToDeleteSerializer(required=False)
 
     class Meta:
         model = MangaSeries
