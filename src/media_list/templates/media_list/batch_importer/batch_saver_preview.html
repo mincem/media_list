@@ -3,6 +3,14 @@
     delimiters: ['[[', ']]'],
     props: ['item', 'match'],
     template: `<form class="batch-preview" v-on:submit.prevent="submitForm">
+
+        <div class="batch-preview-title">
+          <a v-if="match" :href="'/categories/manga/' + match.id" target="_blank" rel="noopener">
+            [[match.title]] <i class="fas fa-external-link-alt"></i>
+          </a>
+          <span v-else class="batch-preview-new">(New item)</span>
+        </div>
+
         <div class="batch-preview-row">
           <div class="batch-preview-field">
             Title
