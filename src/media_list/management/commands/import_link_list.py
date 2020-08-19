@@ -1,9 +1,9 @@
 import os
-import re
 
 from django.core.management.base import BaseCommand
 
 from ...models import MangaSource, MangaSeries
+from ...parsers import link_list_parser
 
 
 class Command(BaseCommand):
@@ -29,9 +29,9 @@ class Command(BaseCommand):
                 self.print_dividing_line()
 
     def scan_contents(self, line):
-        for match in matches_in_line(line):
+        for match in link_list_parser.matches_in_line(line):
             self.stdout.write(f"text: {match['text']}")
-            entry = parse_entry(match["text"], match["url"])
+            entry = link_list_parser.parse_entry(match["text"], match["url"])
             if entry is None:
                 self.stdout.write("No data extracted")
                 return
@@ -70,41 +70,6 @@ class Command(BaseCommand):
             source=self.source
         )
         add_url(manga, url)
-
-
-def matches_in_line(line):
-    markdown_link_pattern = re.compile(r"\[([\w\W\s\d]+?)\]\(((?:/|https?://)[\w\W\s\d./?=#]+)\)")
-    return [{"text": match.group(1), "url": match.group(2)} for match in re.finditer(markdown_link_pattern, line)]
-
-
-def parse_entry(text, url):
-    full_text, title, volumes = parse_text(text)
-    if not title:
-        return None
-    return {
-        "full_text": full_text,
-        "link": url,
-        "title": title,
-        "volumes": volumes,
-        "matches": [manga_best_match(title)]
-    }
-
-
-def parse_text(text):
-    pattern = re.compile(r"(.*?)\(?[ v[\d]+-?v?([\d]+)]?")
-    match = re.match(pattern, text)
-    if match is None:
-        return
-    full_text = match.group(0)
-    title = match.group(1).strip()
-    volumes = int(match.group(2)) if match.group(2) else 0
-    return full_text, title, volumes
-
-
-def manga_best_match(title):
-    query = MangaSeries.objects.filter(title__icontains=title) | \
-            MangaSeries.objects.filter(alternate_title__icontains=title)
-    return query.first()
 
 
 def update_best_match(best_match, volumes, url):
