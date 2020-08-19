@@ -26,42 +26,40 @@ class Command(BaseCommand):
         with open(filename, 'r', encoding="utf8") as html_file:
             for line in html_file:
                 self.scan_contents(line)
+                self.print_dividing_line()
 
     def scan_contents(self, line):
-        markdown_link_pattern = re.compile(r"\[([\w\W\s\d]+?)\]\(((?:/|https?://)[\w\W\s\d./?=#]+)\)")
-        for match in re.finditer(markdown_link_pattern, line):
-            self.parse_entry(
-                text=match.group(1),
-                url=match.group(2)
-            )
-        self.print_dividing_line()
+        for match in matches_in_line(line):
+            self.stdout.write(f"text: {match['text']}")
+            entry = parse_entry(match["text"], match["url"])
+            if entry is None:
+                self.stdout.write("No data extracted")
+                return
+            self.print_entry(entry)
+            self.process_manga(entry)
 
-    def parse_entry(self, text, url):
-        full_text, title, volumes = parse_text(text)
-        print(f"text: {text}")
-        if not title:
-            print("No data extracted")
-            return
-        print(f"url: {url}")
-        print(f"title: {title}")
-        print(f"volumes: {volumes}")
-        best_match = manga_best_match(title)
+    def print_entry(self, entry):
+        self.stdout.write(f"url: {entry['link']}")
+        self.stdout.write(f"title: {entry['title']}")
+        self.stdout.write(f"volumes: {entry['volumes']}")
+        best_match = next(iter(entry["matches"]), None)
         if best_match:
-            print(f"best match: {best_match} ({best_match.volumes} volumes)")
-        self.process_manga(title, volumes, url, best_match)
+            self.stdout.write(f"best match: {best_match} ({best_match.volumes} volumes)")
 
-    def process_manga(self, title, volumes, url, best_match):
+    def process_manga(self, entry):
+        volumes = entry["volumes"]
+        best_match = next(iter(entry["matches"]), None)
         if best_match:
             answer = input("Update best match? ('v' ignores volumes)\n")
             if answer == 'v':
                 volumes = 0
             if answer in ['y', 'v']:
-                return update_best_match(best_match, volumes, url)
+                return update_best_match(best_match, volumes, entry["link"])
         answer = input("Add new manga? ('v' ignores volumes)\n")
         if answer == 'v':
             volumes = 0
         if answer in ['y', 'v']:
-            return self.save_new_manga(title, volumes, url)
+            return self.save_new_manga(entry["title"], volumes, entry["link"])
 
     def save_new_manga(self, title, volumes, url):
         manga = MangaSeries.objects.create(
@@ -72,6 +70,24 @@ class Command(BaseCommand):
             source=self.source
         )
         add_url(manga, url)
+
+
+def matches_in_line(line):
+    markdown_link_pattern = re.compile(r"\[([\w\W\s\d]+?)\]\(((?:/|https?://)[\w\W\s\d./?=#]+)\)")
+    return [{"text": match.group(1), "url": match.group(2)} for match in re.finditer(markdown_link_pattern, line)]
+
+
+def parse_entry(text, url):
+    full_text, title, volumes = parse_text(text)
+    if not title:
+        return None
+    return {
+        "full_text": full_text,
+        "link": url,
+        "title": title,
+        "volumes": volumes,
+        "matches": [manga_best_match(title)]
+    }
 
 
 def parse_text(text):
