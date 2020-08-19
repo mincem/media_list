@@ -3,9 +3,10 @@ import re
 from ..models import MangaSeries
 
 
-def matches_in_line(line):
-    markdown_link_pattern = re.compile(r"\[([\w\W\s\d]+?)\]\(((?:/|https?://)[\w\W\s\d./?=#]+)\)")
-    return [{"text": match.group(1), "url": match.group(2)} for match in re.finditer(markdown_link_pattern, line)]
+def entries_in_line(line):
+    markdown_link_pattern = re.compile(r"\[([\w\W \t\d]+?)\]\(((?:/|https?://)[\w\W \t\d./?=#]+?)\)")
+    matches = re.finditer(markdown_link_pattern, line)
+    return [parse_entry(text=match.group(1), url=match.group(2)) for match in matches]
 
 
 def parse_entry(text, url):

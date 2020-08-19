@@ -29,9 +29,7 @@ class Command(BaseCommand):
                 self.print_dividing_line()
 
     def scan_contents(self, line):
-        for match in link_list_parser.matches_in_line(line):
-            self.stdout.write(f"text: {match['text']}")
-            entry = link_list_parser.parse_entry(match["text"], match["url"])
+        for entry in link_list_parser.entries_in_line(line):
             if entry is None:
                 self.stdout.write("No data extracted")
                 return
@@ -39,6 +37,7 @@ class Command(BaseCommand):
             self.process_manga(entry)
 
     def print_entry(self, entry):
+        self.stdout.write(f"text: {entry['full_text']}")
         self.stdout.write(f"url: {entry['link']}")
         self.stdout.write(f"title: {entry['title']}")
         self.stdout.write(f"volumes: {entry['volumes']}")
