@@ -2,6 +2,7 @@ from django.http import JsonResponse
 from django.views import generic
 
 from ..forms import BatchImporterInputForm
+from ..parsers import link_list_parser
 
 
 class BatchMangaImporterView(generic.FormView):
@@ -13,33 +14,5 @@ class BatchMangaImporterView(generic.FormView):
 
     def form_valid(self, form):
         return JsonResponse({
-            "items": [data_1(), data_2()]
+            "items": link_list_parser.process_markdown(form.cleaned_data['links'])
         })
-
-
-def data_1():
-    return {
-        "link": "https://example.com/1",
-        "title": "An example",
-        "volumes": 20,
-        "matches": [{
-            "id": 33,
-            "title": "An example",
-            "alternate_title": "An alternate",
-            "volumes": 19,
-            "is_completed": False,
-            "links": [
-                {"id": 8, "url": "https://example.com/123"},
-                {"id": 9, "url": "https://example.com/456"},
-            ],
-        }],
-    }
-
-
-def data_2():
-    return {
-        "link": "https://example.com/2",
-        "title": "Another example",
-        "volumes": 5,
-        "matches": [],
-    }

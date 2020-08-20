@@ -1,6 +1,14 @@
 import re
 
 from ..models import MangaSeries
+from ..serializers import MangaSerializer
+
+
+def process_markdown(markdown):
+    entries = entries_in_line(markdown)
+    for entry in entries:
+        entry["matches"] = [MangaSerializer(match).data for match in entry["matches"]]
+    return entries
 
 
 def entries_in_line(line):
