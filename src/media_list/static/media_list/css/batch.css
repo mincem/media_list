@@ -18,21 +18,28 @@
 
 .batch-item {
     display: flex;
+    flex-wrap: wrap;
     margin: 0 auto;
 }
 
+.batch-item-header {
+    width: 80%;
+    margin: 0 auto 20px auto;
+    padding: 10px;
+    background-color: #d5dce3;
+    font-size: 18px;
+    font-weight: bold;
+    text-align: center;
+}
+
 .batch-item-left, .batch-item-right {
-    width: 50%;
+    width: 49%;
     padding: 10px;
     background: #d5dce3;
 }
 
 .batch-item-left {
-    margin-right: 5px;
-}
-
-.batch-item-right {
-    margin-left: 5px;
+    margin-right: 2%;
 }
 
 .batch-match {

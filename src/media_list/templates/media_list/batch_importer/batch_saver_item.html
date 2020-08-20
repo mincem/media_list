@@ -4,14 +4,15 @@
     props: ['item', 'index'],
     template: `
       <div class="batch-item">
+        <div class="batch-item-header">
+          <div>[[item.full_text]]</div>
+          <a :href="item.link" target="_blank" rel="noopener">
+            [[item.link]] <i class="fas fa-external-link-alt"></i>
+          </a>
+        </div>
+
         <div class="batch-item-left">
           <ul>
-            <li>
-              <b>Link:</b>
-              <a :href="item.link" target="_blank" rel="noopener">
-                [[item.link]] <i class="fas fa-external-link-alt"></i>
-              </a>
-            </li>
             <li><b>Title:</b> [[item.title]]</li>
             <li><b>Volumes:</b> [[item.volumes]]</li>
           </ul>
