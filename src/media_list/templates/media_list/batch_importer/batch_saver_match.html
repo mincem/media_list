@@ -10,8 +10,12 @@
     `,
     computed: {
       matchDisplay: function () {
-        if (this.match) return `${this.match.title} [${this.match.alternate_title}] (${this.match.volumes} volumes)`;
+        if (this.match) return `${this.match.title}${this.alternateTitleDisplay} (${this.match.volumes} volumes)`;
         else return 'Create new';
+      },
+      alternateTitleDisplay: function () {
+        if (this.match.alternate_title) return ` [${this.match.alternate_title}]`
+        else return ''
       },
       inputName: function () {
         return `match-${this.index}`
