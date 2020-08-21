@@ -18,7 +18,8 @@ def entries_in_line(line):
 
 
 def parse_entry(text, url):
-    pattern = re.compile(r"(.*?)\(?[ v[\d]+-?v?([\d]+)]?")
+    pattern = re.compile(r"(\w.*?)(?: (?:v\d+-)?v?([\d]+)| [\[\(\{]).*")
+
     match = re.match(pattern, text)
     if match is None:
         return None
@@ -26,7 +27,8 @@ def parse_entry(text, url):
     if not title:
         return None
     return {
-        "full_text": match.group(0),
+        "full_text": text,
+        "matched_text": match.group(0),
         "link": url,
         "title": title,
         "volumes": int(match.group(2)) if match.group(2) else 0,
