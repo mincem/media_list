@@ -7,7 +7,7 @@
         <div v-if="match">
           Links
 
-          <batch-saver-preview-url v-for="(link, index) in match.links" :key="index"
+          <batch-saver-preview-url v-for="(link, index) in match.urls" :key="index"
                                    :index="index" :link="link" :match="match" :ref="'url-' + index"></batch-saver-preview-url>
         </div>
       </div>
