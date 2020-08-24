@@ -22,7 +22,7 @@
             <i class="fa fa-arrow-right" aria-hidden="true"></i>
           </div>
           <div class="batch-preview-input-value">
-            <input name="title" type="text" :value="item.title">
+            <input name="title" type="text" :value="titleInputValue">
           </div>
         </div>
 
@@ -37,7 +37,7 @@
             <i class="fa fa-arrow-right" aria-hidden="true"></i>
           </div>
           <div class="batch-preview-input-value">
-            <input name="alternate_title" type="text" value="">
+            <input name="alternate_title" type="text" :value="alternateTitleInputValue">
           </div>
         </div>
 
@@ -72,7 +72,7 @@
             <i class="fa fa-arrow-right" aria-hidden="true"></i>
           </div>
           <div class="batch-preview-input-value">
-            <input name="is_completed" type="checkbox" ref="isCompleted">
+            <input name="is_completed" type="checkbox" :checked="isCompletedInputValue">
           </div>
         </div>
 
@@ -88,6 +88,17 @@
       },
       formMethod: function () {
         return this.match ? "PATCH" : "POST";
+      },
+      titleInputValue: function () {
+        if (this.match) return this.match.title;
+        else return this.item.title;
+      },
+      alternateTitleInputValue: function () {
+        if (this.match && this.match.alternate_title) return this.match.alternate_title;
+        else return '';
+      },
+      isCompletedInputValue: function () {
+        return this.match && this.match.is_completed;
       },
       completionIcon: function () {
         return this.match && this.match.is_completed ? 'fa-check' : 'fa-times';
@@ -121,15 +132,6 @@
         if (fields.alternate_title.value) baseData.alternate_title = fields.alternate_title.value;
         if (this.match) return {...baseData, urls_to_delete: this.$refs.urls.allSelected()};
         else return {...baseData, interest: 0, status: "N"};
-      },
-      resetCompleted: function () {
-        this.$refs.isCompleted.checked = false;
-      }
-    },
-
-    watch: {
-      match: function () {
-        this.resetCompleted();
       }
     }
   });
