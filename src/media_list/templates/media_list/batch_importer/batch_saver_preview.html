@@ -69,7 +69,7 @@
             <i class="fa fa-arrow-right" aria-hidden="true"></i>
           </div>
           <div class="batch-preview-input-value">
-            <input name="is_completed" type="checkbox" :checked="isCompletedInputValue">
+            <input name="is_completed" type="checkbox" ref="isCompleted" :checked="isCompletedInputValue">
           </div>
         </div>
 
@@ -126,7 +126,16 @@
         if (fields.alternate_title.value) baseData.alternate_title = fields.alternate_title.value;
         if (this.match) return {...baseData, urls_to_delete: this.$refs.urls.allSelected()};
         else return {...baseData, interest: 0, status: "N"};
+      },
+      resetCompleted: function () {
+        this.$refs.isCompleted.checked = this.isCompletedInputValue();
+      }
+    },
+    watch: {
+      match: function () {
+        this.resetCompleted();
       }
     }
-  });
+  })
+  ;
 </script>
