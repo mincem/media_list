@@ -24,7 +24,7 @@ class MangaSerializer(serializers.ModelSerializer):
         model = MangaSeries
         fields = [
             "id", "title", "alternate_title", "volumes", "interest", "status", "is_completed", "has_omnibus",
-            "urls", "urls_to_delete"
+            "notes", "urls", "urls_to_delete"
         ]
 
     def create(self, validated_data):
