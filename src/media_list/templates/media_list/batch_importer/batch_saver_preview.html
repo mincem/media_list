@@ -73,6 +73,8 @@
           </div>
         </div>
 
+        <batch-saver-preview-hasomnibus :item="item" :match="match" ref="hasOmnibus"></batch-saver-preview-hasomnibus>
+
         <batch-saver-preview-urls :item="item" :match="match" ref="urls"></batch-saver-preview-urls>
 
         <button class="btn btn-primary batch-preview-submit" type="submit">Send</button>
@@ -121,6 +123,7 @@
           title: fields.title.value,
           volumes: +fields.volumes.value,
           is_completed: fields.is_completed.checked,
+          has_omnibus: fields.has_omnibus.checked,
           urls: [{"url": this.item.link}]
         }
         if (fields.alternate_title.value) baseData.alternate_title = fields.alternate_title.value;
@@ -128,11 +131,14 @@
         else return {...baseData, interest: 0, status: "N"};
       },
       resetCompleted: function () {
-        this.$refs.isCompleted.checked = this.isCompletedInputValue();
+        this.$refs.isCompleted.checked = this.isCompletedInputValue;
       }
     },
     watch: {
       match: function () {
+        this.resetCompleted();
+      },
+      item: function () {
         this.resetCompleted();
       }
     }

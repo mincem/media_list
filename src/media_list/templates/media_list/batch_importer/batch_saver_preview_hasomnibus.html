@@ -1,0 +1,42 @@
+<script>
+  Vue.component('batch-saver-preview-hasomnibus', {
+    delimiters: ['[[', ']]'],
+    props: ['item', 'match'],
+    template: `
+      <div class="batch-preview-row">
+        <div class="batch-preview-field">
+          Omnibus?
+        </div>
+        <div class="batch-preview-match-value">
+          <span v-show="match && match.has_omnibus"><i class="fas fa-check" aria-hidden="true"></i></span>
+          <span v-show="match && !match.has_omnibus"><i class="fas fa-times" aria-hidden="true"></i></span>
+          <span v-show="!match">-</span>
+        </div>
+        <div class="batch-preview-arrow">
+          <i class="fa fa-arrow-right" aria-hidden="true"></i>
+        </div>
+        <div class="batch-preview-input-value">
+          <input name="has_omnibus" type="checkbox" ref="hasOmnibus" :checked="hasOmnibusInputValue">
+        </div>
+      </div>
+    `,
+    computed: {
+      hasOmnibusInputValue: function () {
+        return this.match && this.match.has_omnibus;
+      }
+    },
+    methods: {
+      resetOmnibus: function () {
+        this.$refs.hasOmnibus.checked = this.hasOmnibusInputValue;
+      }
+    },
+    watch: {
+      match: function () {
+        this.resetOmnibus();
+      },
+      item: function () {
+        this.resetOmnibus();
+      }
+    }
+  });
+</script>

@@ -23,7 +23,8 @@ class MangaSerializer(serializers.ModelSerializer):
     class Meta:
         model = MangaSeries
         fields = [
-            "id", "title", "alternate_title", "volumes", "interest", "status", "is_completed", "urls", "urls_to_delete"
+            "id", "title", "alternate_title", "volumes", "interest", "status", "is_completed", "has_omnibus",
+            "urls", "urls_to_delete"
         ]
 
     def create(self, validated_data):
