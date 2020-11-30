@@ -14,13 +14,23 @@
           <i class="fa fa-arrow-right" aria-hidden="true"></i>
         </div>
         <div class="batch-preview-input-value">
-          <textarea name="notes" rows="5" cols="20" :value="matchNotes"></textarea>
+          <textarea name="notes" ref="notes" rows="5" cols="20" :value="matchNotes"></textarea>
         </div>
       </div>
     `,
     computed: {
       matchNotes: function () {
         return this.match ? this.match.notes : '';
+      }
+    },
+    methods: {
+      resetNotes: function () {
+        this.$refs.notes.value = this.matchNotes;
+      }
+    },
+    watch: {
+      item: function () {
+        this.resetNotes();
       }
     }
   });
