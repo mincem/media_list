@@ -1,0 +1,28 @@
+<script>
+  Vue.component('batch-saver-preview-volumes', {
+    delimiters: ['[[', ']]'],
+    props: ['item', 'match'],
+    template: `
+      <div class="batch-preview-row">
+        <div class="batch-preview-field">
+          Volumes
+        </div>
+        <div class="batch-preview-match-value">
+          [[match ? match.volumes : '-']]
+        </div>
+        <div class="batch-preview-arrow">
+          <i class="fa fa-arrow-right" aria-hidden="true"></i>
+        </div>
+        <div class="batch-preview-input-value">
+          <input name="volumes" type="number" :value="highestVolumes">
+        </div>
+      </div>
+    `,
+    computed: {
+      highestVolumes: function () {
+        if (!this.match || !this.match.volumes) return this.item.volumes;
+        return Math.max(this.item.volumes, this.match.volumes);
+      }
+    }
+  });
+</script>

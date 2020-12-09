@@ -1,3 +1,4 @@
+{% include 'media_list/batch_importer/batch_saver_preview_volumes.html' %}
 {% include 'media_list/batch_importer/batch_saver_preview_notes.html' %}
 {% include 'media_list/batch_importer/batch_saver_preview_hasomnibus.html' %}
 {% include 'media_list/batch_importer/batch_saver_preview_urls.html' %}
@@ -45,20 +46,7 @@
           </div>
         </div>
 
-        <div class="batch-preview-row">
-          <div class="batch-preview-field">
-            Volumes
-          </div>
-          <div class="batch-preview-match-value">
-            [[match ? match.volumes : '-']]
-          </div>
-          <div class="batch-preview-arrow">
-            <i class="fa fa-arrow-right" aria-hidden="true"></i>
-          </div>
-          <div class="batch-preview-input-value">
-            <input name="volumes" type="number" :value="item.volumes">
-          </div>
-        </div>
+        <batch-saver-preview-volumes :item="item" :match="match"></batch-saver-preview-volumes>
 
         <div class="batch-preview-row">
           <div class="batch-preview-field">
