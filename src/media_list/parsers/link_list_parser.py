@@ -37,6 +37,8 @@ def parse_entry(text, url):
 
 
 def manga_matches(title):
-    query = MangaSeries.objects.filter(title__icontains=title) | \
-            MangaSeries.objects.filter(alternate_title__icontains=title)
+    prefix = title[:10]
+    print(prefix)
+    query = MangaSeries.objects.filter(title__icontains=prefix) | \
+            MangaSeries.objects.filter(alternate_title__icontains=prefix)
     return query.all()
