@@ -1,6 +1,6 @@
 from django.forms import ModelForm, Textarea
 
-from src.media_list.widgets import RangeInput
+from ..widgets import RangeInput
 
 
 class MediaItemForm(ModelForm):
