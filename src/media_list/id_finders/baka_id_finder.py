@@ -1,4 +1,5 @@
-from google import google
+from googleapi import google
+import googlesearch
 from urllib.parse import urlparse, parse_qs
 
 from . import ExternalIDFinder
@@ -30,6 +31,14 @@ class BakaIDFinder(ExternalIDFinder):
 
 
 class LinkFetcher:
+    @staticmethod
+    def get(series_title):
+        for url in googlesearch.search(f"site:mangaupdates.com {series_title}", stop=20):
+            return url
+        raise Exception(f'Cannot find Mangaupdates page for series "{series_title}"')
+
+
+class OldLinkFetcher:
     @staticmethod
     def get(series_title):
         search_results = google.search(f"site:mangaupdates.com {series_title}")
