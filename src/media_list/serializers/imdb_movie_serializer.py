@@ -34,7 +34,7 @@ class IMDBMovieSerializer:
         return [text_without_author(plot) for plot in self.api_movie.get("plot", [])]
 
     def parse_description(self):
-        synopsis = self.api_movie.get("synopsis", [])[0]
+        synopsis = self.api_movie.get("synopsis", [""])[0]
         return re.sub(r"\.(?!\s|$)", ".\n\n", synopsis)
 
     def parse_runtime(self):
