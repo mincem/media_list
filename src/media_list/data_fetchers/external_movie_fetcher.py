@@ -1,15 +1,15 @@
-import imdb
+from imdb import Cinemagoer
 
 from .external_item_fetcher import ExternalItemFetcher
 from ..models import Movie
-from ..serializers import IMDBMovieSerializer
 from ..repositories import IMDBMovieRepository
+from ..serializers import IMDBMovieSerializer
 
 
 class ExternalMovieFetcher(ExternalItemFetcher):
     def __init__(self, item, imdb_access=None, image_retriever_class=None):
         super().__init__(item, image_retriever_class)
-        self.imdb_access = imdb_access or imdb.IMDb()
+        self.imdb_access = imdb_access or Cinemagoer()
 
     @classmethod
     def accepts(cls, item):

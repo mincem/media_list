@@ -1,4 +1,4 @@
-import imdb
+from imdb import Cinemagoer
 
 from . import ExternalIDFinder
 from ..models import Movie
@@ -7,7 +7,7 @@ from ..models import Movie
 class MovieIDFinder(ExternalIDFinder):
     def __init__(self, title, imdb_access=None):
         super().__init__(title)
-        self.imdb_access = imdb_access or imdb.IMDb()
+        self.imdb_access = imdb_access or Cinemagoer()
 
     @classmethod
     def accepts(cls, item):
