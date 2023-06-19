@@ -9,6 +9,7 @@ from ..repositories import IMDBMovieRepository
 casablanca_data = {
     "imdb_id": "0034583",
     "title": "Casablanca",
+    "original_title": "Casablanca",
     "plots": [
         "A cynical American expatriate struggles to decide",
         "The story of Rick Blaine, a cynical world-weary",
@@ -55,6 +56,9 @@ class IMDBMovieRepositoryTests(TestCase):
 
     def test_store_correct_title(self):
         self.assertEquals("Casablanca", self.imdb_movie.title)
+
+    def test_store_correct_original_title(self):
+        self.assertEquals("Casablanca", self.imdb_movie.original_title)
 
     def test_store_correct_plots(self):
         self.assertEquals("During World War II, Europeans who were fleeing", str(self.imdb_movie.plots.all()[3]))
