@@ -5,7 +5,7 @@ from ordered_model.models import OrderedModel
 
 
 class ItemURL(OrderedModel):
-    class Meta:
+    class Meta(OrderedModel.Meta):
         abstract = True
 
     url = models.URLField()

@@ -1,6 +1,6 @@
-from googleapi import google
-import googlesearch
 from urllib.parse import urlparse, parse_qs
+
+import googlesearch
 
 from . import ExternalIDFinder
 from ..models import MangaSeries
@@ -36,12 +36,3 @@ class LinkFetcher:
         for url in googlesearch.search(f"site:mangaupdates.com {series_title}", stop=20):
             return url
         raise Exception(f'Cannot find Mangaupdates page for series "{series_title}"')
-
-
-class OldLinkFetcher:
-    @staticmethod
-    def get(series_title):
-        search_results = google.search(f"site:mangaupdates.com {series_title}")
-        if not search_results:
-            raise Exception(f'Cannot find Mangaupdates page for series "{series_title}"')
-        return search_results[0].link
