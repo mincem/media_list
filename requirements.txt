@@ -10,7 +10,6 @@ easy-thumbnails==2.8.5
 emoji==0.5.2
 fake-useragent==0.1.11
 future==0.18.3
-Google-Search-API==1.1.14
 google==3.0.0
 idna==2.8
 cinemagoer==2023.5.1
