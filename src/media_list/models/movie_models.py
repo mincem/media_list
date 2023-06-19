@@ -1,9 +1,9 @@
-from django.contrib.staticfiles.templatetags.staticfiles import static
 from django.db import models
+from django.templatetags.static import static
 from ordered_model.models import OrderedModel
 
-from .video_models import VideoSource
 from .base_models import MediaItem
+from .video_models import VideoSource
 from ..categories import movie_category
 
 STATUS_CHOICES = (
