@@ -37,24 +37,24 @@ class OldScanListParserTests(TestCase):
 
     def test_store_correct_title(self):
         manga_series = self.parser.scan_contents(basara_html)[0]
-        self.assertEquals(basara_data["title"], manga_series.title)
+        self.assertEqual(basara_data["title"], manga_series.title)
 
     def test_store_correct_longer_title(self):
         manga_series = self.parser.scan_contents(gigantomaxia_html)[0]
-        self.assertEquals(gigantomaxia_data["title"], manga_series.title)
+        self.assertEqual(gigantomaxia_data["title"], manga_series.title)
 
     def test_store_correct_volumes(self):
         manga_series = self.parser.scan_contents(basara_html)[0]
-        self.assertEquals(basara_data["volumes"], manga_series.volumes)
+        self.assertEqual(basara_data["volumes"], manga_series.volumes)
 
     def test_standalone_stores_one_volume(self):
         manga_series = self.parser.scan_contents(gigantomaxia_html)[0]
-        self.assertEquals(gigantomaxia_data["volumes"], manga_series.volumes)
+        self.assertEqual(gigantomaxia_data["volumes"], manga_series.volumes)
 
     def test_store_is_completed(self):
         manga_series = self.parser.scan_contents(basara_html)[0]
-        self.assertEquals(True, manga_series.is_completed)
+        self.assertEqual(True, manga_series.is_completed)
 
     def test_store_correct_url(self):
         manga_series = self.parser.scan_contents(basara_html)[0]
-        self.assertEquals(basara_data["url"], str(manga_series.urls.first()))
+        self.assertEqual(basara_data["url"], str(manga_series.urls.first()))

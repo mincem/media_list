@@ -16,5 +16,5 @@ class MangaSeriesFormsTests(TestCase):
         )
         ms.title, ms.alternate_title = ms.alternate_title, ms.title
 
-        self.assertEquals(self.title, ms.alternate_title)
-        self.assertEquals(self.alternate_title, ms.title)
+        self.assertEqual(self.title, ms.alternate_title)
+        self.assertEqual(self.alternate_title, ms.title)
