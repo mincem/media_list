@@ -11,7 +11,7 @@ class ItemURL(OrderedModel):
     url = models.URLField()
 
     def __str__(self):
-        return self.url
+        return str(self.url)
 
     def hostname(self):
         return urlparse(self.url).hostname

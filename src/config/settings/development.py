@@ -1,3 +1,6 @@
+# pylint: disable=wildcard-import
+# pylint: disable=undefined-variable
+
 from .base import *
 
 DATABASES = {

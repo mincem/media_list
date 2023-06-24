@@ -52,47 +52,47 @@ class IMDBMovieRepositoryTests(TestCase):
         self.imdb_movie = IMDBMovieRepository().create(**casablanca_data)
 
     def test_store_correct_imdb_id(self):
-        self.assertEquals("0034583", self.imdb_movie.imdb_id)
+        self.assertEqual("0034583", self.imdb_movie.imdb_id)
 
     def test_store_correct_title(self):
-        self.assertEquals("Casablanca", self.imdb_movie.title)
+        self.assertEqual("Casablanca", self.imdb_movie.title)
 
     def test_store_correct_original_title(self):
-        self.assertEquals("Casablanca", self.imdb_movie.original_title)
+        self.assertEqual("Casablanca", self.imdb_movie.original_title)
 
     def test_store_correct_plots(self):
-        self.assertEquals("During World War II, Europeans who were fleeing", str(self.imdb_movie.plots.all()[3]))
+        self.assertEqual("During World War II, Europeans who were fleeing", str(self.imdb_movie.plots.all()[3]))
 
     def test_store_correct_description(self):
-        self.assertEquals("In the early years of World War II, December 1941", self.imdb_movie.description)
+        self.assertEqual("In the early years of World War II, December 1941", self.imdb_movie.description)
 
     def test_store_correct_runtime(self):
-        self.assertEquals(datetime.timedelta(seconds=6120), self.imdb_movie.runtime)
+        self.assertEqual(datetime.timedelta(seconds=6120), self.imdb_movie.runtime)
 
     def test_store_correct_year(self):
-        self.assertEquals(1942, self.imdb_movie.year)
+        self.assertEqual(1942, self.imdb_movie.year)
 
     def test_store_correct_countries(self):
-        self.assertEquals("United States", str(self.imdb_movie.countries.first()))
+        self.assertEqual("United States", str(self.imdb_movie.countries.first()))
 
     def test_store_correct_genres(self):
         self.assertSetEqual({"Drama", "Romance", "War"}, {str(genre) for genre in self.imdb_movie.genres.all()})
 
     def test_store_correct_keywords(self):
         self.assertIn("french-morocco", {str(keyword) for keyword in self.imdb_movie.keywords.all()})
-        self.assertEquals(10, self.imdb_movie.keywords.count())
+        self.assertEqual(10, self.imdb_movie.keywords.count())
 
     def test_store_correct_cast(self):
-        self.assertEquals("Humphrey Bogart", str(self.imdb_movie.ordered_cast.first()))
-        self.assertEquals("Rick Blaine", self.imdb_movie.ordered_cast.first().role)
-        self.assertEquals(7, self.imdb_movie.ordered_cast.first().member.imdb_id)
-        self.assertEquals(10, self.imdb_movie.ordered_cast.count())
+        self.assertEqual("Humphrey Bogart", str(self.imdb_movie.ordered_cast.first()))
+        self.assertEqual("Rick Blaine", self.imdb_movie.ordered_cast.first().role)
+        self.assertEqual(7, self.imdb_movie.ordered_cast.first().member.imdb_id)
+        self.assertEqual(10, self.imdb_movie.ordered_cast.count())
 
     def test_store_correct_directors(self):
-        self.assertEquals("Michael Curtiz", str(self.imdb_movie.directors.first()))
+        self.assertEqual("Michael Curtiz", str(self.imdb_movie.directors.first()))
 
     def test_store_correct_rating(self):
-        self.assertEquals(8.5, self.imdb_movie.rating)
+        self.assertEqual(8.5, self.imdb_movie.rating)
 
     def test_store_image_in_correct_path(self):
         self.assertIn("/media/movie_images/", self.imdb_movie.image.url)

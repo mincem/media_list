@@ -76,10 +76,10 @@ class ExternalMangaFetcherTests(TestCase):
     #     self.assertTrue(False)
 
     def test_store_correct_baka_id(self):
-        self.assertEquals(MOCK_BAKA_ID, self.baka_series.baka_id)
+        self.assertEqual(MOCK_BAKA_ID, self.baka_series.baka_id)
 
     def test_store_correct_title(self):
-        self.assertEquals(shingeki_title, self.baka_series.title)
+        self.assertEqual(shingeki_title, self.baka_series.title)
 
     def test_store_correct_genres(self):
         baka_series_genres = {str(genre) for genre in self.baka_series.genres.all()}
@@ -90,10 +90,10 @@ class ExternalMangaFetcherTests(TestCase):
         self.assertDictEqual(shingeki_keywords, baka_series_keywords)
 
     def test_store_correct_description(self):
-        self.assertEquals(shingeki_description, self.baka_series.description)
+        self.assertEqual(shingeki_description, self.baka_series.description)
 
     def test_store_correct_status(self):
-        self.assertEquals(shingeki_status, self.baka_series.status)
+        self.assertEqual(shingeki_status, self.baka_series.status)
 
     def test_store_correct_authors(self):
         baka_series_authors = {str(author) for author in self.baka_series.authors.all()}
@@ -104,13 +104,13 @@ class ExternalMangaFetcherTests(TestCase):
         self.assertSetEqual(shingeki_artists, baka_series_artists)
 
     def test_store_correct_year(self):
-        self.assertEquals(shingeki_year, self.baka_series.year)
+        self.assertEqual(shingeki_year, self.baka_series.year)
 
     def test_store_correct_original_publisher(self):
-        self.assertEquals(shingeki_original_publisher, self.baka_series.original_publisher)
+        self.assertEqual(shingeki_original_publisher, self.baka_series.original_publisher)
 
     def test_store_correct_english_publisher(self):
-        self.assertEquals(shingeki_english_publisher, self.baka_series.english_publisher)
+        self.assertEqual(shingeki_english_publisher, self.baka_series.english_publisher)
 
 
 class MoreBakaParserTests(TestCase):

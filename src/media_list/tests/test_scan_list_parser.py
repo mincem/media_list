@@ -82,91 +82,93 @@ another_html = """
     """
 
 
+# pylint: disable=too-many-public-methods
+
 class ScanListParserTests(TestCase):
     def setUp(self):
         self.parser = ScanListParser("mock_filename", "Source")
 
     def test_reports_amount_scanned(self):
         response = ScanListParser("./media_list/samples/scan_list_test_sample.html", "Source").perform()
-        self.assertEquals(2, response["total"])
-        self.assertEquals(2, response["created"])
-        self.assertEquals(0, len(response["errors"]))
+        self.assertEqual(2, response["total"])
+        self.assertEqual(2, response["created"])
+        self.assertEqual(0, len(response["errors"]))
 
     def test_reports_a_scanning_error(self):
         response = ScanListParser("./media_list/samples/scan_list_broken_test_sample.html", "Source").perform()
-        self.assertEquals(2, response["total"])
-        self.assertEquals(1, response["created"])
-        self.assertEquals(1, len(response["errors"]))
+        self.assertEqual(2, response["total"])
+        self.assertEqual(1, response["created"])
+        self.assertEqual(1, len(response["errors"]))
 
     def test_store_correct_title(self):
         manga_series = self.parser.scan_contents(strike_the_blood_html)[0]
-        self.assertEquals(strike_the_blood_data["title"], manga_series.title)
+        self.assertEqual(strike_the_blood_data["title"], manga_series.title)
 
     def test_store_correct_alternate_title(self):
         manga_series = self.parser.scan_contents(water_dragon_bride_html)[0]
-        self.assertEquals(water_dragon_bride_data["alternate_title"], manga_series.alternate_title)
+        self.assertEqual(water_dragon_bride_data["alternate_title"], manga_series.alternate_title)
 
     def test_store_empty_alternate_title(self):
         manga_series = self.parser.scan_contents(strike_the_blood_html)[0]
-        self.assertEquals(strike_the_blood_data["alternate_title"], manga_series.alternate_title)
+        self.assertEqual(strike_the_blood_data["alternate_title"], manga_series.alternate_title)
 
     def test_store_correct_url(self):
         manga_series = self.parser.scan_contents(strike_the_blood_html)[0]
-        self.assertEquals(strike_the_blood_data["url"], str(manga_series.urls.first()))
+        self.assertEqual(strike_the_blood_data["url"], str(manga_series.urls.first()))
 
     def test_store_correct_volumes(self):
         manga_series = self.parser.scan_contents(strike_the_blood_html)[0]
-        self.assertEquals(strike_the_blood_data["volumes"], manga_series.volumes)
+        self.assertEqual(strike_the_blood_data["volumes"], manga_series.volumes)
 
     def test_standalone_stores_one_volume(self):
         manga_series = self.parser.scan_contents(beauty_html)[0]
-        self.assertEquals(1, manga_series.volumes)
+        self.assertEqual(1, manga_series.volumes)
 
     def test_store_does_have_omnibus(self):
         manga_series = self.parser.scan_contents(dragon_half_html)[0]
-        self.assertEquals(True, manga_series.has_omnibus)
+        self.assertEqual(True, manga_series.has_omnibus)
 
     def test_store_does_not_have_omnibus(self):
         manga_series = self.parser.scan_contents(strike_the_blood_html)[0]
-        self.assertEquals(False, manga_series.has_omnibus)
+        self.assertEqual(False, manga_series.has_omnibus)
 
     def test_store_standalone_omnibus(self):
         manga_series = self.parser.scan_contents(another_html)[0]
-        self.assertEquals(1, manga_series.volumes)
-        self.assertEquals(True, manga_series.has_omnibus)
+        self.assertEqual(1, manga_series.volumes)
+        self.assertEqual(True, manga_series.has_omnibus)
 
     def test_store_is_completed(self):
         manga_series = self.parser.scan_contents(strike_the_blood_html)[0]
-        self.assertEquals(True, manga_series.is_completed)
+        self.assertEqual(True, manga_series.is_completed)
 
     def test_store_is_not_completed(self):
         manga_series = self.parser.scan_contents(water_dragon_bride_html)[0]
-        self.assertEquals(False, manga_series.is_completed)
+        self.assertEqual(False, manga_series.is_completed)
 
     def test_standalone_is_always_completed(self):
         manga_series = self.parser.scan_contents(beauty_html)[0]
-        self.assertEquals(True, manga_series.is_completed)
+        self.assertEqual(True, manga_series.is_completed)
 
     def test_store_min_interest(self):
         manga_series = self.parser.scan_contents(strike_the_blood_html)[0]
-        self.assertEquals(MIN_INTEREST, manga_series.interest)
+        self.assertEqual(MIN_INTEREST, manga_series.interest)
 
     def test_store_max_interest(self):
         manga_series = self.parser.scan_contents(ceres_html)[0]
-        self.assertEquals(MAX_INTEREST, manga_series.interest)
+        self.assertEqual(MAX_INTEREST, manga_series.interest)
 
     def test_store_status_not_downloaded(self):
         manga_series = self.parser.scan_contents(strike_the_blood_html)[0]
-        self.assertEquals("N", manga_series.status)
+        self.assertEqual("N", manga_series.status)
 
     def test_store_status_downloading(self):
         manga_series = self.parser.scan_contents(water_dragon_bride_html)[0]
-        self.assertEquals("D", manga_series.status)
+        self.assertEqual("D", manga_series.status)
 
     def test_store_status_downloaded_raw(self):
         manga_series = self.parser.scan_contents(ceres_html)[0]
-        self.assertEquals("R", manga_series.status)
+        self.assertEqual("R", manga_series.status)
 
     def test_store_status_edited(self):
         manga_series = self.parser.scan_contents(dragon_half_html)[0]
-        self.assertEquals("E", manga_series.status)
+        self.assertEqual("E", manga_series.status)
