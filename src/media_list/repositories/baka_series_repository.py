@@ -16,6 +16,7 @@ class BakaSeriesRepository:
                artist_names=None,
                genre_names=None,
                keywords=None,
+               **_kwargs
                ):
         baka_series = BakaSeries.objects.create(
             baka_id=baka_id,

@@ -18,6 +18,7 @@ class IMDBMovieRepository:
                directors=None,
                rating=None,
                image=None,
+               **_kwargs
                ):
         imdb_movie = IMDBMovie.objects.create(
             imdb_id=imdb_id,
