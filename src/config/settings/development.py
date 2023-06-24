@@ -1,4 +1,7 @@
+# pylint: disable=wildcard-import
+
 from .base import *
+from .base import BASE_DIR
 
 DATABASES = {
     'default': {

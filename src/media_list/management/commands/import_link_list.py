@@ -9,6 +9,10 @@ from ...parsers import link_list_parser
 class Command(BaseCommand):
     help = 'Imports manga series from a list of Markdown links'
 
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.source = None
+
     def add_arguments(self, parser):
         parser.add_argument('file', type=str)
         parser.add_argument('source', type=str)
