@@ -1,5 +1,7 @@
 from django.db import models
 
+from ..utils import ColorPicker
+
 
 class TimestampedModel(models.Model):
     class Meta:
@@ -42,7 +44,6 @@ class MediaItem(TimestampedModel):
 
     @property
     def interest_color(self):
-        from ..utils import ColorPicker
         return ColorPicker().color_for(self.interest)
 
     @property

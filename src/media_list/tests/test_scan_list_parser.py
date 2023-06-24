@@ -82,6 +82,8 @@ another_html = """
     """
 
 
+# pylint: disable=too-many-public-methods
+
 class ScanListParserTests(TestCase):
     def setUp(self):
         self.parser = ScanListParser("mock_filename", "Source")
