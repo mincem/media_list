@@ -21,6 +21,8 @@ jobs:
     - name: Run pylint
       run: pylint --load-plugins pylint_django --django-settings-module=config.settings.production src/media_list
     - name: Run tests
+      env:
+        DJANGO_SETTINGS_MODULE: config.settings.production
       run: |
         cd src
         python manage.py test
