@@ -39,7 +39,7 @@ class IMDBMovieSerializer:
 
     def parse_runtime(self):
         runtimes = self.api_movie.get("runtime")
-        if runtimes is None or not len(runtimes):
+        if not runtimes:
             return None
         return timedelta(minutes=int(runtimes[0]))
 

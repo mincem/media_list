@@ -52,6 +52,7 @@ class ScanListParser:
         except Exception as error:
             self.errors.append({"line": entry, "error": error})
             self.total_lines_read += 1
+            return None
 
     def extracted_data_from(self, entry):
         line = clean_text(entry)
@@ -130,8 +131,7 @@ def find_old_volumes(line):
 def find_status(entry):
     entry_html = str(entry)
     try:
-        entry_text_color = next(color for color in (LINK_COLORS.keys()) if color in entry_html)
-        return LINK_COLORS[entry_text_color]
+        return next(status for color, status in LINK_COLORS.items() if color in entry_html)
     except StopIteration:
         return DEFAULT_STATUS
 

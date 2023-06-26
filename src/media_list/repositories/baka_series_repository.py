@@ -1,6 +1,7 @@
 from ..models import MangaPerson, MangaGenre, BakaSeries, MangaKeyword
 
 
+# pylint: disable=too-many-arguments
 class BakaSeriesRepository:
     def create(self,
                baka_id=None,
@@ -15,6 +16,7 @@ class BakaSeriesRepository:
                artist_names=None,
                genre_names=None,
                keywords=None,
+               **_kwargs
                ):
         baka_series = BakaSeries.objects.create(
             baka_id=baka_id,

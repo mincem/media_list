@@ -65,8 +65,7 @@ class MangaSeries(MediaItem):
     def image_url(self):
         if self.external_info and self.external_info.image:
             return self.external_info.image.url
-        else:
-            return static('media_list/images/default_cover_2.jpg')
+        return static('media_list/images/default_cover_2.jpg')
 
 
 class MangaGenre(NamedModel):
