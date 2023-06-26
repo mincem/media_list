@@ -9,6 +9,10 @@ from ...parsers import link_list_parser
 class Command(BaseCommand):
     help = 'Imports manga series from a list of Markdown links'
 
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.source = None
+
     def add_arguments(self, parser):
         parser.add_argument('file', type=str)
         parser.add_argument('source', type=str)
@@ -53,12 +57,13 @@ class Command(BaseCommand):
             if answer == 'v':
                 volumes = 0
             if answer in ['y', 'v']:
-                return update_best_match(best_match, volumes, entry["link"])
+                update_best_match(best_match, volumes, entry["link"])
+                return
         answer = input("Add new manga? ('v' ignores volumes)\n")
         if answer == 'v':
             volumes = 0
         if answer in ['y', 'v']:
-            return self.save_new_manga(entry["title"], volumes, entry["link"])
+            self.save_new_manga(entry["title"], volumes, entry["link"])
 
     def save_new_manga(self, title, volumes, url):
         manga = MangaSeries.objects.create(

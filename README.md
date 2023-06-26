@@ -9,3 +9,14 @@ Manager for media lists
 ## Usage
 
 * Run `python manage.py runserver 8000`
+
+## Development
+
+### Linter
+
+```bash
+pylint --load-plugins pylint_django --django-settings-module=config.settings.productio
+n src/media_list
+```
+
+* Pylint can also be configured in PyCharm with a plugin.

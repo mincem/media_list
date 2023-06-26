@@ -4,7 +4,6 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ('media_list', '0001_initial'),
     ]
@@ -13,6 +12,8 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='mangaseries',
             name='status',
-            field=models.CharField(choices=[('U', 'Unknown'), ('N', 'Not Downloaded'), ('D', 'Downloading'), ('R', 'Downloaded Raw'), ('E', 'Edited Complete'), ('I', 'Edited Incomplete')], default='U', max_length=1),
+            field=models.CharField(
+                choices=[('U', 'Unknown'), ('N', 'Not Downloaded'), ('D', 'Downloading'), ('R', 'Downloaded Raw'),
+                         ('E', 'Edited Complete'), ('I', 'Edited Incomplete')], default='U', max_length=1),
         ),
     ]

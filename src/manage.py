@@ -3,6 +3,7 @@
 import os
 import sys
 
+# pylint: disable=import-outside-toplevel
 
 def main():
     os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'config.settings')

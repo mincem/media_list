@@ -9,5 +9,5 @@ def category_url(category, path, *args, **kwargs):
     try:
         category_path = category.path
     except AttributeError:
-        return
+        return None
     return reverse(f"categories:{category_path}:{path}", args=args, kwargs=kwargs)

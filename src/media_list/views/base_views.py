@@ -12,10 +12,9 @@ class LandingView(generic.TemplateView):
 
 class CollectionView(generic.ListView):
     def get_sources(self):
-        if self.model.source_class:
-            return self.model.source_class.objects.all()
-        else:
+        if not self.model.source_class:
             return []
+        return self.model.source_class.objects.all()
 
     def get_context_data(self, **kwargs):
         return super().get_context_data(

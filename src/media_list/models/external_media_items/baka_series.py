@@ -26,6 +26,7 @@ class BakaSeries(ExternalMediaItem):
     def single_author(self):
         if self.has_single_author():
             return self.authors.first()
+        return None
 
     def has_single_author(self):
         return self.authors.count() == 1 and self.artists.count() == 1 and self.authors.first() == self.artists.first()
