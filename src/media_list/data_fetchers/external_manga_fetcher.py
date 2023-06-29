@@ -1,10 +1,12 @@
 import json
+
 import requests
 
 from .external_item_fetcher import ExternalItemFetcher
 from ..models import MangaSeries
-from ..utils import BakaPageScraper
 from ..repositories import BakaSeriesRepository
+from ..serializers import BakaSerializer
+from ..utils import BakaPageScraper
 
 
 class ExternalMangaFetcher(ExternalItemFetcher):
@@ -41,6 +43,6 @@ class ExternalMangaFetcher(ExternalItemFetcher):
 class BakaRetriever:
     @staticmethod
     def get(baka_id):
-        response = requests.get(f"https://www.mangaupdates.com/series.html?id={baka_id}")
+        response = requests.get(BakaSerializer.numeric_id_url(baka_id))
         response.raise_for_status()
         return response.text

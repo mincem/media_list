@@ -2,10 +2,10 @@ from django.db import models
 from django.db.models import Q
 
 from . import ExternalMediaItem
+from ...serializers import BakaSerializer
 
 
 class BakaSeries(ExternalMediaItem):
-
     class Meta:
         constraints = [
             models.CheckConstraint(
@@ -30,7 +30,7 @@ class BakaSeries(ExternalMediaItem):
         return f"({self.baka_id}) {self.title}"
 
     def url(self):
-        return f"https://www.mangaupdates.com/series.html?id={self.baka_id}"
+        return BakaSerializer.numeric_id_url(self.baka_id)
 
     def simple_genre_list(self):
         return ", ".join(str(genre) for genre in self.genres.all())
