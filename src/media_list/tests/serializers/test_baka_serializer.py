@@ -1,6 +1,6 @@
 from django.test import TestCase
 
-from ...serializers import BakaSerializer
+from ...serializers.baka_serializer import BakaSerializer
 
 
 class TestBakaSerializer(TestCase):
@@ -12,6 +12,6 @@ class TestBakaSerializer(TestCase):
 
     def test_alphanumeric_code_url(self):
         self.assertEqual(
-            "https://www.mangaupdates.com/series.html?id=a1b2c3d4",
-            BakaSerializer.numeric_id_url("a1b2c3d4")
+            "https://www.mangaupdates.com/series/a1b2c3d4",
+            BakaSerializer.alphanumeric_code_url("a1b2c3d4")
         )
