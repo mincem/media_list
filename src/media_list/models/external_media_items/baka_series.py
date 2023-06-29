@@ -1,10 +1,22 @@
 from django.db import models
+from django.db.models import Q
 
 from . import ExternalMediaItem
 
 
 class BakaSeries(ExternalMediaItem):
-    baka_id = models.PositiveSmallIntegerField()
+
+    class Meta:
+        constraints = [
+            models.CheckConstraint(
+                check=Q(baka_id__isnull=False) | Q(baka_code__isnull=False),
+                name='id_and_code_not_both_null',
+                violation_error_message="Fields baka_id and baka_code cannot be both null."
+            )
+        ]
+
+    baka_id = models.PositiveSmallIntegerField(blank=True, null=True)
+    baka_code = models.CharField(max_length=63, blank=True, null=True)
     genres = models.ManyToManyField("MangaGenre", related_name="series")
     keywords = models.ManyToManyField("MangaKeyword", related_name="series", through="MangaSeriesKeyword")
     status = models.CharField(max_length=255, blank=True)

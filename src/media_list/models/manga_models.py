@@ -30,6 +30,7 @@ class MangaSeries(MediaItem):
     source = models.ForeignKey("MangaSource", blank=True, null=True, on_delete=models.SET_NULL)
     status = models.CharField(max_length=1, choices=STATUS_CHOICES, default=DEFAULT_STATUS_CHOICE)
     baka_id = models.PositiveSmallIntegerField(blank=True, null=True)
+    baka_code = models.CharField(max_length=63, blank=True, null=True)
     baka_info = models.ForeignKey("BakaSeries", blank=True, null=True, on_delete=models.SET_NULL)
 
     @property
