@@ -5,7 +5,7 @@ import requests
 from .external_item_fetcher import ExternalItemFetcher
 from ..models import MangaSeries
 from ..repositories import BakaSeriesRepository
-from ..serializers import BakaSerializer
+from ..serializers.baka_serializer import BakaSerializer
 from ..utils import BakaPageScraper
 
 

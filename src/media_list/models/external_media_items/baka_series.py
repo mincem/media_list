@@ -2,7 +2,7 @@ from django.db import models
 from django.db.models import Q
 
 from . import ExternalMediaItem
-from ...serializers import BakaSerializer
+from ...serializers.baka_serializer import BakaSerializer
 
 
 class BakaSeries(ExternalMediaItem):

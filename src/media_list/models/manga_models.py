@@ -3,7 +3,7 @@ from django.templatetags.static import static
 
 from .base_models import TimestampedModel, NamedModel, MediaItem, MediaSource
 from ..categories import manga_category
-from ..serializers import BakaSerializer
+from ..serializers.baka_serializer import BakaSerializer
 
 STATUS_CHOICES = (
     ('U', 'Unknown Status'),

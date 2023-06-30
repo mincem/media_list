@@ -3,7 +3,7 @@ from imdb import Cinemagoer
 from .external_item_fetcher import ExternalItemFetcher
 from ..models import Movie
 from ..repositories import IMDBMovieRepository
-from ..serializers import IMDBMovieSerializer
+from ..serializers.imdb_movie_serializer import IMDBMovieSerializer
 
 
 class ExternalMovieFetcher(ExternalItemFetcher):
