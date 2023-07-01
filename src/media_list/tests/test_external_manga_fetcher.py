@@ -34,14 +34,14 @@ princess_artists = {'SOGABE Toshinori', 'YUKINOBU Azumi', 'YABUKI Gou'}
 
 class ShingekiMockBakaRetriever:
     @staticmethod
-    def get(_baka_id):
+    def get(_baka_url):
         with open("./media_list/samples/sample_baka.html", "rb") as html_file:
             return html_file.read()
 
 
 class PrincessMockBakaRetriever:
     @staticmethod
-    def get(_baka_id):
+    def get(_baka_url):
         with open("./media_list/samples/sample_baka_2.html", "rb") as html_file:
             return html_file.read()
 
@@ -60,6 +60,7 @@ class MockImageRetriever:
 class MockManga:
     baka_id = MOCK_BAKA_ID
     external_id = MOCK_BAKA_ID
+    baka_code = None
 
 
 class ExternalMangaFetcherTests(TestCase):

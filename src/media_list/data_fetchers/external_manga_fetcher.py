@@ -36,13 +36,14 @@ class ExternalMangaFetcher(ExternalItemFetcher):
 
     def baka_web_page_html(self):
         if self.web_page_html is None:
-            self.web_page_html = self.baka_retriever.get(self.item.baka_id)
+            baka_url = BakaSerializer().url(self.item)
+            self.web_page_html = self.baka_retriever.get(baka_url)
         return self.web_page_html
 
 
 class BakaRetriever:
     @staticmethod
-    def get(baka_id):
-        response = requests.get(BakaSerializer.numeric_id_url(baka_id))
+    def get(baka_url):
+        response = requests.get(baka_url)
         response.raise_for_status()
         return response.text
