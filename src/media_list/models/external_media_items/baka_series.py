@@ -30,7 +30,7 @@ class BakaSeries(ExternalMediaItem):
         return f"({self.baka_id}) {self.title}"
 
     def url(self):
-        return BakaSerializer.numeric_id_url(self.baka_id)
+        return BakaSerializer().url(self)
 
     def simple_genre_list(self):
         return ", ".join(str(genre) for genre in self.genres.all())

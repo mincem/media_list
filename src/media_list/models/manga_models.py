@@ -56,9 +56,7 @@ class MangaSeries(MediaItem):
         return f"{self.volumes}{'+' if not self.is_completed else ''} {'omnibus' if self.has_omnibus else 'volumes'}"
 
     def baka_url(self):
-        if not self.baka_id:
-            raise Exception("Mangaupdates URL has not been retrieved yet.")
-        return BakaSerializer.numeric_id_url(self.baka_id)
+        return BakaSerializer().url(self)
 
     def incomplete(self):
         return self.volumes is None or not self.urls.count() or self.status == DEFAULT_STATUS_CHOICE
