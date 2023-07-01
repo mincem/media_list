@@ -3,7 +3,7 @@ from urllib.parse import urlparse, parse_qs
 
 import googlesearch
 
-from . import ExternalIDFinder
+from .external_id_finder import ExternalIDFinder
 from ..models import MangaSeries
 
 

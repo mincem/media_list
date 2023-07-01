@@ -36,7 +36,7 @@ class MangaSeries(MediaItem):
 
     @property
     def external_id(self):
-        return self.baka_id
+        return self.baka_code or self.baka_id
 
     @external_id.setter
     def external_id(self, value):
