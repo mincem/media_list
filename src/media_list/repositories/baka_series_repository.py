@@ -5,6 +5,7 @@ from ..models import MangaPerson, MangaGenre, BakaSeries, MangaKeyword
 class BakaSeriesRepository:
     def create(self,
                baka_id=None,
+               baka_code=None,
                title=None,
                description=None,
                status=None,
@@ -20,6 +21,7 @@ class BakaSeriesRepository:
                ):
         baka_series = BakaSeries.objects.create(
             baka_id=baka_id,
+            baka_code=baka_code,
             title=title,
             description=description,
             status=status,

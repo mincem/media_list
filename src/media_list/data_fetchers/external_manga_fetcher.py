@@ -28,7 +28,11 @@ class ExternalMangaFetcher(ExternalItemFetcher):
         return json.dumps(self.parsed_series_data(), indent=2)
 
     def parsed_series_data(self):
-        series_data = BakaPageScraper(self.baka_web_page_html(), self.item.baka_id).parse()
+        series_data = BakaPageScraper(
+            page_html=self.baka_web_page_html(),
+            baka_id=self.item.baka_id,
+            baka_code=self.item.baka_code
+        ).parse()
         image_url = series_data.pop("image_url")
         if image_url is not None:
             series_data["image"] = self.image_retriever_class(image_url).fetch()

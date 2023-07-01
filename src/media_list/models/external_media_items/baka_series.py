@@ -27,7 +27,7 @@ class BakaSeries(ExternalMediaItem):
     image = models.ImageField(upload_to="manga_images/", blank=True, null=True)
 
     def __str__(self):
-        return f"({self.baka_id}) {self.title}"
+        return f"({self.baka_code or self.baka_id}) {self.title}"
 
     def url(self):
         return BakaSerializer().url(self)
