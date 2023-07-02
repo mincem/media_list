@@ -35,7 +35,7 @@ class BakaPageScraper:
 
     def parse_genres(self):
         genres = self.contents["Genre"]
-        if genres is None:
+        if genres.br is None:
             return []
         genres.br.find_next_sibling().extract()
         return list(genres.stripped_strings)
