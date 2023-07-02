@@ -1,7 +1,7 @@
 import re
 
 from ..models import MangaSeries
-from ..serializers import MangaSerializer
+from ..serializers.manga_serializers import MangaSerializer
 
 
 def process_markdown(markdown):
