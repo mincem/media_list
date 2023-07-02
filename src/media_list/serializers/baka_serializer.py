@@ -11,6 +11,6 @@ class BakaSerializer:
     def url(self, manga):
         if manga.baka_code:
             return self.alphanumeric_code_url(manga.baka_code)
-        elif manga.baka_id:
+        if manga.baka_id:
             return self.numeric_id_url(manga.baka_id)
         raise Exception("Missing external item ID")
