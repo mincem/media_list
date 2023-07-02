@@ -40,7 +40,10 @@ class MangaSeries(MediaItem):
 
     @external_id.setter
     def external_id(self, value):
-        self.baka_id = value
+        if isinstance(value, int) or value.isnumeric():
+            self.baka_id = value
+        else:
+            self.baka_code = value
 
     @property
     def external_info(self):
