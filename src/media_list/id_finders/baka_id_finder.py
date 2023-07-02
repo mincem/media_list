@@ -1,8 +1,9 @@
+import re
 from urllib.parse import urlparse, parse_qs
 
 from googlesearch import search
 
-from . import ExternalIDFinder
+from .external_id_finder import ExternalIDFinder
 from ..models import MangaSeries
 
 
@@ -16,23 +17,33 @@ class BakaIDFinder(ExternalIDFinder):
         return isinstance(item, MangaSeries)
 
     def get_id(self):
-        link = self.fetch_link()
+        link = self.link_fetcher.fetch(self.title)
         url = urlparse(link)
-        if not self.source_is_correct(url):
-            raise Exception(f"Cannot get Baka-ID from URL: {link}")
-        return int(parse_qs(url.query)["id"][0])
-
-    def fetch_link(self):
-        return self.link_fetcher.get(self.title)
-
-    @staticmethod
-    def source_is_correct(url):
-        return url.hostname == 'www.mangaupdates.com' and url.path == '/series.html'
+        alphanumeric_match = re.match(re.compile("/series/(\w+)/?.*"), url.path)
+        if not url.hostname == 'www.mangaupdates.com':
+            raise BakaUrlException(link)
+        elif alphanumeric_match:
+            return alphanumeric_match.group(1)
+        elif url.path == '/series.html':
+            try:
+                return int(parse_qs(url.query)["id"][0])
+            except KeyError:
+                raise BakaUrlException(link)
+        else:
+            raise BakaUrlException(link)
 
 
 class LinkFetcher:
     @staticmethod
-    def get(series_title):
+    def fetch(series_title):
         for result in search(f"mangaupdates.com {series_title}", advanced=True):
             return result.url
         raise Exception(f'Cannot find Mangaupdates page for series "{series_title}"')
+
+
+class BakaUrlException(Exception):
+    def __init__(self, url):
+        self.url = url
+
+    def __str__(self):
+        return f"Cannot get Baka-ID from URL: {self.url}"

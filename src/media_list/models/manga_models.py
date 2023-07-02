@@ -3,6 +3,7 @@ from django.templatetags.static import static
 
 from .base_models import TimestampedModel, NamedModel, MediaItem, MediaSource
 from ..categories import manga_category
+from ..serializers.baka_serializer import BakaSerializer
 
 STATUS_CHOICES = (
     ('U', 'Unknown Status'),
@@ -30,11 +31,12 @@ class MangaSeries(MediaItem):
     source = models.ForeignKey("MangaSource", blank=True, null=True, on_delete=models.SET_NULL)
     status = models.CharField(max_length=1, choices=STATUS_CHOICES, default=DEFAULT_STATUS_CHOICE)
     baka_id = models.PositiveSmallIntegerField(blank=True, null=True)
+    baka_code = models.CharField(max_length=63, blank=True, null=True)
     baka_info = models.ForeignKey("BakaSeries", blank=True, null=True, on_delete=models.SET_NULL)
 
     @property
     def external_id(self):
-        return self.baka_id
+        return self.baka_code or self.baka_id
 
     @external_id.setter
     def external_id(self, value):
@@ -54,9 +56,7 @@ class MangaSeries(MediaItem):
         return f"{self.volumes}{'+' if not self.is_completed else ''} {'omnibus' if self.has_omnibus else 'volumes'}"
 
     def baka_url(self):
-        if not self.baka_id:
-            raise Exception("Mangaupdates URL has not been retrieved yet.")
-        return f"https://www.mangaupdates.com/series.html?id={self.baka_id}"
+        return BakaSerializer().url(self)
 
     def incomplete(self):
         return self.volumes is None or not self.urls.count() or self.status == DEFAULT_STATUS_CHOICE

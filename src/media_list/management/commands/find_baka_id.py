@@ -13,6 +13,6 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         for series_id in options["series_ids"]:
             series = MangaSeries.objects.get(pk=series_id)
-            if not series.baka_id:
+            if not series.baka_id and not series.baka_code:
                 series.baka_id = BakaIDFinder(series.title).get_id()
                 series.save()

@@ -25,6 +25,7 @@ class Command(BaseCommand):
         keywords_data = BakaPageScraper(
             page_html=BakaRetriever().get(baka_series.baka_id),
             baka_id=baka_series.baka_id,
+            baka_code=baka_series.baka_code
         ).parse()["keywords"]
         for keyword_data in keywords_data:
             keyword = MangaKeyword.objects.get_or_create(name=keyword_data["name"])[0]
