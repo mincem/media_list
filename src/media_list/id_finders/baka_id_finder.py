@@ -19,18 +19,17 @@ class BakaIDFinder(ExternalIDFinder):
     def get_id(self):
         link = self.link_fetcher.fetch(self.title)
         url = urlparse(link)
-        alphanumeric_match = re.match(re.compile("/series/(\w+)/?.*"), url.path)
+        alphanumeric_match = re.match(re.compile(r"/series/(\w+)/?.*"), url.path)
         if not url.hostname == 'www.mangaupdates.com':
             raise BakaUrlException(link)
-        elif alphanumeric_match:
+        if alphanumeric_match:
             return alphanumeric_match.group(1)
-        elif url.path == '/series.html':
+        if url.path == '/series.html':
             try:
                 return int(parse_qs(url.query)["id"][0])
-            except KeyError:
-                raise BakaUrlException(link)
-        else:
-            raise BakaUrlException(link)
+            except KeyError as error:
+                raise BakaUrlException(link) from error
+        raise BakaUrlException(link)
 
 
 class LinkFetcher:
@@ -43,6 +42,7 @@ class LinkFetcher:
 
 class BakaUrlException(Exception):
     def __init__(self, url):
+        super().__init__()
         self.url = url
 
     def __str__(self):

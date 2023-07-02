@@ -1,0 +1,28 @@
+name: Build and test
+
+on: [push]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.8"]
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v4
+      with:
+        python-version: ${{ matrix.python-version }}
+        cache: 'pip'
+    - name: Install requirements
+      run: pip install -r requirements.txt
+    - name: Run pylint
+      run: pylint --load-plugins pylint_django --django-settings-module=config.settings.production src/media_list
+    - name: Run tests
+      env:
+        DJANGO_SETTINGS_MODULE: config.settings.production
+      run: |
+        cd src
+        python manage.py test
