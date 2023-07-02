@@ -1,10 +1,12 @@
 import json
+
 import requests
 
 from .external_item_fetcher import ExternalItemFetcher
 from ..models import MangaSeries
-from ..utils import BakaPageScraper
 from ..repositories import BakaSeriesRepository
+from ..serializers.baka_serializer import BakaSerializer
+from ..utils import BakaPageScraper
 
 
 class ExternalMangaFetcher(ExternalItemFetcher):
@@ -26,7 +28,11 @@ class ExternalMangaFetcher(ExternalItemFetcher):
         return json.dumps(self.parsed_series_data(), indent=2)
 
     def parsed_series_data(self):
-        series_data = BakaPageScraper(self.baka_web_page_html(), self.item.baka_id).parse()
+        series_data = BakaPageScraper(
+            page_html=self.baka_web_page_html(),
+            baka_id=self.item.baka_id,
+            baka_code=self.item.baka_code
+        ).parse()
         image_url = series_data.pop("image_url")
         if image_url is not None:
             series_data["image"] = self.image_retriever_class(image_url).fetch()
@@ -34,13 +40,14 @@ class ExternalMangaFetcher(ExternalItemFetcher):
 
     def baka_web_page_html(self):
         if self.web_page_html is None:
-            self.web_page_html = self.baka_retriever.get(self.item.baka_id)
+            baka_url = BakaSerializer().url(self.item)
+            self.web_page_html = self.baka_retriever.get(baka_url)
         return self.web_page_html
 
 
 class BakaRetriever:
     @staticmethod
-    def get(baka_id):
-        response = requests.get(f"https://www.mangaupdates.com/series.html?id={baka_id}")
+    def get(baka_url):
+        response = requests.get(baka_url)
         response.raise_for_status()
         return response.text

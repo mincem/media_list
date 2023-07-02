@@ -106,14 +106,14 @@
 
 
 {% block actions %}
-  {% if not object.baka_id %}
+  {% if not object.baka_id and not object.baka_code %}
     <button id="action-find-external-id" type="button" class="btn btn-primary"
             data-url="{% category_url object.get_category 'get_external_id' object.id %}">
       Find Mangaupdates ID
     </button>
   {% endif %}
 
-  {% if object.baka_id and not object.external_info %}
+  {% if object.baka_id or object.baka_code and not object.external_info %}
     <button id="action-get-baka-data" type="button" class="btn btn-primary"
             data-url="{% category_url object.get_category 'get_external_item' object.id %}">
       Get Info from Mangaupdates
@@ -123,7 +123,7 @@
 
 
 {% block extra_links %}
-  {% if object.baka_id %}
+  {% if object.baka_id or object.baka_code %}
     <a class="btn btn-baka btn-sm media-link" href="{{ object.baka_url }}" target="_blank" rel="noopener">
       Mangaupdates page
       <i class="fas fa-external-link-alt"></i>

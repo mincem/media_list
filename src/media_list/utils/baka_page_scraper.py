@@ -4,8 +4,9 @@ from bs4 import BeautifulSoup
 
 
 class BakaPageScraper:
-    def __init__(self, page_html, baka_id):
+    def __init__(self, page_html, baka_id = None, baka_code = None):
         self.baka_id = baka_id
+        self.baka_code = baka_code
         self.main_content = BeautifulSoup(page_html, "lxml").find(id="main_content")
         self.contents = self.all_contents()
 
@@ -14,7 +15,8 @@ class BakaPageScraper:
 
     def parse(self):
         return {
-            "baka_id": self.baka_id,
+            "baka_id": self.baka_id or None,
+            "baka_code": self.baka_code or None,
             "title": self.parse_title(),
             "genre_names": self.parse_genres(),
             "keywords": self.parse_keywords(),
@@ -33,7 +35,7 @@ class BakaPageScraper:
 
     def parse_genres(self):
         genres = self.contents["Genre"]
-        if genres is None:
+        if genres.br is None:
             return []
         genres.br.find_next_sibling().extract()
         return list(genres.stripped_strings)
