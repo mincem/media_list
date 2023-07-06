@@ -13,7 +13,7 @@ future==0.18.3
 googlesearch-python==1.2.3
 idna==2.8
 cinemagoer==2023.5.1
-lxml==4.9.1
+lxml==4.9.3
 multidict==4.5.2
 pylint==2.14.5
 pylint-django==2.5.3
