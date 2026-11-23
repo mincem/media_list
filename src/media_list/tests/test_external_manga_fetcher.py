@@ -4,8 +4,11 @@ from django.core.files.base import File
 from django.test import TestCase
 
 from ..data_fetchers import ExternalMangaFetcher
+from ..data_fetchers.external_manga_fetcher import BakaPage
 
-MOCK_BAKA_ID = 1234567
+MOCK_BAKA_ID = "1234567"
+MOCK_BAKA_CODE = "a1b2c3d4"
+MOCK_REDIRECT_URL = f"https://www.mangaupdates.com/series/{MOCK_BAKA_CODE}/shingeki-no-kyojin"
 FMP_SIGMA_BAKA_ID = 913
 
 shingeki_authors = {"ISAYAMA Hajime"}
@@ -32,18 +35,26 @@ princess_authors = {'SAKAKI Ichiro'}
 princess_artists = {'SOGABE Toshinori', 'YUKINOBU Azumi', 'YABUKI Gou'}
 
 
-class ShingekiMockBakaRetriever:
-    @staticmethod
-    def get(_baka_url):
-        with open("./media_list/samples/sample_baka.html", "rb") as html_file:
-            return html_file.read()
+class MockBakaRetriever:
+    """Serves a sample page. Pass final_url to simulate a redirect; by default the URL is returned unchanged."""
+    sample_path = None
+
+    def __init__(self, final_url=None):
+        self.final_url = final_url
+        self.requested_urls = []
+
+    def get(self, baka_url):
+        self.requested_urls.append(baka_url)
+        with open(self.sample_path, "rb") as html_file:
+            return BakaPage(html=html_file.read(), url=self.final_url or baka_url)
 
 
-class PrincessMockBakaRetriever:
-    @staticmethod
-    def get(_baka_url):
-        with open("./media_list/samples/sample_baka_2.html", "rb") as html_file:
-            return html_file.read()
+class ShingekiMockBakaRetriever(MockBakaRetriever):
+    sample_path = "./media_list/samples/sample_baka.html"
+
+
+class PrincessMockBakaRetriever(MockBakaRetriever):
+    sample_path = "./media_list/samples/sample_baka_2.html"
 
 
 class MockImageRetriever:
@@ -58,9 +69,12 @@ class MockImageRetriever:
 
 
 class MockManga:
-    baka_id = MOCK_BAKA_ID
-    external_id = MOCK_BAKA_ID
-    baka_code = None
+    def __init__(self, baka_id=MOCK_BAKA_ID):
+        self.baka_id = baka_id
+
+    @property
+    def external_id(self):
+        return self.baka_id
 
 
 class ExternalMangaFetcherTests(TestCase):
@@ -112,6 +126,37 @@ class ExternalMangaFetcherTests(TestCase):
 
     def test_store_correct_english_publisher(self):
         self.assertEqual(shingeki_english_publisher, self.baka_series.english_publisher)
+
+
+class LazyIdUpgradeTests(TestCase):
+    def fetch(self, manga, final_url=None):
+        retriever = ShingekiMockBakaRetriever(final_url=final_url)
+        baka_series = ExternalMangaFetcher(
+            item=manga,
+            baka_retriever=retriever,
+            image_retriever_class=MockImageRetriever,
+        ).fetch()
+        return baka_series, retriever
+
+    def test_numeric_id_redirected_to_code_is_upgraded(self):
+        manga = MockManga(baka_id=MOCK_BAKA_ID)
+        baka_series, retriever = self.fetch(manga, final_url=MOCK_REDIRECT_URL)
+        self.assertEqual([f"https://www.mangaupdates.com/series.html?id={MOCK_BAKA_ID}"], retriever.requested_urls)
+        self.assertEqual(MOCK_BAKA_CODE, manga.baka_id)
+        self.assertEqual(MOCK_BAKA_CODE, baka_series.baka_id)
+
+    def test_numeric_id_without_redirect_is_kept(self):
+        manga = MockManga(baka_id=MOCK_BAKA_ID)
+        baka_series, _retriever = self.fetch(manga)
+        self.assertEqual(MOCK_BAKA_ID, manga.baka_id)
+        self.assertEqual(MOCK_BAKA_ID, baka_series.baka_id)
+
+    def test_code_is_fetched_directly(self):
+        manga = MockManga(baka_id=MOCK_BAKA_CODE)
+        baka_series, retriever = self.fetch(manga, final_url=MOCK_REDIRECT_URL)
+        self.assertEqual([f"https://www.mangaupdates.com/series/{MOCK_BAKA_CODE}"], retriever.requested_urls)
+        self.assertEqual(MOCK_BAKA_CODE, manga.baka_id)
+        self.assertEqual(MOCK_BAKA_CODE, baka_series.baka_id)
 
 
 class MoreBakaParserTests(TestCase):

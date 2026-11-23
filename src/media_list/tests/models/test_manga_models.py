@@ -17,15 +17,17 @@ class MangaSeriesTests(TestCase):
         self.assertEqual(None, self.manga_series.external_id)
         self.manga_series.external_id = NUMERIC_ID
         self.manga_series.save()
-        self.assertEqual(NUMERIC_ID, self.manga_series.external_id)
-        self.assertEqual(NUMERIC_ID, self.manga_series.baka_id)
+        self.manga_series.refresh_from_db()
+        self.assertEqual(str(NUMERIC_ID), self.manga_series.external_id)
+        self.assertEqual(str(NUMERIC_ID), self.manga_series.baka_id)
 
     def test_external_id_with_alphanumeric_id(self):
         self.assertEqual(None, self.manga_series.external_id)
         self.manga_series.external_id = ALPHANUMERIC_ID
         self.manga_series.save()
+        self.manga_series.refresh_from_db()
         self.assertEqual(ALPHANUMERIC_ID, self.manga_series.external_id)
-        self.assertEqual(ALPHANUMERIC_ID, self.manga_series.baka_code)
+        self.assertEqual(ALPHANUMERIC_ID, self.manga_series.baka_id)
 
     def test_display_volumes(self):
         data = (dict.values() for dict in (
