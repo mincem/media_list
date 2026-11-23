@@ -4,9 +4,8 @@ from ...serializers.baka_serializer import BakaSerializer
 
 
 class MockManga:
-    def __init__(self, baka_id=None, baka_code=None):
+    def __init__(self, baka_id=None):
         self.baka_id = baka_id
-        self.baka_code = baka_code
 
 
 class TestBakaSerializer(TestCase):
@@ -20,22 +19,43 @@ class TestBakaSerializer(TestCase):
         url = BakaSerializer.alphanumeric_code_url("a1b2c3d4")
         self.assertEqual(expected, url)
 
-    def test_url_with_baka_id(self):
+    def test_url_with_numeric_id(self):
         expected = "https://www.mangaupdates.com/series.html?id=12345"
-        url = BakaSerializer().url(MockManga(baka_id=12345))
-        self.assertEqual(expected, url)
+        for baka_id in ("12345", 12345):
+            with self.subTest(baka_id=baka_id):
+                self.assertEqual(expected, BakaSerializer().url(MockManga(baka_id=baka_id)))
 
-    def test_url_with_baka_code(self):
+    def test_url_with_alphanumeric_code(self):
         expected = "https://www.mangaupdates.com/series/a1b2c3d4"
-        url = BakaSerializer().url(MockManga(baka_code="a1b2c3d4"))
+        url = BakaSerializer().url(MockManga(baka_id="a1b2c3d4"))
         self.assertEqual(expected, url)
 
-    def test_url_with_both_ids(self):
-        expected = "https://www.mangaupdates.com/series/a1b2c3d4"
-        url = BakaSerializer().url(MockManga(baka_id=12345, baka_code="a1b2c3d4"))
-        self.assertEqual(expected, url)
+    def test_url_with_no_id(self):
+        for baka_id in (None, ""):
+            with self.subTest(baka_id=baka_id):
+                with self.assertRaises(Exception) as content_manager:
+                    BakaSerializer().url(MockManga(baka_id=baka_id))
+                self.assertEqual("Missing external item ID", str(content_manager.exception))
 
-    def test_url_with_no_ids(self):
-        with self.assertRaises(Exception) as content_manager:
-            BakaSerializer().url(MockManga())
-        self.assertEqual("Missing external item ID", str(content_manager.exception))
+    def test_code_from_url(self):
+        data = {
+            "https://www.mangaupdates.com/series/5b8ska1/tangled-hyungjakga": "5b8ska1",
+            "https://www.mangaupdates.com/series/5b8ska1": "5b8ska1",
+            "https://www.mangaupdates.com/series.html?id=150000": None,
+        }
+        for url, expected in data.items():
+            with self.subTest(url=url):
+                self.assertEqual(expected, BakaSerializer.code_from_url(url))
+
+    def test_upgraded_id_from_redirected_numeric_id(self):
+        final_url = "https://www.mangaupdates.com/series/5b8ska1/tangled-hyungjakga"
+        new_id = BakaSerializer().upgraded_id("150000", final_url)
+        self.assertEqual("5b8ska1", new_id)
+
+    def test_upgraded_id_without_redirect(self):
+        new_id = BakaSerializer().upgraded_id("150000", "https://www.mangaupdates.com/series.html?id=150000")
+        self.assertEqual("150000", new_id)
+
+    def test_upgraded_id_keeps_existing_code(self):
+        new_id = BakaSerializer().upgraded_id("a1b2c3d4", "https://www.mangaupdates.com/series/zzzzzzz/other")
+        self.assertEqual("a1b2c3d4", new_id)

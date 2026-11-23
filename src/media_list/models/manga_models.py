@@ -30,20 +30,19 @@ class MangaSeries(MediaItem):
     is_read = models.BooleanField(default=False)
     source = models.ForeignKey("MangaSource", blank=True, null=True, on_delete=models.SET_NULL)
     status = models.CharField(max_length=1, choices=STATUS_CHOICES, default=DEFAULT_STATUS_CHOICE)
-    baka_id = models.PositiveSmallIntegerField(blank=True, null=True)
-    baka_code = models.CharField(max_length=63, blank=True, null=True)
+    baka_id = models.CharField(
+        max_length=63, blank=True, null=True,
+        help_text="Mangaupdates ID: either an old numeric ID or a new alphanumeric code",
+    )
     baka_info = models.ForeignKey("BakaSeries", blank=True, null=True, on_delete=models.SET_NULL)
 
     @property
     def external_id(self):
-        return self.baka_code or self.baka_id
+        return self.baka_id
 
     @external_id.setter
     def external_id(self, value):
-        if isinstance(value, int) or value.isnumeric():
-            self.baka_id = value
-        else:
-            self.baka_code = value
+        self.baka_id = None if value is None else str(value)
 
     @property
     def external_info(self):

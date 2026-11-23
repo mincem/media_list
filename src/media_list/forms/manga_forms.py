@@ -19,7 +19,6 @@ class MangaForm(MediaItemForm):
             "status",
             "notes",
             "baka_id",
-            "baka_code",
         ]
 
 
