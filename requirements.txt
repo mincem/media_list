@@ -3,9 +3,9 @@ bs4==0.0.1
 certifi==2023.7.22
 chardet==5.1.0
 Django==5.2.19
-django-extra-views==0.14.0
+django-extra-views==0.16.0
 django-ordered-model==3.7.4
-django-widget-tweaks==1.4.12
+django-widget-tweaks==1.6.0
 easy-thumbnails==2.10.1
 emoji==2.6.0
 fake-useragent==1.1.3
@@ -32,4 +32,4 @@ urllib3==2.0.4
 vcrpy==5.0.0
 wrapt==1.15.0
 yarl==1.9.2
-djangorestframework==3.14.0
+djangorestframework==3.18.3

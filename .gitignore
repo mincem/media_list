@@ -106,5 +106,6 @@ venv.bak/
 .idea
 
 src/media
+src/db
 
 .google-cookie
