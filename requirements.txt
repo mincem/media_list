@@ -1,4 +1,4 @@
-beautifulsoup4==4.12.2
+beautifulsoup4==4.15.0
 certifi==2023.7.22
 Django==5.2.19
 django-extra-views==0.16.0
@@ -7,14 +7,13 @@ django-widget-tweaks==1.6.0
 easy-thumbnails==2.10.1
 googlesearch-python==1.2.3
 idna==3.4
-cinemagoer==2023.5.1
-lxml==4.9.3
+cinemagoer==2026.8.20
+lxml==6.1.3
 pylint==2.14.5
 pylint-django==2.5.3
-Pillow==10.0.0
-requests==2.31.0
+Pillow==13.0.0
+requests==2.34.2
 soupsieve==2.4.1
-SQLAlchemy==2.0.19
 sqlparse==0.4.4
 urllib3==2.0.4
 wrapt==1.15.0
