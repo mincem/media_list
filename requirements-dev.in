@@ -5,8 +5,8 @@
 -r requirements.in
 -c requirements.txt
 
-# Kept at the old versions until the pylint upgrade (#41, #42)
-pylint==2.14.5
-pylint-django==2.5.3
+# Linting
+pylint
+pylint-django
 
 uv

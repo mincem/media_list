@@ -37,8 +37,6 @@ class ScanListParser:
 
     def scan_contents(self, html):
         soup = BeautifulSoup(html, "lxml")
-        # False positive with pylint 2.14 and bs4 4.13+; remove when upgrading pylint (#41)
-        # pylint: disable-next=not-an-iterable
         return [self.scan(entry) for entry in soup.find_all("p")]
 
     def scan(self, entry):
@@ -51,7 +49,7 @@ class ScanListParser:
             self.series_created += 1
             self.total_lines_read += 1
             return series
-        except Exception as error:
+        except Exception as error:  # pylint: disable=broad-exception-caught
             self.errors.append({"line": entry, "error": error})
             self.total_lines_read += 1
             return None

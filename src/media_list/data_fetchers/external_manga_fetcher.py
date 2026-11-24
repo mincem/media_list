@@ -53,6 +53,6 @@ class BakaPage(NamedTuple):
 class BakaRetriever:
     @staticmethod
     def get(baka_url):
-        response = requests.get(baka_url)
+        response = requests.get(baka_url, timeout=30)
         response.raise_for_status()
         return BakaPage(html=response.text, url=response.url)
