@@ -1,20 +1,16 @@
 import json
-from typing import NamedTuple, Union
 
-import requests
-
+from .baka_sources import fetch_from_sources
 from .external_item_fetcher import ExternalItemFetcher
 from ..models import MangaSeries
 from ..repositories import BakaSeriesRepository
-from ..serializers.baka_serializer import BakaSerializer
-from ..utils import BakaPageScraper
 
 
 class ExternalMangaFetcher(ExternalItemFetcher):
-    def __init__(self, item, baka_retriever=None, image_retriever_class=None):
+    def __init__(self, item, sources=None, image_retriever_class=None):
         super().__init__(item, image_retriever_class)
-        self.baka_retriever = baka_retriever or BakaRetriever()
-        self.web_page = None
+        self.sources = sources
+        self.source_result = None
 
     @classmethod
     def accepts(cls, item):
@@ -29,30 +25,17 @@ class ExternalMangaFetcher(ExternalItemFetcher):
         return json.dumps(self.parsed_series_data(), indent=2)
 
     def parsed_series_data(self):
-        page = self.baka_web_page()
+        result = self.fetch_series()
         # Lazy upgrade: if an old numeric ID was redirected to a code URL, keep the code.
         # The caller is responsible for saving the item.
-        self.item.baka_id = BakaSerializer().upgraded_id(self.item.baka_id, page.url)
-        series_data = BakaPageScraper(page_html=page.html, baka_id=self.item.baka_id).parse()
+        self.item.baka_id = result.baka_id
+        series_data = dict(result.series_data)
         image_url = series_data.pop("image_url")
         if image_url is not None:
             series_data["image"] = self.image_retriever_class(image_url).fetch()
         return series_data
 
-    def baka_web_page(self):
-        if self.web_page is None:
-            self.web_page = self.baka_retriever.get(BakaSerializer().url(self.item))
-        return self.web_page
-
-
-class BakaPage(NamedTuple):
-    html: Union[str, bytes]
-    url: str
-
-
-class BakaRetriever:
-    @staticmethod
-    def get(baka_url):
-        response = requests.get(baka_url, timeout=30)
-        response.raise_for_status()
-        return BakaPage(html=response.text, url=response.url)
+    def fetch_series(self):
+        if self.source_result is None:
+            self.source_result = fetch_from_sources(self.item.baka_id, self.sources)
+        return self.source_result
