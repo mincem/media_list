@@ -2,6 +2,7 @@ import re
 from urllib.parse import urlparse
 
 BASE_URL = "https://www.mangaupdates.com"
+API_BASE_URL = "https://api.mangaupdates.com/v1"
 CODE_PATH_PATTERN = re.compile(r"/series/(\w+)/?.*")
 
 
@@ -16,6 +17,15 @@ class BakaSerializer:
         return f"{BASE_URL}/series/{baka_code}"
 
     @staticmethod
+    def api_series_id(baka_code):
+        """The API identifies series by the base-36 integer value of the alphanumeric code."""
+        return int(baka_code, 36)
+
+    @classmethod
+    def api_url(cls, baka_code):
+        return f"{API_BASE_URL}/series/{cls.api_series_id(baka_code)}"
+
+    @staticmethod
     def is_numeric(baka_id):
         return str(baka_id).isdigit()
 
@@ -25,11 +35,14 @@ class BakaSerializer:
         return match.group(1) if match else None
 
     def url(self, manga):
-        if not manga.baka_id:
+        return self.url_for_id(manga.baka_id)
+
+    def url_for_id(self, baka_id):
+        if not baka_id:
             raise Exception("Missing external item ID")
-        if self.is_numeric(manga.baka_id):
-            return self.numeric_id_url(manga.baka_id)
-        return self.alphanumeric_code_url(manga.baka_id)
+        if self.is_numeric(baka_id):
+            return self.numeric_id_url(baka_id)
+        return self.alphanumeric_code_url(baka_id)
 
     def upgraded_id(self, baka_id, final_url):
         """Return the alphanumeric code if an old numeric ID was redirected to a code URL; otherwise the ID as-is."""

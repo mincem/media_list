@@ -2,10 +2,8 @@ from time import sleep
 
 from django.core.management.base import BaseCommand
 
-from ...data_fetchers.external_manga_fetcher import BakaRetriever
+from ...data_fetchers.baka_sources import fetch_from_sources
 from ...models import BakaSeries, MangaKeyword, MangaSeries
-from ...serializers.baka_serializer import BakaSerializer
-from ...utils import BakaPageScraper
 
 
 class Command(BaseCommand):
@@ -22,17 +20,15 @@ class Command(BaseCommand):
                 sleep(5)
 
     def fetch_keywords(self, baka_series):
-        page = BakaRetriever().get(BakaSerializer().url(baka_series))
-        self.upgrade_id(baka_series, page.url)
-        keywords_data = BakaPageScraper(page_html=page.html, baka_id=baka_series.baka_id).parse()["keywords"]
-        for keyword_data in keywords_data:
+        result = fetch_from_sources(baka_series.baka_id)
+        self.upgrade_id(baka_series, result.baka_id)
+        for keyword_data in result.series_data["keywords"]:
             keyword = MangaKeyword.objects.get_or_create(name=keyword_data["name"])[0]
             baka_series.keywords.add(keyword, through_defaults={"score": keyword_data["score"]})
 
     @staticmethod
-    def upgrade_id(baka_series, final_url):
+    def upgrade_id(baka_series, new_id):
         old_id = baka_series.baka_id
-        new_id = BakaSerializer().upgraded_id(old_id, final_url)
         if new_id != old_id:
             baka_series.baka_id = new_id
             baka_series.save()

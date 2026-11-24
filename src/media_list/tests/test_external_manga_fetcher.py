@@ -4,7 +4,7 @@ from django.core.files.base import File
 from django.test import TestCase
 
 from ..data_fetchers import ExternalMangaFetcher
-from ..data_fetchers.external_manga_fetcher import BakaPage
+from ..data_fetchers.baka_sources import BakaPage, BakaScraperSource
 
 MOCK_BAKA_ID = "1234567"
 MOCK_BAKA_CODE = "a1b2c3d4"
@@ -81,7 +81,7 @@ class ExternalMangaFetcherTests(TestCase):
     def setUp(self):
         self.baka_series = ExternalMangaFetcher(
             item=MockManga(),
-            baka_retriever=ShingekiMockBakaRetriever(),
+            sources=[BakaScraperSource(ShingekiMockBakaRetriever())],
             image_retriever_class=MockImageRetriever,
         ).fetch()
 
@@ -133,7 +133,7 @@ class LazyIdUpgradeTests(TestCase):
         retriever = ShingekiMockBakaRetriever(final_url=final_url)
         baka_series = ExternalMangaFetcher(
             item=manga,
-            baka_retriever=retriever,
+            sources=[BakaScraperSource(retriever)],
             image_retriever_class=MockImageRetriever,
         ).fetch()
         return baka_series, retriever
@@ -163,7 +163,7 @@ class MoreBakaParserTests(TestCase):
     def setUp(self):
         self.baka_series = ExternalMangaFetcher(
             item=MockManga(),
-            baka_retriever=PrincessMockBakaRetriever(),
+            sources=[BakaScraperSource(PrincessMockBakaRetriever())],
             image_retriever_class=MockImageRetriever,
         ).fetch()
 
