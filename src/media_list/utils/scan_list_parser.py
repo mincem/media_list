@@ -37,7 +37,9 @@ class ScanListParser:
 
     def scan_contents(self, html):
         soup = BeautifulSoup(html, "lxml")
-        return [self.scan(entry) for entry in soup("p")]
+        # False positive with pylint 2.14 and bs4 4.13+; remove when upgrading pylint (#41)
+        # pylint: disable-next=not-an-iterable
+        return [self.scan(entry) for entry in soup.find_all("p")]
 
     def scan(self, entry):
         try:
