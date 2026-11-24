@@ -1,7 +1,7 @@
 from ..models import MangaPerson, MangaGenre, BakaSeries, MangaKeyword
 
 
-# pylint: disable=too-many-arguments
+# pylint: disable=too-many-arguments,too-many-positional-arguments
 class BakaSeriesRepository:
     def create(self,
                baka_id=None,

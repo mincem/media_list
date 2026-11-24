@@ -10,7 +10,7 @@ class BakaPageScraper:
         self.contents = self.all_contents()
 
     def all_contents(self):
-        return {name_of(category): html_of(category) for category in self.main_content(class_="sCat")}
+        return {name_of(category): html_of(category) for category in self.main_content.find_all(class_="sCat")}
 
     def parse(self):
         return {

@@ -35,7 +35,7 @@ class Migration(migrations.Migration):
         migrations.AddConstraint(
             model_name='bakaseries',
             constraint=models.CheckConstraint(
-                check=models.Q(('baka_id__isnull', False), ('baka_code__isnull', False), _connector='OR'),
+                condition=models.Q(('baka_id__isnull', False), ('baka_code__isnull', False), _connector='OR'),
                 name='id_and_code_not_both_null',
                 violation_error_message='Fields baka_id and baka_code cannot be both null.'),
         ),

@@ -1,6 +1,6 @@
 from django.db import models
 
-from . import ExternalMediaItem
+from .external_media_item import ExternalMediaItem
 from ...serializers.baka_serializer import BakaSerializer
 
 

@@ -37,7 +37,7 @@ class ScanListParser:
 
     def scan_contents(self, html):
         soup = BeautifulSoup(html, "lxml")
-        return [self.scan(entry) for entry in soup("p")]
+        return [self.scan(entry) for entry in soup.find_all("p")]
 
     def scan(self, entry):
         try:
@@ -49,7 +49,7 @@ class ScanListParser:
             self.series_created += 1
             self.total_lines_read += 1
             return series
-        except Exception as error:
+        except Exception as error:  # pylint: disable=broad-exception-caught
             self.errors.append({"line": entry, "error": error})
             self.total_lines_read += 1
             return None

@@ -1,7 +1,7 @@
 from ..models import IMDBMovie, VideoGenre, VideoCountry, VideoPerson, VideoKeyword, MovieCastMember
 
 
-# pylint: disable=too-many-arguments
+# pylint: disable=too-many-arguments,too-many-positional-arguments
 class IMDBMovieRepository:
     def create(self,
                imdb_id=None,

@@ -1,6 +1,6 @@
 from imdb import Cinemagoer
 
-from . import ExternalIDFinder
+from .external_id_finder import ExternalIDFinder
 from ..models import Movie
 
 

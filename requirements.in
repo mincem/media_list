@@ -1,0 +1,17 @@
+# Packages the app imports directly. Edit this file, then regenerate requirements.txt:
+#   uv pip compile requirements.in --universal --python-version 3.11 -o requirements.txt
+# and requirements-dev.txt (see requirements-dev.in).
+
+Django>=5.2,<5.3  # 5.2 LTS
+django-extra-views
+django-ordered-model
+django-widget-tweaks
+djangorestframework
+easy-thumbnails
+
+beautifulsoup4
+cinemagoer
+googlesearch-python
+lxml
+Pillow
+requests

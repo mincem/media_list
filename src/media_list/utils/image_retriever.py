@@ -9,7 +9,7 @@ class ImageRetriever:
         self.image_url = image_url
 
     def fetch(self):
-        response = requests.get(self.image_url)
+        response = requests.get(self.image_url, timeout=30)
         response.raise_for_status()
         return {
             "name": os.path.basename(self.image_url),

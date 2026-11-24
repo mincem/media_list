@@ -17,7 +17,7 @@ jobs:
         python-version: ${{ matrix.python-version }}
         cache: 'pip'
     - name: Install requirements
-      run: pip install -r requirements.txt
+      run: pip install -r requirements-dev.txt
     - name: Run pylint
       run: pylint --load-plugins pylint_django --django-settings-module=config.settings.production src/media_list
     - name: Run tests

@@ -1,0 +1,12 @@
+# App packages plus development tools. Regenerate after requirements.txt:
+#   uv pip compile requirements-dev.in --universal --python-version 3.11 -o requirements-dev.txt
+# The -c line keeps the app packages at the versions locked in requirements.txt.
+
+-r requirements.in
+-c requirements.txt
+
+# Linting
+pylint
+pylint-django
+
+uv
