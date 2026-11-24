@@ -10,7 +10,6 @@ beautifulsoup4==4.15.0
     # via
     #   -c requirements.txt
     #   -r requirements.in
-    #   googlesearch-python
 certifi==2026.11.20
     # via
     #   -c requirements.txt
@@ -55,10 +54,6 @@ easy-thumbnails==2.10.1
     # via
     #   -c requirements.txt
     #   -r requirements.in
-googlesearch-python==1.3.0
-    # via
-    #   -c requirements.txt
-    #   -r requirements.in
 idna==3.20
     # via
     #   -c requirements.txt
@@ -94,7 +89,6 @@ requests==2.34.2
     # via
     #   -c requirements.txt
     #   -r requirements.in
-    #   googlesearch-python
 soupsieve==2.10 ; python_full_version < '3.11.5'
     # via
     #   -c requirements.txt
