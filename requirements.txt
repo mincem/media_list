@@ -2,11 +2,11 @@ beautifulsoup4==4.12.2
 bs4==0.0.1
 certifi==2023.7.22
 chardet==5.1.0
-Django==4.2.3
+Django==5.2.19
 django-extra-views==0.14.0
 django-ordered-model==3.7.4
 django-widget-tweaks==1.4.12
-easy-thumbnails==2.8.5
+easy-thumbnails==2.10.1
 emoji==2.6.0
 fake-useragent==1.1.3
 future==0.18.3
