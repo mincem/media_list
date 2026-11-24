@@ -1,7 +1,7 @@
 import re
 from urllib.parse import urlparse, parse_qs
 
-from googlesearch import search
+import requests
 
 from .external_id_finder import ExternalIDFinder
 from ..models import MangaSeries
@@ -32,12 +32,40 @@ class BakaIDFinder(ExternalIDFinder):
         raise BakaUrlException(link)
 
 
+class BakaSearchRetriever:
+    SEARCH_URL = "https://api.mangaupdates.com/v1/series/search"
+
+    def search(self, series_title):
+        response = requests.post(self.SEARCH_URL, json={"search": series_title}, timeout=30)
+        response.raise_for_status()
+        return response.json()["results"]
+
+
 class LinkFetcher:
-    @staticmethod
-    def fetch(series_title):
-        for result in search(f"mangaupdates.com {series_title}", advanced=True):
-            return result.url
-        raise Exception(f'Cannot find Mangaupdates page for series "{series_title}"')
+    """Finds a series' Mangaupdates URL with the official API search.
+
+    Prefers a result whose matched title equals the series title, otherwise falls back to the first result.
+    """
+
+    def __init__(self, retriever=None):
+        self.retriever = retriever or BakaSearchRetriever()
+
+    def fetch(self, series_title):
+        results = self.retriever.search(series_title)
+        if not results:
+            raise BakaSearchException(series_title)
+        wanted = normalize_title(series_title)
+        best = next((result for result in results if normalize_title(result.get("hit_title")) == wanted), results[0])
+        return best["record"]["url"]
+
+
+def normalize_title(title):
+    return " ".join((title or "").casefold().split())
+
+
+class BakaSearchException(Exception):
+    def __init__(self, series_title):
+        super().__init__(f'Cannot find Mangaupdates page for series "{series_title}"')
 
 
 class BakaUrlException(Exception):
