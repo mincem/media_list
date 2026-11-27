@@ -4,7 +4,8 @@ from .external_media_item import ExternalMediaItem
 
 
 class IMDBMovie(ExternalMediaItem):
-    imdb_id = models.PositiveSmallIntegerField()
+    imdb_id = models.PositiveIntegerField()
+    tmdb_id = models.PositiveIntegerField(blank=True, null=True)
     original_title = models.CharField(max_length=255)
     runtime = models.DurationField(blank=True, null=True)
     countries = models.ManyToManyField("VideoCountry", related_name="movies")

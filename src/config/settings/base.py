@@ -119,3 +119,7 @@ THUMBNAIL_ALIASES = {
         'list': {'size': (45, 70), 'crop': True},
     },
 }
+
+# TMDB API (v3) key for movie data: https://developer.themoviedb.org/docs
+# Placeholder until a real key is set up.
+TMDB_API_KEY = 'mock-tmdb-api-key'

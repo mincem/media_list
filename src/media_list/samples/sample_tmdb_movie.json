@@ -1,0 +1,57 @@
+{
+  "id": 77,
+  "imdb_id": "tt0209144",
+  "title": "Memento",
+  "original_title": "Memento",
+  "tagline": "Some memories are best forgotten.",
+  "overview": "Leonard Shelby is tracking down the man who raped and murdered his wife. The difficulty of locating his wife's killer, however, is compounded by the fact that he suffers from a rare, untreatable form of short-term memory loss. Although he can recall details of life before his accident, Leonard cannot remember what happened fifteen minutes ago, where he's going, or why.",
+  "runtime": 113,
+  "release_date": "2000-10-11",
+  "production_countries": [
+    {"iso_3166_1": "US", "name": "United States of America"}
+  ],
+  "genres": [
+    {"id": 9648, "name": "Mystery"},
+    {"id": 53, "name": "Thriller"}
+  ],
+  "vote_average": 8.186,
+  "vote_count": 15230,
+  "poster_path": "/yuNs09hvpHVU1cBTCAk9zxsL2oW.jpg",
+  "credits": {
+    "cast": [
+      {"id": 529, "name": "Guy Pearce", "character": "Leonard", "order": 0},
+      {"id": 532, "name": "Joe Pantoliano", "character": "Teddy", "order": 2},
+      {"id": 530, "name": "Carrie-Anne Moss", "character": "Natalie", "order": 1},
+      {"id": 534, "name": "Mark Boone Junior", "character": "Burt", "order": 3},
+      {"id": 535, "name": "Russ Fega", "character": "Waiter", "order": 4},
+      {"id": 536, "name": "Jorja Fox", "character": "Leonard's Wife", "order": 5},
+      {"id": 537, "name": "Stephen Tobolowsky", "character": "Sammy", "order": 6},
+      {"id": 538, "name": "Harriet Sansom Harris", "character": "Mrs. Jankis", "order": 7},
+      {"id": 539, "name": "Thomas Lennon", "character": "Doctor", "order": 8},
+      {"id": 540, "name": "Callum Keith Rennie", "character": "Dodd", "order": 9},
+      {"id": 541, "name": "Kimberly Campbell", "character": "Blonde", "order": 10},
+      {"id": 542, "name": "Marianne Muellerleile", "character": "", "order": 11}
+    ],
+    "crew": [
+      {"id": 525, "name": "Christopher Nolan", "department": "Directing", "job": "Director"},
+      {"id": 525, "name": "Christopher Nolan", "department": "Writing", "job": "Screenplay"},
+      {"id": 556, "name": "Emma Thomas", "department": "Production", "job": "Executive Producer"}
+    ]
+  },
+  "keywords": {
+    "keywords": [
+      {"id": 237, "name": "tattoo"},
+      {"id": 1, "name": "amnesia"},
+      {"id": 2, "name": "nonlinear timeline"},
+      {"id": 3, "name": "insurance"},
+      {"id": 4, "name": "revenge"},
+      {"id": 5, "name": "polaroid"},
+      {"id": 6, "name": "motel"},
+      {"id": 7, "name": "black and white"},
+      {"id": 8, "name": "memory loss"},
+      {"id": 9, "name": "murder"},
+      {"id": 10, "name": "unreliable narrator"},
+      {"id": 11, "name": "neo-noir"}
+    ]
+  }
+}

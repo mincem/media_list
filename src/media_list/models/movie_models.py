@@ -22,7 +22,7 @@ class Movie(MediaItem):
     is_watched = models.BooleanField(default=False)
     status = models.CharField(max_length=1, choices=STATUS_CHOICES, default=DEFAULT_STATUS_CHOICE)
     source = models.ForeignKey("VideoSource", blank=True, null=True, on_delete=models.SET_NULL)
-    imdb_id = models.PositiveSmallIntegerField(blank=True, null=True)
+    imdb_id = models.PositiveIntegerField(blank=True, null=True)
     imdb_info = models.ForeignKey("IMDBMovie", blank=True, null=True, on_delete=models.SET_NULL)
 
     @property
