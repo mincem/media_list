@@ -16,7 +16,8 @@ class VideoKeyword(base_models.NamedModel):
 
 
 class VideoPerson(base_models.NamedModel, base_models.TimestampedModel):
-    imdb_id = models.PositiveSmallIntegerField()
+    imdb_id = models.PositiveIntegerField(blank=True, null=True)
+    tmdb_id = models.PositiveIntegerField(blank=True, null=True)
 
 
 class VideoCountry(base_models.NamedModel):

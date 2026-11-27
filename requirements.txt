@@ -8,8 +8,6 @@ certifi==2026.11.20
     # via requests
 charset-normalizer==3.5.3
     # via requests
-cinemagoer==2026.8.20
-    # via -r requirements.in
 django==5.2.19
     # via
     #   -r requirements.in
@@ -30,9 +28,7 @@ easy-thumbnails==2.10.1
 idna==3.20
     # via requests
 lxml==6.1.3
-    # via
-    #   -r requirements.in
-    #   cinemagoer
+    # via -r requirements.in
 pillow==13.0.0
     # via
     #   -r requirements.in

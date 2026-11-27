@@ -4,10 +4,12 @@ from unittest import mock
 from django.core.files.base import File
 from django.test import TestCase
 
+from ..models import VideoPerson
 from ..repositories import IMDBMovieRepository
 
 casablanca_data = {
-    "imdb_id": "0034583",
+    "imdb_id": 34583,
+    "tmdb_id": 289,
     "title": "Casablanca",
     "original_title": "Casablanca",
     "plots": [
@@ -27,18 +29,18 @@ casablanca_data = {
         "police", "nightclub", "escape"
     ],
     "cast": [
-        {"id": "0000007", "name": "Humphrey Bogart", "role": "Rick Blaine"},
-        {"id": "0000006", "name": "Ingrid Bergman", "role": "Ilsa Lund"},
-        {"id": "0002134", "name": "Paul Henreid", "role": "Victor Laszlo"},
-        {"id": "0001647", "name": "Claude Rains", "role": "Captain Louis Renault"},
-        {"id": "0891998", "name": "Conrad Veidt", "role": "Major Heinrich Strasser"},
-        {"id": "0002113", "name": "Sydney Greenstreet", "role": "Signor Ferrari"},
-        {"id": "0000048", "name": "Peter Lorre", "role": "Ugarte"},
-        {"id": "0757064", "name": "S.Z. Sakall", "role": "Carl"},
-        {"id": "0495495", "name": "Madeleine Lebeau", "role": "Yvonne"},
-        {"id": "0933330", "name": "Dooley Wilson", "role": "Sam"},
+        {"id": 4110, "name": "Humphrey Bogart", "role": "Rick Blaine"},
+        {"id": 4111, "name": "Ingrid Bergman", "role": "Ilsa Lund"},
+        {"id": 4112, "name": "Paul Henreid", "role": "Victor Laszlo"},
+        {"id": 4113, "name": "Claude Rains", "role": "Captain Louis Renault"},
+        {"id": 4114, "name": "Conrad Veidt", "role": "Major Heinrich Strasser"},
+        {"id": 4115, "name": "Sydney Greenstreet", "role": "Signor Ferrari"},
+        {"id": 2094, "name": "Peter Lorre", "role": "Ugarte"},
+        {"id": 4117, "name": "S.Z. Sakall", "role": "Carl"},
+        {"id": 4118, "name": "Madeleine Lebeau", "role": "Yvonne"},
+        {"id": 4119, "name": "Dooley Wilson", "role": "Sam"},
     ],
-    "directors": [{"id": "0002031", "name": "Michael Curtiz"}],
+    "directors": [{"id": 10541, "name": "Michael Curtiz"}],
     "rating": 8.5,
     "image": {
         "name": "FileMock",
@@ -52,10 +54,13 @@ class IMDBMovieRepositoryTests(TestCase):
         self.imdb_movie = IMDBMovieRepository().create(**casablanca_data)
 
     def test_store_correct_imdb_id(self):
-        self.assertEqual("0034583", self.imdb_movie.imdb_id)
+        self.assertEqual(34583, self.imdb_movie.imdb_id)
 
     def test_store_correct_title(self):
         self.assertEqual("Casablanca", self.imdb_movie.title)
+
+    def test_store_correct_tmdb_id(self):
+        self.assertEqual(289, self.imdb_movie.tmdb_id)
 
     def test_store_correct_original_title(self):
         self.assertEqual("Casablanca", self.imdb_movie.original_title)
@@ -85,7 +90,7 @@ class IMDBMovieRepositoryTests(TestCase):
     def test_store_correct_cast(self):
         self.assertEqual("Humphrey Bogart", str(self.imdb_movie.ordered_cast.first()))
         self.assertEqual("Rick Blaine", self.imdb_movie.ordered_cast.first().role)
-        self.assertEqual(7, self.imdb_movie.ordered_cast.first().member.imdb_id)
+        self.assertEqual(4110, self.imdb_movie.ordered_cast.first().member.tmdb_id)
         self.assertEqual(10, self.imdb_movie.ordered_cast.count())
 
     def test_store_correct_directors(self):
@@ -96,3 +101,18 @@ class IMDBMovieRepositoryTests(TestCase):
 
     def test_store_image_in_correct_path(self):
         self.assertIn("/media/movie_images/", self.imdb_movie.image.url)
+
+
+class IMDBMovieRepositoryPeopleTests(TestCase):
+    def test_reuse_person_with_same_tmdb_id(self):
+        IMDBMovieRepository().create(**casablanca_data)
+        IMDBMovieRepository().create(**casablanca_data)
+        self.assertEqual(1, VideoPerson.objects.filter(tmdb_id=4110).count())
+
+    def test_give_tmdb_id_to_person_stored_before_tmdb(self):
+        legacy_person = VideoPerson.objects.create(imdb_id=7, name="Humphrey Bogart")
+        imdb_movie = IMDBMovieRepository().create(**casablanca_data)
+        legacy_person.refresh_from_db()
+        self.assertEqual(4110, legacy_person.tmdb_id)
+        self.assertEqual(legacy_person, imdb_movie.ordered_cast.first().member)
+        self.assertEqual(1, VideoPerson.objects.filter(name="Humphrey Bogart").count())
