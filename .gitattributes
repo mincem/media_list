@@ -1,2 +1,6 @@
 # Normalize line endings: store and check out text files as LF on every OS
 * text=auto eol=lf
+
+# GitHub language stats: ignore test fixtures and label templates as Django
+src/media_list/samples/** linguist-vendored
+src/media_list/templates/** linguist-language=HTML+Django
