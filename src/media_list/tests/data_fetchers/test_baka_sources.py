@@ -4,13 +4,14 @@ from unittest import TestCase as SimpleTestCase
 import requests
 from django.test import TestCase
 
+from .. import SAMPLES_DIR
 from .test_external_manga_fetcher import MockImageRetriever, MockManga, ShingekiMockBakaRetriever
-from ..data_fetchers import ExternalMangaFetcher
-from ..data_fetchers.baka_sources import BakaApiSource, BakaScraperSource, BakaSourceError, fetch_from_sources
-from ..serializers.baka_serializer import BakaSerializer
-from ..utils import BakaApiParser
+from ...data_fetchers import ExternalMangaFetcher
+from ...data_fetchers.baka_sources import BakaApiSource, BakaScraperSource, BakaSourceError, fetch_from_sources
+from ...integrations import BakaApiParser
+from ...serializers.baka_serializer import BakaSerializer
 
-SAMPLE_API_PATH = "./media_list/samples/sample_baka_api.json"
+SAMPLE_API_PATH = SAMPLES_DIR / "sample_baka_api.json"
 SHINGEKI_CODE = "aqw5kar"
 SHINGEKI_API_ID = 23393951235
 

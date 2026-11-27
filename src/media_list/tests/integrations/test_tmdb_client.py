@@ -2,7 +2,7 @@ from unittest import mock
 
 from django.test import TestCase, override_settings
 
-from ..utils import TMDBClient, imdb_number, imdb_tag
+from ...integrations import TMDBClient, imdb_number, imdb_tag
 
 
 def mock_response(json_data):
@@ -23,7 +23,7 @@ class TestIMDbIDs(TestCase):
         self.assertIsNone(imdb_number(""))
 
 
-@mock.patch("media_list.utils.tmdb_client.requests.get")
+@mock.patch("media_list.integrations.tmdb_client.requests.get")
 class TestTMDBClient(TestCase):
     @override_settings(TMDB_API_KEY="settings-key")
     def test_reads_api_key_from_settings(self, get):

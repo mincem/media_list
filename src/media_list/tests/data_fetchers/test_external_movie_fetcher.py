@@ -3,10 +3,10 @@ from unittest import mock
 from django.core.files.base import ContentFile
 from django.test import TestCase
 
-from .serializers.test_tmdb_movie_serializer import sample_movie
-from ..data_fetchers import ExternalMovieFetcher
-from ..data_fetchers.external_movie_fetcher import MovieNotFoundException
-from ..models import Movie
+from ..serializers.test_tmdb_movie_serializer import sample_movie
+from ...data_fetchers import ExternalMovieFetcher
+from ...data_fetchers.external_movie_fetcher import MovieNotFoundException
+from ...models import Movie
 
 
 class MockTMDBClient:

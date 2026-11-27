@@ -2,7 +2,7 @@ from .external_item_fetcher import ExternalItemFetcher
 from ..models import Movie
 from ..repositories import IMDBMovieRepository
 from ..serializers.tmdb_movie_serializer import TMDBMovieSerializer
-from ..utils import TMDBClient
+from ..integrations import TMDBClient
 
 
 class ExternalMovieFetcher(ExternalItemFetcher):

@@ -4,7 +4,7 @@ from typing import NamedTuple, Union
 import requests
 
 from ..serializers.baka_serializer import BakaSerializer
-from ..utils import BakaApiParser, BakaPageScraper
+from ..integrations import BakaApiParser, BakaPageScraper
 
 logger = logging.getLogger(__name__)
 

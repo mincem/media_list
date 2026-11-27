@@ -1,6 +1,6 @@
 from django.test import TestCase
 
-from ..models import MangaSeries
+from ...models import MangaSeries
 
 
 class MangaSeriesFormsTests(TestCase):

@@ -1,6 +1,6 @@
 from datetime import timedelta
 
-from ..utils import imdb_number
+from ..integrations import imdb_number
 
 TMDB_IMAGE_URL = "https://image.tmdb.org/t/p/original"
 MAX_CAST_MEMBERS = 10

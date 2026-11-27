@@ -3,8 +3,9 @@ from unittest import mock
 from django.core.files.base import File
 from django.test import TestCase
 
-from ..data_fetchers import ExternalMangaFetcher
-from ..data_fetchers.baka_sources import BakaPage, BakaScraperSource
+from .. import SAMPLES_DIR
+from ...data_fetchers import ExternalMangaFetcher
+from ...data_fetchers.baka_sources import BakaPage, BakaScraperSource
 
 MOCK_BAKA_ID = "1234567"
 MOCK_BAKA_CODE = "a1b2c3d4"
@@ -50,11 +51,11 @@ class MockBakaRetriever:
 
 
 class ShingekiMockBakaRetriever(MockBakaRetriever):
-    sample_path = "./media_list/samples/sample_baka.html"
+    sample_path = SAMPLES_DIR / "sample_baka.html"
 
 
 class PrincessMockBakaRetriever(MockBakaRetriever):
-    sample_path = "./media_list/samples/sample_baka_2.html"
+    sample_path = SAMPLES_DIR / "sample_baka_2.html"
 
 
 class MockImageRetriever:

@@ -1,6 +1,7 @@
 from django.test import TestCase
 
-from ..utils.scan_list_parser import ScanListParser
+from .. import SAMPLES_DIR
+from ...parsers.scan_list_parser import ScanListParser
 
 MIN_INTEREST = 0
 MAX_INTEREST = 100
@@ -89,13 +90,13 @@ class ScanListParserTests(TestCase):
         self.parser = ScanListParser("mock_filename", "Source")
 
     def test_reports_amount_scanned(self):
-        response = ScanListParser("./media_list/samples/scan_list_test_sample.html", "Source").perform()
+        response = ScanListParser(SAMPLES_DIR / "scan_list_test_sample.html", "Source").perform()
         self.assertEqual(2, response["total"])
         self.assertEqual(2, response["created"])
         self.assertEqual(0, len(response["errors"]))
 
     def test_reports_a_scanning_error(self):
-        response = ScanListParser("./media_list/samples/scan_list_broken_test_sample.html", "Source").perform()
+        response = ScanListParser(SAMPLES_DIR / "scan_list_broken_test_sample.html", "Source").perform()
         self.assertEqual(2, response["total"])
         self.assertEqual(1, response["created"])
         self.assertEqual(1, len(response["errors"]))

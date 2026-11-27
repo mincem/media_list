@@ -1,12 +1,12 @@
 import json
 from datetime import timedelta
-from pathlib import Path
 
 from django.test import TestCase
 
+from .. import SAMPLES_DIR
 from ...serializers.tmdb_movie_serializer import TMDBMovieSerializer
 
-SAMPLE_PATH = Path(__file__).resolve().parents[2] / "samples" / "sample_tmdb_movie.json"
+SAMPLE_PATH = SAMPLES_DIR / "sample_tmdb_movie.json"
 
 
 def sample_movie():

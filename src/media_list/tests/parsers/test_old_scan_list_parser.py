@@ -1,6 +1,6 @@
 from django.test import TestCase
 
-from ..utils.scan_list_parser import OldScanListParser
+from ...parsers.scan_list_parser import OldScanListParser
 
 basara_html = """
         <p class="c4"><span class="c1">

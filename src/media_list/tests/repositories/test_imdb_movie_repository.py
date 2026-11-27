@@ -4,8 +4,8 @@ from unittest import mock
 from django.core.files.base import File
 from django.test import TestCase
 
-from ..models import VideoPerson
-from ..repositories import IMDBMovieRepository
+from ...models import VideoPerson
+from ...repositories import IMDBMovieRepository
 
 casablanca_data = {
     "imdb_id": 34583,

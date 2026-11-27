@@ -1,6 +1,6 @@
 from .external_id_finder import ExternalIDFinder
 from ..models import Movie
-from ..utils import TMDBClient, imdb_number
+from ..integrations import TMDBClient, imdb_number
 
 
 class MovieIDFinder(ExternalIDFinder):
