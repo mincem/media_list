@@ -204,7 +204,7 @@ class ReviewSession:
             stored_people = {str(person) for person in [*info.authors.all(), *info.artists.all()]}
         else:
             stored_title, stored_year, stored_people = group.manga[0].title, None, set()
-        fetched_people = set(fetched["author_names"]) | set(fetched["artist_names"])
+        fetched_people = {person["name"] for person in [*fetched["authors"], *fetched["artists"]]}
         rows = [
             ("", "stored" if info is not None else "manga (no info)", "Mangaupdates"),
             ("title", stored_title, fetched["title"]),

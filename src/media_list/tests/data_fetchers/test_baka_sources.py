@@ -61,8 +61,8 @@ class BakaApiParserTests(SimpleTestCase):
 
     def test_same_keys_as_scraper(self):
         self.assertSetEqual(
-            {"baka_id", "title", "genre_names", "keywords", "description", "status", "author_names",
-             "artist_names", "year", "original_publisher", "english_publisher", "image_url"},
+            {"baka_id", "title", "genre_names", "keywords", "description", "status", "authors", "artists",
+             "year", "original_publisher", "english_publisher", "image_url"},
             set(self.data),
         )
 
@@ -89,8 +89,9 @@ class BakaApiParserTests(SimpleTestCase):
         self.assertEqual("34 Volumes (Complete)", self.data["status"])
 
     def test_authors_and_artists_split_by_type(self):
-        self.assertEqual(["ISAYAMA Hajime"], self.data["author_names"])
-        self.assertEqual(["ISAYAMA Hajime"], self.data["artist_names"])
+        isayama = {"id": "py2nfr7", "name": "ISAYAMA Hajime"}
+        self.assertEqual([isayama], self.data["authors"])
+        self.assertEqual([isayama], self.data["artists"])
 
     def test_year_is_int(self):
         self.assertEqual(2009, self.data["year"])
@@ -115,7 +116,7 @@ class BakaApiParserEdgeCaseTests(SimpleTestCase):
         self.assertIsNone(data["image_url"])
         self.assertEqual([], data["genre_names"])
         self.assertEqual([], data["keywords"])
-        self.assertEqual([], data["author_names"])
+        self.assertEqual([], data["authors"])
         self.assertEqual("", data["original_publisher"])
         self.assertEqual("", data["description"])
 

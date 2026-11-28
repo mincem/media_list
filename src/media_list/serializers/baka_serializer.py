@@ -4,6 +4,7 @@ from urllib.parse import urlparse
 BASE_URL = "https://www.mangaupdates.com"
 API_BASE_URL = "https://api.mangaupdates.com/v1"
 CODE_PATH_PATTERN = re.compile(r"/series/(\w+)/?.*")
+BASE_36_DIGITS = "0123456789abcdefghijklmnopqrstuvwxyz"
 
 
 class BakaSerializer:
@@ -20,6 +21,18 @@ class BakaSerializer:
     def api_series_id(baka_code):
         """The API identifies series by the base-36 integer value of the alphanumeric code."""
         return int(baka_code, 36)
+
+    @staticmethod
+    def code_from_api_id(api_id):
+        """The alphanumeric code for a numeric API ID (the inverse of api_series_id). Works for series and authors."""
+        if api_id < 0:
+            raise ValueError(f"Mangaupdates API IDs are not negative: {api_id}")
+        code = ""
+        while True:
+            api_id, digit = divmod(api_id, 36)
+            code = BASE_36_DIGITS[digit] + code
+            if not api_id:
+                return code
 
     @classmethod
     def api_url(cls, baka_code):

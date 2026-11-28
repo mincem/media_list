@@ -59,3 +59,20 @@ class TestBakaSerializer(TestCase):
     def test_upgraded_id_keeps_existing_code(self):
         new_id = BakaSerializer().upgraded_id("a1b2c3d4", "https://www.mangaupdates.com/series/zzzzzzz/other")
         self.assertEqual("a1b2c3d4", new_id)
+
+
+class TestBakaCodeFromApiId(TestCase):
+    def test_author_id_from_sample(self):
+        self.assertEqual("py2nfr7", BakaSerializer.code_from_api_id(56479861123))
+
+    def test_inverse_of_api_series_id(self):
+        for code in ("aqw5kar", "dn77cs0", "jacyd12", "1", "z"):
+            with self.subTest(code=code):
+                self.assertEqual(code, BakaSerializer.code_from_api_id(BakaSerializer.api_series_id(code)))
+
+    def test_zero(self):
+        self.assertEqual("0", BakaSerializer.code_from_api_id(0))
+
+    def test_negative_is_rejected(self):
+        with self.assertRaises(ValueError):
+            BakaSerializer.code_from_api_id(-1)

@@ -39,17 +39,4 @@ def directors_from_data(directors_data):
 
 
 def get_or_create_person(person_data):
-    """Finds a person by TMDB ID.
-
-    Falls back to a person stored before TMDB (with no TMDB ID yet) with the same name, and gives them the TMDB ID.
-    """
-    tmdb_id, name = person_data["id"], person_data["name"]
-    person = VideoPerson.objects.filter(tmdb_id=tmdb_id).first()
-    if person is not None:
-        return person
-    person = VideoPerson.objects.filter(tmdb_id__isnull=True, name=name).first()
-    if person is not None:
-        person.tmdb_id = tmdb_id
-        person.save()
-        return person
-    return VideoPerson.objects.create(tmdb_id=tmdb_id, name=name)
+    return VideoPerson.objects.from_credit(person_data["id"], person_data["name"])
