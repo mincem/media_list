@@ -1,39 +1,18 @@
+from .external_item_repository import ExternalItemRepository
 from ..models import MangaPerson, MangaGenre, BakaSeries, MangaKeyword
 
 
-# pylint: disable=too-many-arguments,too-many-positional-arguments
-class BakaSeriesRepository:
-    def create(self,
-               baka_id=None,
-               title=None,
-               description=None,
-               status=None,
-               year=None,
-               original_publisher=None,
-               english_publisher=None,
-               image=None,
-               author_names=None,
-               artist_names=None,
-               genre_names=None,
-               keywords=None,
-               **_kwargs
-               ):
-        baka_series = BakaSeries.objects.create(
-            baka_id=baka_id,
-            title=title,
-            description=description,
-            status=status,
-            year=year,
-            original_publisher=original_publisher,
-            english_publisher=english_publisher,
-        )
-        baka_series.genres.add(*genres_from_names(genre_names))
-        baka_series.authors.add(*people_from_names(author_names))
-        baka_series.artists.add(*people_from_names(artist_names))
-        add_keywords(keywords, baka_series)
-        if image is not None:
-            baka_series.image.save(**image)
-        return baka_series
+class BakaSeriesRepository(ExternalItemRepository):
+    model = BakaSeries
+    scalar_fields = (
+        "baka_id", "title", "description", "status", "year", "original_publisher", "english_publisher",
+    )
+
+    def save_relations(self, instance, data):
+        instance.genres.set(genres_from_names(data.get("genre_names") or []))
+        instance.authors.set(people_from_names(data.get("author_names") or []))
+        instance.artists.set(people_from_names(data.get("artist_names") or []))
+        replace_keywords(data.get("keywords") or [], instance)
 
 
 def people_from_names(names):
@@ -44,7 +23,12 @@ def genres_from_names(names):
     return [MangaGenre.objects.get_or_create(name=genre_name)[0] for genre_name in names]
 
 
-def add_keywords(keywords_data, baka_series):
+def replace_keywords(keywords_data, baka_series):
+    """Replaces the series' keyword links, so the scores of keywords that were already linked are updated too.
+
+    Only the links (MangaSeriesKeyword) are deleted: the MangaKeyword rows are shared with other series.
+    """
+    baka_series.weighed_keywords.all().delete()
     for keyword_data in keywords_data:
         keyword = MangaKeyword.objects.get_or_create(name=keyword_data["name"])[0]
         baka_series.keywords.add(keyword, through_defaults={"score": keyword_data["score"]})

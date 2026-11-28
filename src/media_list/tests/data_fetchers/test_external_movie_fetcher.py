@@ -39,7 +39,7 @@ class MockImageRetriever:
 class TestExternalMovieFetcher(TestCase):
     def setUp(self):
         MockImageRetriever.fetched_urls = []
-        self.movie = Movie(title="Memento", imdb_id=209144)
+        self.movie = Movie(title="Memento", imdb_id=209144, interest=50)
 
     def fetch(self, client):
         fetcher = ExternalMovieFetcher(self.movie, tmdb_client=client, image_retriever_class=MockImageRetriever)

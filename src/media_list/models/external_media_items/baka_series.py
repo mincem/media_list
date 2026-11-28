@@ -18,6 +18,10 @@ class BakaSeries(ExternalMediaItem):
     def __str__(self):
         return f"({self.baka_id}) {self.title}"
 
+    @property
+    def external_id(self):
+        return self.baka_id
+
     def url(self):
         return BakaSerializer().url(self)
 

@@ -113,10 +113,10 @@
     </button>
   {% endif %}
 
-  {% if object.baka_id and not object.external_info %}
+  {% if object.baka_id %}
     <button id="action-get-baka-data" type="button" class="btn btn-primary"
             data-url="{% category_url object.get_category 'get_external_item' object.id %}">
-      Get Info from Mangaupdates
+      {% if object.external_info %}Refresh{% else %}Get Info{% endif %} from Mangaupdates
     </button>
   {% endif %}
 {% endblock actions %}

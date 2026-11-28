@@ -29,6 +29,8 @@ class MediaItem(TimestampedModel):
 
     category = None
     source_class = None
+    # Name of the foreign key to the item's external info (see external_info)
+    external_info_field = None
 
     title = models.CharField(max_length=255)
     alternate_title = models.CharField(blank=True, max_length=255)

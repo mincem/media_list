@@ -70,12 +70,18 @@ class MockImageRetriever:
 
 
 class MockManga:
+    """A manga with no info yet. Saving it does nothing."""
+    external_info = None
+
     def __init__(self, baka_id=MOCK_BAKA_ID):
         self.baka_id = baka_id
 
     @property
     def external_id(self):
         return self.baka_id
+
+    def save(self):
+        pass
 
 
 class ExternalMangaFetcherTests(TestCase):

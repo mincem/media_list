@@ -1,46 +1,23 @@
+from .external_item_repository import ExternalItemRepository
 from ..models import IMDBMovie, VideoGenre, VideoCountry, VideoPerson, VideoKeyword, MovieCastMember
 
 
-# pylint: disable=too-many-arguments,too-many-positional-arguments
-class IMDBMovieRepository:
-    def create(self,
-               imdb_id=None,
-               tmdb_id=None,
-               title=None,
-               original_title=None,
-               plots=None,
-               description=None,
-               runtime=None,
-               year=None,
-               countries=None,
-               genres=None,
-               keywords=None,
-               cast=None,
-               directors=None,
-               rating=None,
-               image=None,
-               **_kwargs
-               ):
-        imdb_movie = IMDBMovie.objects.create(
-            imdb_id=imdb_id,
-            tmdb_id=tmdb_id,
-            title=title,
-            original_title=original_title,
-            description=description,
-            runtime=runtime,
-            year=year,
-            rating=rating,
-        )
-        for plot in plots:
-            imdb_movie.plots.create(text=plot)
-        imdb_movie.countries.add(*models_from_names(countries, VideoCountry))
-        imdb_movie.genres.add(*models_from_names(genres, VideoGenre))
-        imdb_movie.keywords.add(*models_from_names(keywords, VideoKeyword))
-        add_cast(cast, imdb_movie)
-        imdb_movie.directors.add(*directors_from_data(directors))
-        if image is not None:
-            imdb_movie.image.save(**image)
-        return imdb_movie
+class IMDBMovieRepository(ExternalItemRepository):
+    model = IMDBMovie
+    scalar_fields = (
+        "imdb_id", "tmdb_id", "title", "original_title", "description", "runtime", "year", "rating",
+    )
+
+    def save_relations(self, instance, data):
+        instance.plots.all().delete()
+        for plot in data.get("plots") or []:
+            instance.plots.create(text=plot)
+        instance.countries.set(models_from_names(data.get("countries") or [], VideoCountry))
+        instance.genres.set(models_from_names(data.get("genres") or [], VideoGenre))
+        instance.keywords.set(models_from_names(data.get("keywords") or [], VideoKeyword))
+        instance.ordered_cast.all().delete()
+        add_cast(data.get("cast") or [], instance)
+        instance.directors.set(directors_from_data(data.get("directors") or []))
 
 
 def models_from_names(names, model):

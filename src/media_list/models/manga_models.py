@@ -23,6 +23,7 @@ class MangaSource(MediaSource):
 class MangaSeries(MediaItem):
     category = manga_category
     source_class = MangaSource
+    external_info_field = "baka_info"
 
     volumes = models.IntegerField(blank=True, null=True)
     has_omnibus = models.BooleanField(default=False)

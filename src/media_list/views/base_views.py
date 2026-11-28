@@ -40,19 +40,22 @@ class DetailView(generic.DetailView):
 
 
 class FetchExternalIDView(DetailView):
-    def get(self, request, *args, **kwargs):
+    http_method_names = ["post"]
+
+    def post(self, request, *args, **kwargs):
         item = self.get_object()
         item.external_id = ExternalIDFinder.for_item(item).get_id()
         item.save()
-        return super().get(self, request, *args, **kwargs)
+        return super().get(request, *args, **kwargs)
 
 
 class FetchExternalItemView(DetailView):
-    def get(self, request, *args, **kwargs):
-        item = self.get_object()
-        item.external_info = ExternalItemFetcher.for_item(item).fetch()
-        item.save()
-        return super().get(self, request, *args, **kwargs)
+    """Gets the item's external info, or refreshes it if it already has some."""
+    http_method_names = ["post"]
+
+    def post(self, request, *args, **kwargs):
+        ExternalItemFetcher.for_item(self.get_object()).fetch()
+        return super().get(request, *args, **kwargs)
 
 
 class CreateView(CreateWithInlinesView):
