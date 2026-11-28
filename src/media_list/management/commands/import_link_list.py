@@ -34,9 +34,9 @@ class Command(BaseCommand):
 
     def scan_contents(self, line):
         for entry in link_list_parser.entries_in_line(line):
-            if entry is None:
-                self.stdout.write("No data extracted")
-                return
+            if not entry["title"]:
+                self.stdout.write(f"No title in link to {entry['link']}")
+                continue
             self.print_entry(entry)
             self.process_manga(entry)
 
