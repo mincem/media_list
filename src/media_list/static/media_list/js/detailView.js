@@ -75,35 +75,30 @@ class DetailView {
   }
 
   findExternalID(event) {
-    const button = document.getElementById('action-find-external-id');
-    this.showLoadingAnimation(button);
-    $.ajax({
-      url: event.currentTarget.dataset.url,
-      type: 'get',
-      dataType: 'html',
-      success: (htmlData) => {
-        this.display(htmlData);
-      },
-      error: () => {
-        this.hideLoadingAnimation($(button));
-        alert("Error finding ID!");
-      }
-    });
+    this.postExternalAction(event.currentTarget, "Error finding ID!");
   }
 
   getBakaData(event) {
-    const button = document.getElementById('action-get-baka-data');
+    this.postExternalAction(event.currentTarget, "Error retrieving data!");
+  }
+
+  postExternalAction(button, errorMessage) {
     this.showLoadingAnimation(button);
     $.ajax({
-      url: event.currentTarget.dataset.url,
-      type: 'get',
+      url: button.dataset.url,
+      type: 'POST',
       dataType: 'html',
+      data: [{
+        name: 'csrfmiddlewaretoken',
+        value: getCookie('csrftoken')
+      }],
       success: (htmlData) => {
         this.display(htmlData);
       },
-      error: () => {
+      error: (xhr) => {
         this.hideLoadingAnimation($(button));
-        alert("Error retrieving data!");
+        const isPlainText = (xhr.getResponseHeader('Content-Type') || '').startsWith('text/plain');
+        alert(isPlainText && xhr.responseText ? `${errorMessage}\n${xhr.responseText}` : errorMessage);
       }
     });
   }

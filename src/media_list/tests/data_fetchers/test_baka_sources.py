@@ -172,6 +172,11 @@ class ApiFetcherTests(TestCase):
         self.assertEqual(["https://www.mangaupdates.com/series.html?id=1234567"], scraper_retriever.requested_urls)
         self.assertEqual("1234567", baka_series.baka_id)
 
+    def test_scraper_keyword_scores_are_ints_like_the_api(self):
+        result = BakaScraperSource(ShingekiMockBakaRetriever()).fetch(SHINGEKI_CODE)
+        scores = {keyword["name"]: keyword["score"] for keyword in result.series_data["keywords"]}
+        self.assertEqual(153, scores["Giant/s"])
+
 
 class FetchFromSourcesTests(SimpleTestCase):
     def test_no_accepting_source_raises(self):

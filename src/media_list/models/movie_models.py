@@ -18,6 +18,7 @@ DEFAULT_STATUS_CHOICE = STATUS_CHOICES[0][0]
 class Movie(MediaItem):
     category = movie_category
     source_class = VideoSource
+    external_info_field = "imdb_info"
 
     is_watched = models.BooleanField(default=False)
     status = models.CharField(max_length=1, choices=STATUS_CHOICES, default=DEFAULT_STATUS_CHOICE)

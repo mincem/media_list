@@ -15,3 +15,7 @@ class IMDBMovie(ExternalMediaItem):
     directors = models.ManyToManyField("VideoPerson", related_name="movies_as_director")
     rating = models.DecimalField(max_digits=3, decimal_places=1)
     image = models.ImageField(upload_to="movie_images/", blank=True, null=True)
+
+    @property
+    def external_id(self):
+        return self.imdb_id
