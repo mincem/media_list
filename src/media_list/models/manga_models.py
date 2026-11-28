@@ -1,7 +1,7 @@
 from django.db import models
 from django.templatetags.static import static
 
-from .base_models import TimestampedModel, NamedModel, MediaItem, MediaSource
+from .base_models import NamedModel, MediaItem, MediaSource, Person
 from ..categories import manga_category
 from ..serializers.baka_serializer import BakaSerializer
 
@@ -91,5 +91,10 @@ class MangaSeriesKeyword(models.Model):
         return str(self.keyword)
 
 
-class MangaPerson(NamedModel, TimestampedModel):
-    pass
+class MangaPerson(Person):
+    external_id_field = "baka_author_id"
+
+    baka_author_id = models.CharField(
+        max_length=63, blank=True, null=True, unique=True,
+        help_text="Mangaupdates author code, as in the author page URL (the API gives its base-36 number instead)",
+    )

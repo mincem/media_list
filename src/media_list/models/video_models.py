@@ -15,9 +15,11 @@ class VideoKeyword(base_models.NamedModel):
     pass
 
 
-class VideoPerson(base_models.NamedModel, base_models.TimestampedModel):
+class VideoPerson(base_models.Person):
+    external_id_field = "tmdb_id"
+
     imdb_id = models.PositiveIntegerField(blank=True, null=True)
-    tmdb_id = models.PositiveIntegerField(blank=True, null=True)
+    tmdb_id = models.PositiveIntegerField(blank=True, null=True, unique=True)
 
 
 class VideoCountry(base_models.NamedModel):

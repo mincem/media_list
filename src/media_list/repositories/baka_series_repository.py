@@ -10,13 +10,13 @@ class BakaSeriesRepository(ExternalItemRepository):
 
     def save_relations(self, instance, data):
         instance.genres.set(genres_from_names(data.get("genre_names") or []))
-        instance.authors.set(people_from_names(data.get("author_names") or []))
-        instance.artists.set(people_from_names(data.get("artist_names") or []))
+        instance.authors.set(people_from_credits(data.get("authors") or []))
+        instance.artists.set(people_from_credits(data.get("artists") or []))
         replace_keywords(data.get("keywords") or [], instance)
 
 
-def people_from_names(names):
-    return [MangaPerson.objects.get_or_create(name=name)[0] for name in names]
+def people_from_credits(person_credits):
+    return [MangaPerson.objects.from_credit(credit["id"], credit["name"]) for credit in person_credits]
 
 
 def genres_from_names(names):

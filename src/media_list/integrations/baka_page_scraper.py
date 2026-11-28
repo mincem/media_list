@@ -20,8 +20,8 @@ class BakaPageScraper:
             "keywords": self.parse_keywords(),
             "description": self.parse_description(),
             "status": self.parse_status(),
-            "author_names": self.parse_authors(),
-            "artist_names": self.parse_artists(),
+            "authors": self.parse_authors(),
+            "artists": self.parse_artists(),
             "year": int(clean_text(self.contents["Year"])) or None,
             "original_publisher": clean_text(self.contents["Original Publisher"]) or "",
             "english_publisher": clean_text(self.contents["English Publisher"]) or "",
@@ -63,16 +63,17 @@ class BakaPageScraper:
         return clean_text(self.contents["Status in Country of Origin"])
 
     def parse_authors(self):
-        return self.parse_person_names(section="Author(s)")
+        return self.parse_people(section="Author(s)")
 
     def parse_artists(self):
-        return self.parse_person_names(section="Artist(s)")
+        return self.parse_people(section="Artist(s)")
 
-    def parse_person_names(self, section):
+    def parse_people(self, section):
+        """The page links to author pages, but not with the API's numeric author IDs, so people get no ID."""
         section_html = self.contents[section]
         if section_html is None:
             return []
-        return [hyperlink.string for hyperlink in section_html.find_all("a")]
+        return [{"id": None, "name": hyperlink.string} for hyperlink in section_html.find_all("a")]
 
     def parse_image_url(self):
         html_tag = self.contents["Image [ Report Inappropriate Content ]"]
