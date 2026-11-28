@@ -124,3 +124,53 @@
     color: #a00000;
 }
 
+
+.batch-input-drop-zone {
+    padding: 40px;
+    border: 2px dashed #8a99a8;
+    border-radius: 6px;
+    background-color: #f2f5f7;
+    text-align: center;
+    font-size: 16px;
+}
+
+.batch-input-drop-zone-active {
+    border-color: #007bff;
+    background-color: #e3eefa;
+}
+
+.batch-input-message {
+    margin-top: 10px;
+    color: #6c757d;
+}
+
+.batch-input-links {
+    list-style: none;
+    margin: 20px 0 0 0;
+    padding: 0;
+}
+
+.batch-input-links li {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 4px 0;
+    border-bottom: 1px solid #d5dce3;
+}
+
+.batch-input-link-title {
+    font-weight: bold;
+}
+
+.batch-input-links a {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    color: #6c757d;
+}
+
+.batch-input-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 20px;
+}
