@@ -114,6 +114,9 @@ STATIC_URL = '/static/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
 
+# Tests store their files in a temporary MEDIA_ROOT instead of the real one
+TEST_RUNNER = 'media_list.tests.runner.TempMediaTestRunner'
+
 THUMBNAIL_ALIASES = {
     '': {
         'list': {'size': (45, 70), 'crop': True},
