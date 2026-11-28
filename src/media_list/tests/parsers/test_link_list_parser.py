@@ -1,3 +1,5 @@
+import json
+
 from django.test import TestCase
 from django.urls import reverse
 
@@ -41,32 +43,51 @@ class ParseEntryTests(TestCase):
         self.assertEqual(list(entry["matches"]), [])
 
 
-class ProcessMarkdownTests(TestCase):
-    markdown = "\n".join([
-        "- [Berserk v41 (Digital)](https://example.com/berserk)",
-        "- [Vinland Saga](https://example.com/vinland)",
-        "- [ ](https://example.com/blank)",
-        "- [Monster 18 [Scans]](https://example.com/monster)",
-    ])
+LINKS = [
+    {"text": "Berserk v41 (Digital)", "url": "https://example.com/berserk"},
+    {"text": "Vinland Saga", "url": "https://example.com/vinland"},
+    {"text": "", "url": "https://example.com/blank"},
+    {"text": "Monster 18 [Scans]", "url": "https://example.com/monster(manga)"},
+]
 
+
+class ProcessLinksTests(TestCase):
     def setUp(self):
         self.berserk = MangaSeries.objects.create(title="Berserk", interest=50)
 
     def test_every_link_gives_an_entry(self):
-        entries = link_list_parser.process_markdown(self.markdown)
+        entries = link_list_parser.process_links(LINKS)
         self.assertEqual(
             [(entry["title"], entry["volumes"], entry["link"]) for entry in entries],
             [
                 ("Berserk", 41, "https://example.com/berserk"),
                 ("Vinland Saga", 0, "https://example.com/vinland"),
                 ("", 0, "https://example.com/blank"),
-                ("Monster", 18, "https://example.com/monster"),
+                ("Monster", 18, "https://example.com/monster(manga)"),
             ]
         )
         self.assertEqual([match["id"] for match in entries[0]["matches"]], [self.berserk.id])
         self.assertEqual(entries[2]["matches"], [])
 
-    def test_view_returns_all_entries(self):
-        response = self.client.post(reverse("batch"), {"links": self.markdown})
+
+class BatchMangaImporterViewTests(TestCase):
+    def post(self, body):
+        return self.client.post(reverse("batch"), body, content_type="application/json")
+
+    def test_get_sets_csrf_cookie(self):
+        response = self.client.get(reverse("batch"))
         self.assertEqual(response.status_code, 200)
-        self.assertEqual(len(response.json()["items"]), 4)
+        self.assertIn("csrftoken", response.cookies)
+
+    def test_returns_an_item_per_link(self):
+        response = self.post(json.dumps({"links": LINKS}))
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual([item["link"] for item in response.json()["items"]], [link["url"] for link in LINKS])
+
+    def test_rejects_invalid_json(self):
+        self.assertEqual(self.post("not json").status_code, 400)
+
+    def test_rejects_invalid_links(self):
+        for body in [{}, {"links": []}, {"links": [{"text": "Berserk"}]}, {"links": [{"text": "x", "url": "nope"}]}]:
+            with self.subTest(body=body):
+                self.assertEqual(self.post(json.dumps(body)).status_code, 400)

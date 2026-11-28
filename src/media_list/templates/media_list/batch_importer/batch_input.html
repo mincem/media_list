@@ -1,64 +1,104 @@
 <script>
-  // The server's link pattern ends the URL at the first ")", so encode parentheses and spaces.
-  function markdownUrl(url) {
-    return url.replace(/\(/g, '%28').replace(/\)/g, '%29').replace(/ /g, '%20');
+  // Bookmarks copied or dragged from Firefox come as text/html with an <a> per bookmark (folders add a <dl> around
+  // them and a folder name without a link), while text/plain holds only the URLs. Read the links from the HTML so
+  // titles survive; without HTML, fall back to plain text lines that are URLs, which have no title.
+  function linksFromTransfer(data) {
+    if (!data) {
+      return [];
+    }
+    const html = data.getData('text/html');
+    if (html) {
+      const anchors = new DOMParser().parseFromString(html, 'text/html').querySelectorAll('a[href]');
+      return Array.from(anchors)
+        .map(a => ({title: a.textContent.replace(/\s+/g, ' ').trim(), url: a.getAttribute('href').trim()}))
+        .filter(link => isWebUrl(link.url));
+    }
+    return data.getData('text/plain').split(/\r?\n/)
+      .map(line => line.trim())
+      .filter(isWebUrl)
+      .map(url => ({title: '', url: url}));
   }
 
-  // execCommand keeps the insertion in the textarea's undo history; setRangeText is the fallback.
-  function insertText(textarea, text) {
-    textarea.focus();
-    if (!document.execCommand('insertText', false, text)) {
-      textarea.setRangeText(text, textarea.selectionStart, textarea.selectionEnd, 'end');
-    }
+  function isWebUrl(text) {
+    return /^https?:\/\/\S+$/i.test(text);
   }
 
   Vue.component('batch-input', {
     delimiters: ['[[', ']]'],
     template: `
-     <div>
-       <div>Paste Markdown links, or paste or drop bookmarks:</div>
+      <div class="batch-input">
+        <div class="batch-input-drop-zone" :class="{'batch-input-drop-zone-active': dragging}"
+             @dragover.prevent="dragging = true" @dragleave="dragging = false" @drop.prevent="onDrop">
+          Paste bookmarks anywhere on the page (Ctrl+V), or drop them here.
+        </div>
 
-        <form class="batch-input-form"  v-on:submit.prevent="submitForm">
-          {% csrf_token %}
-          <textarea name="links" rows="20" cols="100"
-                    @paste="insertLinks($event, $event.clipboardData)"
-                    @drop="insertLinks($event, $event.dataTransfer)"></textarea>
-          <button class="btn btn-primary" type="submit">Send</button>
-        </form>
+        <div v-if="message" class="batch-input-message">[[message]]</div>
+
+        <ul v-if="links.length" class="batch-input-links">
+          <li v-for="(link, index) in links" :key="link.url">
+            <button class="btn btn-sm btn-outline-danger" type="button" title="Remove" @click="links.splice(index, 1)">
+              <i class="fas fa-times" aria-hidden="true"></i>
+            </button>
+            <span class="batch-input-link-title">[[link.title || '(no title)']]</span>
+            <a :href="link.url" target="_blank" rel="noopener">[[link.url]]</a>
+          </li>
+        </ul>
+
+        <div class="batch-input-actions">
+          <button class="btn btn-primary" type="button" :disabled="!links.length || sending" @click="send">
+            Send ([[links.length]])
+          </button>
+          <button class="btn btn-secondary" type="button" :disabled="!links.length || sending" @click="links = []">
+            Clear
+          </button>
+        </div>
       </div>
     `,
+    data: function () {
+      return {
+        links: [],
+        dragging: false,
+        sending: false,
+        message: ''
+      }
+    },
+    mounted: function () {
+      this.onPaste = (event) => this.addLinks(linksFromTransfer(event.clipboardData));
+      document.addEventListener('paste', this.onPaste);
+    },
+    destroyed: function () {
+      document.removeEventListener('paste', this.onPaste);
+    },
     methods: {
-      // Bookmarks copied or dragged from Firefox come as text/html with an <a> per bookmark (folders add a <dl>
-      // around them), while text/plain holds only the URLs. Turn the links into Markdown so titles survive.
-      // Anything without links, such as plain text or a drag inside the textarea, is left to the browser.
-      insertLinks: function (event, data) {
-        const html = data && data.getData('text/html');
-        if (!html) {
-          return;
-        }
-        const links = Array.from(new DOMParser().parseFromString(html, 'text/html').querySelectorAll('a[href]'))
-          .map(a => ({url: a.getAttribute('href').trim(), title: a.textContent.replace(/\s+/g, ' ').trim()}))
-          .filter(link => /^https?:\/\//i.test(link.url));
-        if (!links.length) {
-          return;
-        }
-        event.preventDefault();
-        const textarea = event.target;
-        const before = textarea.value.slice(0, textarea.selectionStart);
-        const prefix = before && !before.endsWith('\n') ? '\n' : '';
-        const markdown = links.map(link => `- [${link.title || link.url}](${markdownUrl(link.url)})`).join('\n');
-        insertText(textarea, prefix + markdown + '\n');
+      onDrop: function (event) {
+        this.dragging = false;
+        this.addLinks(linksFromTransfer(event.dataTransfer));
       },
-      submitForm: function (event) {
+      addLinks: function (newLinks) {
+        const known = new Set(this.links.map(link => link.url));
+        const added = newLinks.filter(link => !known.has(link.url) && known.add(link.url));
+        this.links.push(...added);
+        const repeated = newLinks.length - added.length;
+        if (!newLinks.length) {
+          this.message = 'No links found in what was pasted or dropped.';
+        } else {
+          this.message = repeated ? `${repeated} link(s) were already in the list.` : '';
+        }
+      },
+      send: function () {
+        this.sending = true;
         $.ajax({
-          url: {% url 'batch' %},
+          url: '{% url 'batch' %}',
           type: 'POST',
+          contentType: 'application/json; charset=utf-8',
           dataType: 'json',
-          data: $(event.target).serializeArray(),
+          headers: {'X-CSRFToken': getCookie('csrftoken')},
+          data: JSON.stringify({links: this.links.map(link => ({text: link.title, url: link.url}))}),
           success: (json) => {
             this.$emit('batchProcessed', json);
           },
           error: () => {
+            this.sending = false;
             alert("Error!");
           }
         });
