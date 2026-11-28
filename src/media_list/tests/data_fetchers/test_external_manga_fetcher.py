@@ -5,6 +5,7 @@ from django.test import TestCase
 
 from .. import SAMPLES_DIR
 from ...data_fetchers import ExternalMangaFetcher
+from ...data_fetchers.baka_id_resolver import BakaIDResolutionError
 from ...data_fetchers.baka_sources import BakaPage, BakaScraperSource
 
 MOCK_BAKA_ID = "1234567"
@@ -69,11 +70,28 @@ class MockImageRetriever:
         }
 
 
+class MockIDResolver:
+    """Resolves every old numeric ID to the given code, or raises the given error."""
+
+    def __init__(self, code=MOCK_BAKA_CODE, error=None):
+        self.code = code
+        self.error = error
+        self.resolved_ids = []
+
+    def resolve(self, manga):
+        self.resolved_ids.append(manga.baka_id)
+        if self.error is not None:
+            raise self.error
+        return self.code
+
+
 class MockManga:
     """A manga with no info yet. Saving it does nothing."""
+    title = shingeki_title
+    baka_info = None
     external_info = None
 
-    def __init__(self, baka_id=MOCK_BAKA_ID):
+    def __init__(self, baka_id=MOCK_BAKA_CODE):
         self.baka_id = baka_id
 
     @property
@@ -98,7 +116,7 @@ class ExternalMangaFetcherTests(TestCase):
     #     self.assertTrue(False)
 
     def test_store_correct_baka_id(self):
-        self.assertEqual(MOCK_BAKA_ID, self.baka_series.baka_id)
+        self.assertEqual(MOCK_BAKA_CODE, self.baka_series.baka_id)
 
     def test_store_correct_title(self):
         self.assertEqual(shingeki_title, self.baka_series.title)
@@ -135,34 +153,46 @@ class ExternalMangaFetcherTests(TestCase):
         self.assertEqual(shingeki_english_publisher, self.baka_series.english_publisher)
 
 
-class LazyIdUpgradeTests(TestCase):
-    def fetch(self, manga, final_url=None):
-        retriever = ShingekiMockBakaRetriever(final_url=final_url)
+class OldIdTests(TestCase):
+    def fetch(self, manga, id_resolver):
+        retriever = ShingekiMockBakaRetriever(final_url=MOCK_REDIRECT_URL)
         baka_series = ExternalMangaFetcher(
             item=manga,
             sources=[BakaScraperSource(retriever)],
             image_retriever_class=MockImageRetriever,
+            id_resolver=id_resolver,
         ).fetch()
         return baka_series, retriever
 
-    def test_numeric_id_redirected_to_code_is_upgraded(self):
+    def test_numeric_id_is_resolved_to_code_before_fetching(self):
         manga = MockManga(baka_id=MOCK_BAKA_ID)
-        baka_series, retriever = self.fetch(manga, final_url=MOCK_REDIRECT_URL)
-        self.assertEqual([f"https://www.mangaupdates.com/series.html?id={MOCK_BAKA_ID}"], retriever.requested_urls)
+        id_resolver = MockIDResolver(code=MOCK_BAKA_CODE)
+        baka_series, retriever = self.fetch(manga, id_resolver)
+        self.assertEqual([MOCK_BAKA_ID], id_resolver.resolved_ids)
+        self.assertEqual([f"https://www.mangaupdates.com/series/{MOCK_BAKA_CODE}"], retriever.requested_urls)
         self.assertEqual(MOCK_BAKA_CODE, manga.baka_id)
         self.assertEqual(MOCK_BAKA_CODE, baka_series.baka_id)
 
-    def test_numeric_id_without_redirect_is_kept(self):
+    def test_unresolvable_numeric_id_fetches_nothing(self):
         manga = MockManga(baka_id=MOCK_BAKA_ID)
-        baka_series, _retriever = self.fetch(manga)
+        retriever = ShingekiMockBakaRetriever()
+        fetcher = ExternalMangaFetcher(
+            item=manga,
+            sources=[BakaScraperSource(retriever)],
+            image_retriever_class=MockImageRetriever,
+            id_resolver=MockIDResolver(error=BakaIDResolutionError(MOCK_BAKA_ID)),
+        )
+        with self.assertRaises(BakaIDResolutionError):
+            fetcher.fetch()
+        self.assertEqual([], retriever.requested_urls)
         self.assertEqual(MOCK_BAKA_ID, manga.baka_id)
-        self.assertEqual(MOCK_BAKA_ID, baka_series.baka_id)
 
     def test_code_is_fetched_directly(self):
         manga = MockManga(baka_id=MOCK_BAKA_CODE)
-        baka_series, retriever = self.fetch(manga, final_url=MOCK_REDIRECT_URL)
+        id_resolver = MockIDResolver()
+        baka_series, retriever = self.fetch(manga, id_resolver)
+        self.assertEqual([], id_resolver.resolved_ids)
         self.assertEqual([f"https://www.mangaupdates.com/series/{MOCK_BAKA_CODE}"], retriever.requested_urls)
-        self.assertEqual(MOCK_BAKA_CODE, manga.baka_id)
         self.assertEqual(MOCK_BAKA_CODE, baka_series.baka_id)
 
 

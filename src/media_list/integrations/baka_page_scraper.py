@@ -48,7 +48,7 @@ class BakaPageScraper:
     def parse_keyword(html):
         return {
             "name": clean(html.text),
-            "score": re.search(r'Score: (.*) \(', html.a.attrs["title"]).group(1)
+            "score": int(re.search(r'Score: (.*) \(', html.a.attrs["title"]).group(1))
         }
 
     def parse_description(self):

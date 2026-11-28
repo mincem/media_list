@@ -3,6 +3,7 @@ from typing import NamedTuple, Union
 
 import requests
 
+from .external_item_fetcher import ExternalItemFetchError
 from ..serializers.baka_serializer import BakaSerializer
 from ..integrations import BakaApiParser, BakaPageScraper
 
@@ -30,7 +31,7 @@ class BakaApiRetriever:
         return response.json()
 
 
-class BakaSourceError(Exception):
+class BakaSourceError(ExternalItemFetchError):
     pass
 
 

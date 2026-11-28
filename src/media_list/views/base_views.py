@@ -1,8 +1,9 @@
+from django.http import HttpResponse
 from django.urls import reverse_lazy
 from django.views import generic
 from extra_views import CreateWithInlinesView, UpdateWithInlinesView
 
-from ..data_fetchers import ExternalItemFetcher
+from ..data_fetchers import ExternalItemFetcher, ExternalItemFetchError
 from ..id_finders import ExternalIDFinder
 
 
@@ -54,7 +55,10 @@ class FetchExternalItemView(DetailView):
     http_method_names = ["post"]
 
     def post(self, request, *args, **kwargs):
-        ExternalItemFetcher.for_item(self.get_object()).fetch()
+        try:
+            ExternalItemFetcher.for_item(self.get_object()).fetch()
+        except ExternalItemFetchError as error:
+            return HttpResponse(str(error), status=502, content_type="text/plain")
         return super().get(request, *args, **kwargs)
 
 

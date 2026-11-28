@@ -95,9 +95,10 @@ class DetailView {
       success: (htmlData) => {
         this.display(htmlData);
       },
-      error: () => {
+      error: (xhr) => {
         this.hideLoadingAnimation($(button));
-        alert(errorMessage);
+        const isPlainText = (xhr.getResponseHeader('Content-Type') || '').startsWith('text/plain');
+        alert(isPlainText && xhr.responseText ? `${errorMessage}\n${xhr.responseText}` : errorMessage);
       }
     });
   }

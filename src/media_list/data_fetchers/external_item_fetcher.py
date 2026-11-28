@@ -3,6 +3,10 @@ from django.db import transaction
 from ..utils import ImageRetriever
 
 
+class ExternalItemFetchError(Exception):
+    """An expected failure to get an item's info (source down, series not found...). The user sees its message."""
+
+
 class ExternalItemFetcher:
     """Fetches an item's info from an external source and stores it on the item.
 
@@ -35,13 +39,18 @@ class ExternalItemFetcher:
     def fetch(self):
         """Fetches the item's info, stores it, points the item at it and saves the item.
 
-        If the item's info is for the item's current external ID, it's updated in place. Otherwise (the ID was changed),
-        new info is created and the old info is deleted, unless another item uses it.
-        Everything is fetched before anything is written, and the writes are made in one transaction.
+        If the item's info is for the item's external ID (as it was before fetching, or as fetch_data upgraded it), it's
+        updated in place. Otherwise (the ID was changed), new info is created and the old info is deleted, unless
+        another item uses it.
+        Everything is fetched before anything is written, and the writes are made in one transaction. If fetching fails,
+        nothing is written.
         """
         current_info = self.item.external_info
-        is_refresh = current_info is not None and str(current_info.external_id) == str(self.item.external_id)
+        original_id = self.item.external_id
         data = self.fetch_data()
+        is_refresh = current_info is not None and str(current_info.external_id) in {
+            str(original_id), str(self.item.external_id),
+        }
         repository = self.repository_class()  # pylint: disable=not-callable  # Set by subclasses
         with transaction.atomic():
             if is_refresh:

@@ -5,7 +5,7 @@ import requests
 from django.test import TestCase
 
 from .. import SAMPLES_DIR
-from .test_external_manga_fetcher import MockImageRetriever, MockManga, ShingekiMockBakaRetriever
+from .test_external_manga_fetcher import MockIDResolver, MockImageRetriever, MockManga, ShingekiMockBakaRetriever
 from ...data_fetchers import ExternalMangaFetcher
 from ...data_fetchers.baka_sources import BakaApiSource, BakaScraperSource, BakaSourceError, fetch_from_sources
 from ...integrations import BakaApiParser
@@ -164,13 +164,23 @@ class ApiFetcherTests(TestCase):
             baka_series, _scraper_retriever = self.fetch(MockManga(baka_id=SHINGEKI_CODE), api_retriever)
         self.assertEqual("28 Volumes (Ongoing)", baka_series.status)
 
-    def test_numeric_id_skips_api(self):
+    def test_numeric_id_is_resolved_and_fetched_from_api(self):
         api_retriever = MockBakaApiRetriever()
         manga = MockManga(baka_id="1234567")
-        baka_series, scraper_retriever = self.fetch(manga, api_retriever)
-        self.assertEqual([], api_retriever.requested_codes)
-        self.assertEqual(["https://www.mangaupdates.com/series.html?id=1234567"], scraper_retriever.requested_urls)
-        self.assertEqual("1234567", baka_series.baka_id)
+        baka_series = ExternalMangaFetcher(
+            item=manga,
+            sources=[BakaApiSource(api_retriever), BakaScraperSource(ShingekiMockBakaRetriever())],
+            image_retriever_class=MockImageRetriever,
+            id_resolver=MockIDResolver(code=SHINGEKI_CODE),
+        ).fetch()
+        self.assertEqual([SHINGEKI_CODE], api_retriever.requested_codes)
+        self.assertEqual(SHINGEKI_CODE, manga.baka_id)
+        self.assertEqual(SHINGEKI_CODE, baka_series.baka_id)
+
+    def test_scraper_keyword_scores_are_ints_like_the_api(self):
+        result = BakaScraperSource(ShingekiMockBakaRetriever()).fetch(SHINGEKI_CODE)
+        scores = {keyword["name"]: keyword["score"] for keyword in result.series_data["keywords"]}
+        self.assertEqual(153, scores["Giant/s"])
 
 
 class FetchFromSourcesTests(SimpleTestCase):

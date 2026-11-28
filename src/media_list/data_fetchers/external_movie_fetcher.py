@@ -1,4 +1,4 @@
-from .external_item_fetcher import ExternalItemFetcher
+from .external_item_fetcher import ExternalItemFetcher, ExternalItemFetchError
 from ..models import Movie
 from ..repositories import IMDBMovieRepository
 from ..serializers.tmdb_movie_serializer import TMDBMovieSerializer
@@ -29,6 +29,6 @@ class ExternalMovieFetcher(ExternalItemFetcher):
         return movie_dict
 
 
-class MovieNotFoundException(Exception):
+class MovieNotFoundException(ExternalItemFetchError):
     def __init__(self, imdb_id):
         super().__init__(f"Cannot find a TMDB movie with IMDb ID {imdb_id}")
