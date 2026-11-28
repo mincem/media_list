@@ -1,18 +1,54 @@
 <script>
+  // The server's link pattern ends the URL at the first ")", so encode parentheses and spaces.
+  function markdownUrl(url) {
+    return url.replace(/\(/g, '%28').replace(/\)/g, '%29').replace(/ /g, '%20');
+  }
+
+  // execCommand keeps the insertion in the textarea's undo history; setRangeText is the fallback.
+  function insertText(textarea, text) {
+    textarea.focus();
+    if (!document.execCommand('insertText', false, text)) {
+      textarea.setRangeText(text, textarea.selectionStart, textarea.selectionEnd, 'end');
+    }
+  }
+
   Vue.component('batch-input', {
     delimiters: ['[[', ']]'],
     template: `
      <div>
-       <div>Paste a Markdown file:</div>
+       <div>Paste Markdown links, or paste or drop bookmarks:</div>
 
         <form class="batch-input-form"  v-on:submit.prevent="submitForm">
           {% csrf_token %}
-          <textarea name="links" rows="20" cols="100"></textarea>
+          <textarea name="links" rows="20" cols="100"
+                    @paste="insertLinks($event, $event.clipboardData)"
+                    @drop="insertLinks($event, $event.dataTransfer)"></textarea>
           <button class="btn btn-primary" type="submit">Send</button>
         </form>
       </div>
     `,
     methods: {
+      // Bookmarks copied or dragged from Firefox come as text/html with an <a> per bookmark (folders add a <dl>
+      // around them), while text/plain holds only the URLs. Turn the links into Markdown so titles survive.
+      // Anything without links, such as plain text or a drag inside the textarea, is left to the browser.
+      insertLinks: function (event, data) {
+        const html = data && data.getData('text/html');
+        if (!html) {
+          return;
+        }
+        const links = Array.from(new DOMParser().parseFromString(html, 'text/html').querySelectorAll('a[href]'))
+          .map(a => ({url: a.getAttribute('href').trim(), title: a.textContent.replace(/\s+/g, ' ').trim()}))
+          .filter(link => /^https?:\/\//i.test(link.url));
+        if (!links.length) {
+          return;
+        }
+        event.preventDefault();
+        const textarea = event.target;
+        const before = textarea.value.slice(0, textarea.selectionStart);
+        const prefix = before && !before.endsWith('\n') ? '\n' : '';
+        const markdown = links.map(link => `- [${link.title || link.url}](${markdownUrl(link.url)})`).join('\n');
+        insertText(textarea, prefix + markdown + '\n');
+      },
       submitForm: function (event) {
         $.ajax({
           url: {% url 'batch' %},
